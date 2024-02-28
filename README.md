@@ -2,7 +2,7 @@
 Bayesian inference and cure rate modeling
 
 Code for the paper **Papastamoulis and Milienos (2023)**. *Bayesian inference and cure rate
-modeling for event history data*. 
+modeling for event history data*. [arXiv:2310.06926](https://arxiv.org/abs/2310.06926)
 
 ## Illustrative examples
 
