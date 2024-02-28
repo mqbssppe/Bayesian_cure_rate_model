@@ -4,8 +4,8 @@ sourceCpp("cll_reparameterization_fix.cpp")
 library('coda')
 library('doParallel')
 library('foreach')
-
-
+library('HDInterval')
+library('mclust')
 
 #myData must contain the columns "Covariate1", "Covariate2" and "Y"
 #We also need  D1, D0, and I_sim
@@ -1082,6 +1082,221 @@ cure_rate_MC3 <- function( myData, nChains = 16,
 }
 
 
+compute_map_and_hdis <- function(myData, retained_mcmc, prior_parameters = NULL, gamma_mix = TRUE, K_gamma = 2){
 
-
+	if(is.null(prior_parameters)){
+		mu_g = 0
+		s2_g = 100
+		a_l = 2.001
+		b_l = 1 
+		a_1 = 2.001
+		b_1 = 1
+		a_2 = 2.001
+		b_2 = 1
+		mu_b = rep(0,dim(myData)[2] - 1)
+		Sigma = 100*diag(dim(myData)[2] - 1)
+	}
+	
 		
+	log_inv_gamma_kernel <- function(x, a, b){
+		if(min(c(x,a,b)) < 0){
+		stop("input should be positive")
+		}
+		return(-b/x - (a+1) * log(x))
+	}
+
+	
+	ct = exp(exp(-1))
+	x <- cbind(1, myData[, -(1:2)])
+	nCov <- dim(x)[2]
+	log_S_p <- function(tau, g, lambda, a1, a2, b, x){
+		theta <- exp(x %*% b)
+		return(-log(1 + g * theta * ct^{g*theta} * (1 - exp(-(a1*tau)^a2))^lambda)/g)
+	}
+
+	c_under <- 10^{-9}
+	log_f_p <- function(tau, g, lambda, a1, a2, b, logS){
+		# logS = log_S_p(tau = tau, g = g, lambda = lambda, a1 = a1, a2 = a2, b0 = b0, b1 = b1, b2 = b2)
+		one_minus_exp <- apply(cbind((1 - exp(-(a1*tau)^a2)), c_under), 1, max)
+		log_weibull_dens <- log(a1) + log(a2)  -(a1*tau)^a2 + (a2 - 1)*log(a1*tau)
+		log_theta <- x %*% b
+		return(
+		        (1 + g) * logS + log(lambda) + log_theta +
+		        g*exp(log_theta)*log(ct) + 
+		        (lambda - 1)*log(one_minus_exp) + #### NOTE: this causes the log -> -inf, so now it regulated.
+		        log_weibull_dens
+		)
+	 }
+
+	m <- dim(retained_mcmc)[1]
+	ind <- 1:m
+	
+	logL <- logP <- numeric(m)
+	tz <- 0
+	bIndices <- paste0('b',1:nCov - 1,'_mcmc')
+	for(iter in ind){
+
+
+		logS <- log_S_p(tau = myData[,'Y'], 
+			g = retained_mcmc[iter,'g_mcmc'], 
+			lambda = retained_mcmc[iter,'lambda_mcmc'], 
+			a1 = retained_mcmc[iter,'a1_mcmc'], 
+			a2 = retained_mcmc[iter,'a2_mcmc'], 
+			b = retained_mcmc[iter, bIndices], 
+			x = x)
+
+		logf <- log_f_p(tau = myData[,'Y'], 
+			g = retained_mcmc[iter,'g_mcmc'], 
+			lambda = retained_mcmc[iter,'lambda_mcmc'], 
+			a1 = retained_mcmc[iter,'a1_mcmc'], 
+			a2 = retained_mcmc[iter,'a2_mcmc'], 
+			b = retained_mcmc[iter, bIndices], 
+			logS = logS
+			)
+		tz <- tz + 1
+		logL[tz] <- sum(myData[,'Censoring_status'] * logf) + sum((1-myData[,'Censoring_status'])*logS)
+		g = retained_mcmc[iter,'g_mcmc']
+		lambda = retained_mcmc[iter,'lambda_mcmc']
+		a1 = retained_mcmc[iter,'a1_mcmc']
+		a2 = retained_mcmc[iter,'a2_mcmc'] 
+		b = retained_mcmc[iter, bIndices]
+		log_prior_density <- -0.5*((g - mu_g)^2)/s2_g + 
+			        log_inv_gamma_kernel(lambda, a_l, b_l) +
+			        log_inv_gamma_kernel(a1, a_1, b_1) +
+			        log_inv_gamma_kernel(a2, a_2, b_2) -
+			        0.5 * mahalanobis(b, mu_b, Sigma)^2
+
+		logP[tz] <- logL[tz] + log_prior_density
+		if(iter %% 100 == 0){
+		cat(paste0('iteration: ', iter),'\r')
+		}
+		
+	}
+	cat('\n')
+	n <- dim(myData)[1]
+	n_parameters <- dim(x)[2] + 4
+	BIC <- -2 * max(logL) + n_parameters * log(n)
+	map_estimate <- retained_mcmc[which.max(logP), ]
+	hdis <- fpf <- plot.bayesCureModel(retained_mcmc = retained_mcmc, alpha = 0.05, plot = FALSE)
+	results <- vector('list', length = 4)
+	results[[1]] <- logP
+	results[[2]] <- BIC
+	results[[3]] <- map_estimate
+	results[[4]] <- hdis
+	names(results) <- c('log_posterior', 'bic','map_estimate', 'highest_density_indervals')
+	return(results)
+
+}
+
+plot.bayesCureModel <- function(retained_mcmc, map_estimate = NULL, alpha = 0.05, gamma_mix = TRUE, K_gamma = 2, plot = TRUE){
+	nPars <- dim(retained_mcmc)[2]
+	myXlim <- matrix(NA, nPars, 2)
+	for(i in 1:nPars){
+		myXlim[i,] <- quantile(retained_mcmc[,i],probs = c(0.001,0.999))# c(-5,2)
+	}
+	hdis <- vector('list', length = nPars)
+	m <- dim(retained_mcmc)[1]
+	ind <- 1:m
+	
+	varnames <- numeric(nPars)
+	varnames[1:4] <- as.expression(c(
+		bquote(gamma), 
+		bquote(lambda), 
+		bquote(alpha[1]), 
+		bquote(alpha[2])))
+	for(i in 5:nPars){
+		varnames[i] <- as.expression(bquote(beta[.(i-5)]))
+	}
+
+	hdi_alpha = alpha
+	for(i in 1:nPars){
+#		pdf(file = paste0("../img/recidivism_new_data_parameter_",i,".pdf"), width = 12, height = 3)
+		if(i == 1){
+			shouldIask = FALSE
+		}else{shouldIask = TRUE}
+		if(plot){
+		par(mar = c(4,4,0.1,0.5), ask = shouldIask)	
+		}
+		x <- retained_mcmc[ind,i]
+
+		myD <- density(x, bw = 'ucv')
+		if(i < 5){
+			myD <- density(x, bw = 'bcv')			
+		}
+		if(i == 1){
+		if(gamma_mix){
+		fit <- Mclust(x,G=1:K_gamma, modelNames = "V")
+		k <- fit$G
+		if( k > 1){
+			multMode = TRUE
+			mu <- fit$parameters$mean
+			w <- fit$parameters$pro
+			s2 <- fit$parameters$variance$sigmasq
+			dd <- range(x) + 0.01*c(-1,1)
+			xvals <- seq(dd[1],dd[2], length = 512)
+			yvals <- w[1]*dnorm(xvals,mean = mu[1], sd = sqrt(s2[1]))
+			for(j in 2:k){
+				yvals <- yvals + w[j]*dnorm(xvals,mean = mu[j], sd = sqrt(s2[j]))
+			}
+			myD <- vector("list", length = 2)
+			names(myD) <- c('x','y')
+			myD$x <- xvals
+			myD$y <- yvals
+			class(myD) <- 'density'
+		}
+		
+		}}
+		allow_split = TRUE
+		if(i %in% c(2,3,4)){allow_split = FALSE}
+		hdi_95 <- hdi(myD,allowSplit=allow_split, credMass = 1 - hdi_alpha)				
+
+
+		if(is.null(dim(hdi_95))){hdi_length = diff(hdi_95)}else{
+		hdi_length = sum(apply(hdi_95,1,diff))}
+		hdis[[i]] <- hdi_95
+		if(is.null(dim(hdi_95))){hdi_95 = matrix(hdi_95,1,2)}
+		if(plot){
+		plot(myD, xlab = varnames[i], main = '', xlim = myXlim[i,])
+		}
+		if(i == 1){
+					if(plot){
+			legend('topleft', c('estimate (map)', paste0(100*(1-hdi_alpha), '% HDI')), 
+				col = c('red','papayawhip'),lty = 1,lwd = c(1,10))
+				}
+		}
+		#hist(mcmcmc16$mcmc_sample[ind,i], xlab = varnames[i], main = '');abline(v = truePars[i], col = 1, lwd = 2)
+
+		for(j in 1:dim(hdi_95)[1]){
+			#abline(v = hdi_95[j,], lty = 2, col = 1+j)
+			x_dens1 <- which.min(abs(hdi_95[j,1] - myD$x))
+			x_dens2 <- which.min(abs(hdi_95[j,2] - myD$x))
+			y_dens <- myD$y[c(x_dens1,x_dens2)]
+					if(plot){
+			polygon(c(myD$x[c(x_dens1:x_dens2,x_dens2:x_dens1)]),
+				c(rep(0,x_dens2 - x_dens1+1),myD$y[c(x_dens2:x_dens1)]),col='papayawhip')
+				}
+			#points(c(hdi_95[j,1],hdi_95[j,1]),c(0,y_dens[1]), type = 'l')	
+			#points(c(hdi_95[j,2],hdi_95[j,2]),c(0,y_dens[2]), type = 'l')			
+		}
+		hdi_length = sum(apply(hdi_95,1,diff))
+		if(is.null(map_estimate) == FALSE){
+				if(plot){
+			abline(v = c(map_estimate[i]), col = 2, lwd = 2, lty = 1)
+				}
+		}
+#		abline(v = truePars[i], col = 'green', lwd = 2, lty = 2)
+#		dev.off()
+		
+	}
+			if(plot){
+	par(ask=FALSE)
+	}
+	names(hdis) <- c('g', 'lambda', 'a1', 'a2',paste0('b',5:nPars - 5))
+	return(hdis)
+
+}
+
+
+
+
+
