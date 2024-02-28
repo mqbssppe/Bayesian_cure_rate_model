@@ -1085,8 +1085,8 @@ cure_rate_MC3 <- function( myData, nChains = 16,
 compute_map_and_hdis <- function(myData, retained_mcmc, prior_parameters = NULL, gamma_mix = TRUE, K_gamma = 2){
 
 	if(is.null(prior_parameters)){
-		mu_g = 0
-		s2_g = 100
+		mu_g = 1
+		s2_g = 1
 		a_l = 2.001
 		b_l = 1 
 		a_1 = 2.001
@@ -1105,6 +1105,11 @@ compute_map_and_hdis <- function(myData, retained_mcmc, prior_parameters = NULL,
 		return(-b/x - (a+1) * log(x))
 	}
 
+	log_prior_gamma <- function(g, mu_g, s2_g){
+		# mu_g is a_g
+		# s2_g is b_g
+		return(mu_g * log(s2_g) - 2*lgamma(mu_g) + (mu_g - 1)*log(abs(g)) - s2_g*abs(g))
+	}
 	
 	ct = exp(exp(-1))
 	x <- cbind(1, myData[, -(1:2)])
@@ -1160,7 +1165,7 @@ compute_map_and_hdis <- function(myData, retained_mcmc, prior_parameters = NULL,
 		a1 = retained_mcmc[iter,'a1_mcmc']
 		a2 = retained_mcmc[iter,'a2_mcmc'] 
 		b = retained_mcmc[iter, bIndices]
-		log_prior_density <- -0.5*((g - mu_g)^2)/s2_g + 
+		log_prior_density <- log_prior_gamma(g, mu_g, s2_g) + 
 			        log_inv_gamma_kernel(lambda, a_l, b_l) +
 			        log_inv_gamma_kernel(a1, a_1, b_1) +
 			        log_inv_gamma_kernel(a2, a_2, b_2) -
