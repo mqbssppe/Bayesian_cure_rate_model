@@ -18,6 +18,12 @@ The file [Recidivism_Iowa_5000.txt](https://github.com/mqbssppe/Bayesian_cure_ra
 - [foreach](https://CRAN.R-project.org/package=foreach)
 - [pracma](https://CRAN.R-project.org/package=pracma)
 
+## See dev version 
+
+The [https://github.com/mqbssppe/Bayesian_cure_rate_model/tree/main/dev](developer version) of the package is now available. Main features
+* allow general number of covariates (with/out constant terms)
+* dedicated functions for plotting and summarizing the output.
+
 ## Session info
 
 ```
