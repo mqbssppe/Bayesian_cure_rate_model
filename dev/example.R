@@ -2,7 +2,7 @@ source('sim_data_function_2.R')
 source('bayesian_cure_rate_model.R')
 
 # sample size
-n <- 1000
+n <- 500
 
 #	Simulation scenarios
 # true Parameter values (14 scenarios)
@@ -35,7 +35,7 @@ if(scenario_id < 5){
 }else{
         source('sim_data_extra_scenario.R')               
 }
-myData <- sim_fotis_model(n = n, truePars = truePars, ab = ab, seed = 1)           
+sim <- sim_fotis_model(n = n, truePars = truePars, ab = ab, seed = 1)           
 
 # the first four columns of the `myData` data.frame contains the simulated dataset. 
 #	column 1 ('Y'): observed times
@@ -43,20 +43,24 @@ myData <- sim_fotis_model(n = n, truePars = truePars, ab = ab, seed = 1)
 #	column 3 ('Covariate1'): first covariate
 #	column 4 ('Covariate2'): second covariate
 #	The 5th column contains the cured status (which is latent for each subject however - this is ignored in the algorithm)
-latent_statuses <- myData[,5]
-myData <- myData[,1:4]
+
+y <- sim[,1]
+X1 <- cbind(1, sim[,3:4])
+stat <- sim[,2]
 
 
-myData1 <- myData
-myData2 <- cbind(myData, matrix(rnorm(n*2), n, 2))
 
-nChains <- 8    
+
+nChains <- 8
 mcmcIterations <- 10000
 alpha <- 1/1.00001^{(1:nChains)^2.5 - 1}
 
+# run the `true` model (including const. term)
 
 run1 <- cure_rate_MC3( 
-	myData = myData1, 		# this is the input dataset - should be in the format described above
+	y = y, 
+	X = X1,
+	Censoring_status = stat,		
 	nChains = nChains, 		# number of heated chains (denoted as `C` in the paper)
 	mcmc_cycles = mcmcIterations,	# number of MCMC cycles (denoted as `N` in the paper)
         nCores = 8, 			# number of cores to use for parallel processing
@@ -78,9 +82,13 @@ run1 <- cure_rate_MC3(
         mala = 0.33		# probability of proposing a MALA update  - otherwise a single MH is attempted
 )
 
+# run a model without constant term plus an irrelevant explanatory variable
+X2 <- cbind(sim[,3:4], rnorm(n))
 
 run2 <- cure_rate_MC3( 
-	myData = myData2, 		# this is the input dataset - should be in the format described above
+	y = y, 
+	X = X2,
+	Censoring_status = stat,		
 	nChains = nChains, 		# number of heated chains (denoted as `C` in the paper)
 	mcmc_cycles = mcmcIterations,	# number of MCMC cycles (denoted as `N` in the paper)
         nCores = 8, 			# number of cores to use for parallel processing
@@ -105,11 +113,18 @@ run2 <- cure_rate_MC3(
 
 
 
-burn = 5000
-getSummary1 <- compute_map_and_hdis(myData = myData1, retained_mcmc = run1$mcmc_sample[-(1:burn), ], prior_parameters = NULL)
-getSummary2 <- compute_map_and_hdis(myData = myData2, retained_mcmc = run2$mcmc_sample[-(1:burn), ], prior_parameters = NULL)
+burn = 2000
+getSummary1 <- compute_map_and_hdis(y = y, X = X1, Censoring_status = stat, 
+	retained_mcmc = run1$mcmc_sample[-(1:burn), ], prior_parameters = NULL)
 
+getSummary2 <- compute_map_and_hdis(y = y, X = X2, Censoring_status = stat, 
+	retained_mcmc = run2$mcmc_sample[-(1:burn), ], prior_parameters = NULL)
 
+# print bic (smaller = better)
+getSummary1$bic
+getSummary2$bic
+
+# plot estimated marginal posterior distribution along with highest density intervals
 plot.bayesCureModel(retained_mcmc = run1$mcmc_sample[-(1:burn), ], map_estimate = getSummary1$map_estimate, alpha = 0.05)
 
 

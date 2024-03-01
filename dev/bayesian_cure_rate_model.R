@@ -11,12 +11,13 @@ library('mclust')
 #We also need  D1, D0, and I_sim
 #dercomp takes on {1,2,3,4,5,6,7}->{g,lambda,a1,a2,b0,b1,b2} depending on which derivative must be computed 
 
-derv_complete_log_likelihood_fotis <- function(myData, g, lambda, a1, a2, b, I_sim){
-	nCov <- dim(myData)[2] - 1
-	n <- dim(myData)[1]
+derv_complete_log_likelihood_fotis <- function(y, X, Censoring_status, g, lambda, a1, a2, b, I_sim){
+	X <- as.matrix(X)
+	nCov <- dim(X)[2] 
+	n <- dim(X)[1]
 	nPars <- 4 + nCov
-	D1 <- which(myData[,"Censoring_status"] == 1)	# fixed
-	D0 <- which(myData[,"Censoring_status"] == 0)	# fixed
+	D1 <- which(Censoring_status == 1)	# fixed
+	D0 <- which(Censoring_status == 0)	# fixed
 	
 	Dp0b <- array(data = NA, dim = c(n,nCov))
 	Dfpb <- array(data = NA, dim = c(n,nCov))
@@ -28,8 +29,8 @@ derv_complete_log_likelihood_fotis <- function(myData, g, lambda, a1, a2, b, I_s
 	
 	gradientVec <- numeric(nPars)
 	ct = exp(exp(-1))
-	x <- cbind(1, myData[,-(1:2)])
-	tau <- myData[,1]
+	x <- X
+	tau <- y
 
 
 	theta1 <- exp(x %*% b)
@@ -188,7 +189,7 @@ log_prior_gradient <- function(g, lambda, a1, a2, b ,mu_g, s2_g,  a_l, b_l, a_1,
 }
 
 
-cure_rate_metropolis_hastings_cpp <- function( myData,  m, alpha = 1,
+cure_rate_metropolis_hastings_cpp <- function( y, X, Censoring_status,  m, alpha = 1,
 				mu_g = 0.2, s2_g = 0.1, a_l = 2.001, b_l = 1, 
 				a_1 = 2.001, b_1 = 1, a_2 = 2.001, b_2 = 1, 
 				mu_b = NULL, Sigma = NULL,
@@ -202,7 +203,9 @@ cure_rate_metropolis_hastings_cpp <- function( myData,  m, alpha = 1,
 						verbose = TRUE,
 						tau_mala = 0.000015, mala = 0.33
 					){
-	nCov <- dim(myData)[2] - 1
+#	nCov <- dim(myData)[2] - 1
+	X <- as.matrix(X)
+	nCov <- dim(X)[2]
 	nPars <- nCov + 4
 	if(is.null(mu_b)){mu_b <- rep(0, nCov)}
 	if(is.null(Sigma)){Sigma <- 100 * diag(nCov)}
@@ -232,13 +235,16 @@ cure_rate_metropolis_hastings_cpp <- function( myData,  m, alpha = 1,
 #	initialValues: should be a list with entries named as g_mcmc, b0_mcmc, b1_mcmc, b2_mcmc, lambda_mcmc, a1_mcmc, a2_mcmc
 #			and if it is NULL then random starting values are generated
 
-	n <- dim(myData)[1]
-
-	X <- myData[,-(1:2)]
+#	n <- dim(myData)[1]
+	n <- dim(X)[1]
+#	X <- myData[,-(1:2)]
 	ct = exp(exp(-1))
 
-	D1 <- which(myData[,"Censoring_status"] == 1)	# fixed
-	D0 <- which(myData[,"Censoring_status"] == 0)	# fixed
+#	D1 <- which(myData[,"Censoring_status"] == 1)	# fixed
+#	D0 <- which(myData[,"Censoring_status"] == 0)	# fixed
+
+	D1 <- which(Censoring_status == 1)	# fixed
+	D0 <- which(Censoring_status == 0)	# fixed
 
 
 	g_mcmc <- lambda_mcmc <- a1_mcmc <- a2_mcmc <- numeric(m)
@@ -246,6 +252,13 @@ cure_rate_metropolis_hastings_cpp <- function( myData,  m, alpha = 1,
 	cllValues <- numeric(m)
 	lpd <- numeric(m)
 	I_sim_values_D0 <- matrix(data = NA, ncol = length(D0), nrow = m)
+
+	if(length(unique(X[,1])) == 1){
+		bRange <- 1:nCov - 1
+	}else{
+		bRange <- 1:nCov 
+	}
+
 
 	# initial values (random)
 	if(is.null(initialValues)){
@@ -257,8 +270,8 @@ cure_rate_metropolis_hastings_cpp <- function( myData,  m, alpha = 1,
 	}else{
 		g = initialValues[['g_mcmc']]
 		b <- numeric(nCov)
-		for(j in (1:nCov - 1)){
-			b[j + 1] <- initialValues[[paste0('b',j,'_mcmc')]]
+		for(j in 1:nCov){
+			b[j] <- initialValues[[4+j]]
 		}
 		lambda = initialValues[['lambda_mcmc']]								
 		a1 = initialValues[['a1_mcmc']]
@@ -286,7 +299,7 @@ cure_rate_metropolis_hastings_cpp <- function( myData,  m, alpha = 1,
 	I_sim_values_D0[1, ] <- I_sim[D0]
 
 
-	cll <- complete_log_likelihood(myData = myData, g = g, lambda = lambda, a1 = a1, a2 = a2, b = b, I_sim = I_sim, alpha = alpha)
+	cll <- complete_log_likelihood(y = y, X = X, Censoring_status = Censoring_status, g = g, lambda = lambda, a1 = a1, a2 = a2, b = b, I_sim = I_sim, alpha = alpha)
 	cllValues[1] <- cll$cll
 	##########################################################edw stamatisa################################################3
 #	print("0")
@@ -342,8 +355,8 @@ cure_rate_metropolis_hastings_cpp <- function( myData,  m, alpha = 1,
 		#       Metropolis-Hastings proposal for gamma: normal proposal distribution
 		#------------------------------------------------
 		        g_prop <- rnorm(1, mean = g, sd = g_prop_sd)
-		        cll_prop <- complete_log_likelihood(myData = myData, g = g_prop, lambda = lambda, a1 = a1, 
-		        	a2 = a2, b = b, I_sim = I_sim, alpha = alpha)
+		        cll_prop <- complete_log_likelihood(y = y, X = X, Censoring_status = Censoring_status, 
+		        		g = g_prop, lambda = lambda, a1 = a1, a2 = a2, b = b, I_sim = I_sim, alpha = alpha)
 		        cll_diff <- cll_prop$cll - cll$cll
 	#               print("1")
 	#               print(cll_diff)
@@ -365,7 +378,8 @@ cure_rate_metropolis_hastings_cpp <- function( myData,  m, alpha = 1,
 		#       Metropolis-Hastings proposal for lambda: lognormal proposal distribution
 		#------------------------------------------------
 		        lambda_prop = rlnorm(1, meanlog = log(lambda), sdlog = lambda_prop_scale)
-		        cll_prop <- complete_log_likelihood(myData = myData, g = g, lambda = lambda_prop, a1 = a1, a2 = a2, 
+		        cll_prop <- complete_log_likelihood(y = y, X = X, Censoring_status = Censoring_status, 
+		        	g = g, lambda = lambda_prop, a1 = a1, a2 = a2, 
 		        	b = b, I_sim = I_sim, alpha = alpha)
 		        cll_diff <- cll_prop$cll - cll$cll
 	#               print("2")
@@ -389,7 +403,8 @@ cure_rate_metropolis_hastings_cpp <- function( myData,  m, alpha = 1,
 		#       Metropolis-Hastings proposal for a1: lognormal proposal distribution
 		#------------------------------------------------
 		        a1_prop = rlnorm(1, meanlog = log(a1), sdlog = a1_prop_scale)
-		        cll_prop <- complete_log_likelihood(myData = myData, g = g, lambda = lambda, a1 = a1_prop, a2 = a2, 
+		        cll_prop <- complete_log_likelihood(y = y, X = X, Censoring_status = Censoring_status, 
+		        	g = g, lambda = lambda, a1 = a1_prop, a2 = a2, 
 		        	b = b, I_sim = I_sim, alpha = alpha)
 		        cll_diff <- cll_prop$cll - cll$cll
 	#               print("3")
@@ -413,7 +428,8 @@ cure_rate_metropolis_hastings_cpp <- function( myData,  m, alpha = 1,
 		#       Metropolis-Hastings proposal for a2: lognormal proposal distribution
 		#------------------------------------------------
 		        a2_prop = rlnorm(1, meanlog = log(a2), sdlog = a2_prop_scale)
-		        cll_prop <- complete_log_likelihood(myData = myData, g = g, lambda = lambda, a1 = a1, a2 = a2_prop, 
+		        cll_prop <- complete_log_likelihood(y = y, X = X, Censoring_status = Censoring_status, 
+		        	g = g, lambda = lambda, a1 = a1, a2 = a2_prop, 
 		        	b = b, I_sim = I_sim, alpha = alpha)
 		        cll_diff <- cll_prop$cll - cll$cll
 	#               print("4")
@@ -437,7 +453,8 @@ cure_rate_metropolis_hastings_cpp <- function( myData,  m, alpha = 1,
 		#       Metropolis-Hastings proposal for b = (b0,b1,b2): multivariate normal proposal distribution
 		#------------------------------------------------
 		        b_prop <- b + b_prop_sd*rnorm(nCov)
-		        cll_prop <- complete_log_likelihood(myData = myData, g = g, lambda = lambda, a1 = a1, a2 = a2, 
+		        cll_prop <- complete_log_likelihood(y = y, X = X, Censoring_status = Censoring_status, 
+		        	g = g, lambda = lambda, a1 = a1, a2 = a2, 
 		        	b= b_prop, I_sim = I_sim, alpha = alpha)
 		        cll_diff <- cll_prop$cll - cll$cll
 	#               print("5")
@@ -462,7 +479,7 @@ cure_rate_metropolis_hastings_cpp <- function( myData,  m, alpha = 1,
 			theta_previous <- c(g, lambda, a1, a2, b)		
 
 
-			gradient_vec <- derv_complete_log_likelihood_fotis(myData = myData,
+			gradient_vec <- derv_complete_log_likelihood_fotis(y = y, X = X, Censoring_status = Censoring_status,
 				theta_previous[1],theta_previous[2],theta_previous[3],
 				theta_previous[4],theta_previous[-(1:4)],I_sim)
 
@@ -479,7 +496,8 @@ cure_rate_metropolis_hastings_cpp <- function( myData,  m, alpha = 1,
 			if(min(theta_prop[2:4]) < 0){rejectedMove = TRUE}}
 			if(rejectedMove == FALSE){
 				log_prop_density <- sum(dnorm(theta_prop, mean_prop, sd = sd_prop, log = TRUE))
-				gradient_vec_prop <- derv_complete_log_likelihood_fotis(myData = myData, 
+				gradient_vec_prop <- derv_complete_log_likelihood_fotis(y = y, X = X, 
+					Censoring_status = Censoring_status, 
 					theta_prop[1],theta_prop[2],theta_prop[3], theta_prop[4],
 					theta_prop[-(1:4)],I_sim)
 				
@@ -491,7 +509,8 @@ cure_rate_metropolis_hastings_cpp <- function( myData,  m, alpha = 1,
 				
 				mean_prop_rev <- theta_prop + tau_mala * gradient_vec_prop
 				log_prop_density_reverse <- sum(dnorm(theta_previous, mean_prop_rev, sd = sd_prop, log = TRUE))
-				cll_prop <- complete_log_likelihood(myData = myData, g = theta_prop[1], lambda = theta_prop[2], 
+				cll_prop <- complete_log_likelihood(y = y, X = X, Censoring_status = Censoring_status, 
+					g = theta_prop[1], lambda = theta_prop[2], 
 					a1 = theta_prop[3], a2 = theta_prop[4], b = theta_prop[-(1:4)], I_sim = I_sim, alpha = alpha)
 				cll_diff <- cll_prop$cll - cll$cll
 				log_proposal_ratio <- log_prop_density_reverse - log_prop_density
@@ -547,7 +566,8 @@ cure_rate_metropolis_hastings_cpp <- function( myData,  m, alpha = 1,
 		# for i in D1: I_i = 1
 		I_sim[D0] <- rbinom(n = length(D0), size = 1, prob = susceptible_prob[D0])
 		I_sim_values_D0[iter, ] <- I_sim[D0]
-		cll <- complete_log_likelihood(myData = myData, g = g, lambda = lambda, a1 = a1, a2 = a2, b = b, I_sim = I_sim, alpha = alpha)
+		cll <- complete_log_likelihood(y = y, X = X, Censoring_status = Censoring_status, 
+				g = g, lambda = lambda, a1 = a1, a2 = a2, b = b, I_sim = I_sim, alpha = alpha)
 #		print("6")
 #		print(cll$cll)
 
@@ -563,8 +583,8 @@ cure_rate_metropolis_hastings_cpp <- function( myData,  m, alpha = 1,
 			burn <- floor(0.3*iter)
 			ergMean <- c(mean(g_mcmc[(burn+1):iter]), mean(lambda_mcmc[(burn+1):iter]), 
 				mean(a1_mcmc[(burn+1):iter]), mean(a2_mcmc[(burn+1):iter]), 
-				colMeans(b_mcmc[(burn+1):iter,]))
-				names(ergMean) <- c("gamma", "lambda", "a1", "a2", paste0('b',1:nCov - 1))
+				colMeans(as.matrix(b_mcmc[(burn+1):iter,])))
+				names(ergMean) <- c("gamma", "lambda", "a1", "a2", paste0('b',bRange))
 			print(round(ergMean,2))
 			cat(paste0("    g_accept_rate = ", round(100*g_accept_rate/mh_iter, 2), "%.   "), "\n")
                         cat(paste0("    lambda_accept_rate = ", round(100*lambda_accept_rate/mh_iter, 2), "%.   "), "\n")
@@ -579,8 +599,8 @@ cure_rate_metropolis_hastings_cpp <- function( myData,  m, alpha = 1,
 				plot(lambda_mcmc[1:iter], type = "l", xlab = "MCMC iteration", ylab = bquote(lambda))
 				plot(a1_mcmc[1:iter], type = "l", xlab = "MCMC iteration", ylab = bquote(alpha[1]))						
 				plot(a2_mcmc[1:iter], type = "l", xlab = "MCMC iteration", ylab = bquote(alpha[2]))
-				matplot(b_mcmc[1:iter,], type = "l", xlab = "MCMC iteration", ylab = 'regression coefficients')														
-				lText <- paste0('b',1:nCov - 1)
+				matplot(as.matrix(b_mcmc[1:iter,]), type = "l", xlab = "MCMC iteration", ylab = 'regression coefficients')														
+				lText <- paste0('b',bRange)
 				legend("topright", lText, col = 1:nCov, lty = 1:nCov)
 				plot(cllValues[1:iter], type = "l", xlab = "MCMC iteration", ylab = "complete log-likelihood")
 			}
@@ -588,7 +608,7 @@ cure_rate_metropolis_hastings_cpp <- function( myData,  m, alpha = 1,
 
 	}
 		result <- vector("list", length = 5)
-		colnames(b_mcmc) <- paste0('b',1:nCov - 1, '_mcmc')
+		colnames(b_mcmc) <- paste0('b',bRange, '_mcmc')
 		mcmc_sample <- as.mcmc(cbind(g_mcmc, lambda_mcmc, a1_mcmc, a2_mcmc, b_mcmc))
 		latent_status_D0 <- I_sim_values_D0
 		colnames(latent_status_D0) <- D0
@@ -620,25 +640,27 @@ cure_rate_metropolis_hastings_cpp <- function( myData,  m, alpha = 1,
 
 
 
-cure_rate_MC3 <- function( myData, nChains = 16, 
+cure_rate_MC3 <- function( y, X, Censoring_status, nChains = 16, 
 				mcmc_cycles = 15000, 
 				alpha = NULL, 
 				nCores = 8, 
 				sweep = 10,
 				mu_g = 0.2, s2_g = 0.1, a_l = 2.001, b_l = 1, 
 				a_1 = 2.001, b_1 = 1, a_2 = 2.001, b_2 = 1, 
-				mu_b = rep(0,dim(myData)[2] - 1), Sigma = 100*diag(dim(myData)[2] - 1),
+				mu_b = rep(0,dim(X)[2]), Sigma = 100*diag(dim(X)[2]),
 				g_prop_sd = 0.045, 
 				lambda_prop_scale = 0.03, 
 				a1_prop_scale = 0.2, 
 				a2_prop_scale = 0.03, 
-				b_prop_sd = rep(0.022, dim(myData)[2] - 1), 
+				b_prop_sd = rep(0.022, dim(X)[2]), 
 				initialValues = NULL, 
 				plot = TRUE,
 				adjust_scales = TRUE,
 				adjust_alpha = FALSE,
 				verbose = TRUE, tau_mala = 0.000015, mala = 0.33
 					){
+	X <- as.matrix(X)
+	if(min(y) < 0){stop("Negative values are not allowed in the response variable.")}				
 	if(nChains < 2){stop("at least two chains should be considered.")}
 	if(is.null(alpha)){
 		alpha <- 1/1.001^{(1:nChains)^2.5 - 1}	# temperature per chain (the target chain always corresponds to chain 1)
@@ -652,20 +674,25 @@ cure_rate_MC3 <- function( myData, nChains = 16,
 			stop("alpha[1] should be equal to 1.")
 		}
 	}
-	nCov <- dim(myData)[2] - 1			
+	nCov <- dim(X)[2]
 	nPars <- 4 + nCov
-	D0 <- which(myData[,"Censoring_status"] == 0)
+	D0 <- which(Censoring_status == 0)
 	nCensored <- length(D0)
 	parallel_mcmc_samples <- array(data = NA, dim = c(1, nPars + nCensored, nChains))
 	target_mcmc <- array(data = NA, dim = c(mcmc_cycles, nPars + nCensored))
-	b_names <- paste0('b',1:nCov - 1,'_mcmc')
+
+	if(length(unique(X[,1])) == 1){
+		b_names <- paste0('b',1:nCov - 1,'_mcmc')
+	}else{
+		b_names <- paste0('b',1:nCov,'_mcmc')	
+	}
+
 	dimnames(parallel_mcmc_samples) = list(paste0("current_value"),
 		c("g_mcmc", "lambda_mcmc", "a1_mcmc", "a2_mcmc", b_names,paste0("status_",D0)),
 						paste0("chain_",1:nChains))
 		dimnames(parallel_mcmc_samples)[[3]][1]	<- "chain_1_(target_chain)"
 		dimnames(target_mcmc) = list(paste0("cycle_",1:mcmc_cycles),
 			c("g_mcmc", "lambda_mcmc", "a1_mcmc", "a2_mcmc", b_names,paste0("status_",D0)))
-
 
 	cllValues <- numeric(mcmc_cycles)
 
@@ -692,7 +719,7 @@ cure_rate_MC3 <- function( myData, nChains = 16,
 	 
 	      while(criterion & (iter < 20)){
 
-		  run <- cure_rate_metropolis_hastings_cpp( myData = myData,  
+		  run <- cure_rate_metropolis_hastings_cpp(  y, X, Censoring_status,  
 		                        m = 1000, 
 				mu_g = mu_g, s2_g = s2_g, a_l = a_l, b_l = b_l, 
 				a_1 = a_1, b_1 = b_1, a_2 = a_2, b_2 = b_2, 
@@ -702,7 +729,8 @@ cure_rate_MC3 <- function( myData, nChains = 16,
 		                        lambda_prop_scale = lambda_prop_scale[chain_iter], 
 		                        a1_prop_scale = a1_prop_scale[chain_iter], 
 		                        a2_prop_scale = a2_prop_scale[chain_iter], 
-		                        b_prop_sd = b_prop_sd[chain_iter,], plot = FALSE, verbose = FALSE, tau_mala = tau_mala, mala = mala)
+		                        b_prop_sd = b_prop_sd[chain_iter,], 
+		                        plot = FALSE, verbose = FALSE, tau_mala = tau_mala, mala = mala)
 
 			if(mala>0){
 				indUp <- which((run$acceptance_rates > 0.6) == TRUE)
@@ -758,7 +786,7 @@ cure_rate_MC3 <- function( myData, nChains = 16,
 	 
 	      while(criterion & (iter < 5)){
 
-		  run <- cure_rate_metropolis_hastings_cpp( myData = myData,  
+		  run <- cure_rate_metropolis_hastings_cpp(  y, X, Censoring_status,  
 		                        m = 500, 
 				mu_g = mu_g, s2_g = s2_g, a_l = a_l, b_l = b_l, 
 				a_1 = a_1, b_1 = b_1, a_2 = a_2, b_2 = b_2, 
@@ -768,7 +796,8 @@ cure_rate_MC3 <- function( myData, nChains = 16,
 		                        lambda_prop_scale = lambda_prop_scale[chain_iter], 
 		                        a1_prop_scale = a1_prop_scale[chain_iter], 
 		                        a2_prop_scale = a2_prop_scale[chain_iter], 
-		                        b_prop_sd = b_prop_sd[chain_iter,], plot = FALSE, verbose = FALSE, tau_mala = tau_mala, mala = mala)
+		                        b_prop_sd = b_prop_sd[chain_iter,], 
+		                        plot = FALSE, verbose = FALSE, tau_mala = tau_mala, mala = mala)
 
 			if(mala>0){
 				indUp <- which((run$acceptance_rates > 0.6) == TRUE)
@@ -829,7 +858,7 @@ cure_rate_MC3 <- function( myData, nChains = 16,
 	
 	
 		cat(paste0("Adjusting temperatures..."),"\n")
-		run <- cure_rate_MC3_cpp( myData = myData, nChains = nChains, 
+		run <- cure_rate_MC3_cpp(  y, X, Censoring_status, nChains = nChains, 
 				mcmc_cycles = mcmc_cyc, 
 				alpha = alpha, 
 				nCores = nCores, 
@@ -872,7 +901,7 @@ cure_rate_MC3 <- function( myData, nChains = 16,
 			cat(paste0("   Adjusted temperatures: "),"\n")
 			print(alpha)
 
-			run <- cure_rate_MC3_cpp( myData = myData, nChains = nChains, 
+			run <- cure_rate_MC3_cpp(  y, X, Censoring_status, nChains = nChains, 
 				mcmc_cycles = mcmc_cyc, 
 				alpha = alpha, 
 				nCores = nCores, 
@@ -923,7 +952,7 @@ cure_rate_MC3 <- function( myData, nChains = 16,
 #					perform_mala = mala
 #				}else{perform_mala = 0}
 #			}
-			mcmc_chain <- cure_rate_metropolis_hastings_cpp( myData = myData,  
+			mcmc_chain <- cure_rate_metropolis_hastings_cpp(  y, X, Censoring_status,  
 				                m = sweep, 
 						mu_g = mu_g, s2_g = s2_g, a_l = a_l, b_l = b_l, 
 						a_1 = a_1, b_1 = b_1, a_2 = a_2, b_2 = b_2, 
@@ -966,14 +995,14 @@ cure_rate_MC3 <- function( myData, nChains = 16,
 
 			state_j2 <- as.list(parLoop[[j2]]$mcmc_sample[sweep,])
 			state_j2[["I_sim_D0"]] <- parLoop[[j2]]$latent_status_censored[sweep,]
-			nom1 <- cure_rate_metropolis_hastings_cpp( myData = myData,  
+			nom1 <- cure_rate_metropolis_hastings_cpp(  y, X, Censoring_status,  
 								m = 1, # only the log-posterior is computed at the initial values
 								mu_g = mu_g, s2_g = s2_g, a_l = a_l, b_l = b_l, 
 						a_1 = a_1, b_1 = b_1, a_2 = a_2, b_2 = b_2, 
 						mu_b = mu_b, Sigma = Sigma,
 								alpha = alpha[j1], plot = FALSE, 
 								initialValues = state_j2, tau_mala = tau_mala, mala = mala)
-			nom2 <- cure_rate_metropolis_hastings_cpp( myData = myData,  
+			nom2 <- cure_rate_metropolis_hastings_cpp(  y, X, Censoring_status,  
 								m = 1, # only the log-posterior is computed at the initial values
 								alpha = alpha[j2], plot = FALSE, 
 								mu_g = mu_g, s2_g = s2_g, a_l = a_l, b_l = b_l, 
@@ -1008,7 +1037,7 @@ cure_rate_MC3 <- function( myData, nChains = 16,
 #					}else{perform_mala = 0}
 #				}
 				
-				mcmc_chain <- cure_rate_metropolis_hastings_cpp( myData = myData,  
+				mcmc_chain <- cure_rate_metropolis_hastings_cpp(  y, X, Censoring_status,  
 						        m = sweep, 
 						        alpha = alpha[chain_iter],
 							mu_g = mu_g, s2_g = s2_g, a_l = a_l, b_l = b_l, 
@@ -1038,9 +1067,9 @@ cure_rate_MC3 <- function( myData, nChains = 16,
 				cat("   Current ergodic means and median (after discarding 30% of iterations):","\n")
 		                burn <- floor(0.3*cycle)
 		                ergMean <- colMeans(target_mcmc[(burn+1):cycle,1:nPars])
-		                        names(ergMean) <- c("gamma", "lambda", "a1", "a2", paste0('b',1:nCov-1))
+		                        names(ergMean) <- c("gamma", "lambda", "a1", "a2", b_names)
 		                ergMed <- apply(target_mcmc[(burn+1):cycle,1:nPars], 2, median)
-		                        names(ergMed) <- c("gamma", "lambda", "a1", "a2", paste0('b',1:nCov-1))
+		                        names(ergMed) <- c("gamma", "lambda", "a1", "a2", b_names)
 		                tmpMat <- rbind(ergMean, ergMed)
 		                rownames(tmpMat) <- c("mean", "median")
 		                print(round(tmpMat,2))
@@ -1056,9 +1085,9 @@ cure_rate_MC3 <- function( myData, nChains = 16,
 						ylim = quantile(target_mcmc[1:cycle, 3],c(0.001,0.99)))						
 					plot(target_mcmc[1:cycle, 4], 
 						type = "l", xlab = "MCMC iteration", ylab = bquote(alpha[2]))
-					matplot(target_mcmc[1:cycle, 5:nPars], col = 1:nCov, lty = 1:nCov,
+					matplot(as.matrix(target_mcmc[1:cycle, 5:nPars]), col = 1:nCov, lty = 1:nCov,
 						type = "l", xlab = "MCMC iteration", ylab = 'regression coefficients')														
-					lText <- paste0('b',1:nCov-1)
+					lText <- b_names
 					legend("topright", lText, col = 1:nCov, lty = 1:nCov)
 					#plot(cllValues[1:cycle], type = "l", xlab = "MCMC iteration", ylab = "complete log-likelihood",
 					#ylim = quantile(cllValues[1:cycle],c(0.01,0.999)))
@@ -1082,7 +1111,7 @@ cure_rate_MC3 <- function( myData, nChains = 16,
 }
 
 
-compute_map_and_hdis <- function(myData, retained_mcmc, prior_parameters = NULL, gamma_mix = TRUE, K_gamma = 2){
+compute_map_and_hdis <- function(y, X, Censoring_status, retained_mcmc, prior_parameters = NULL, gamma_mix = TRUE, K_gamma = 2){
 
 	if(is.null(prior_parameters)){
 		mu_g = 1
@@ -1093,8 +1122,8 @@ compute_map_and_hdis <- function(myData, retained_mcmc, prior_parameters = NULL,
 		b_1 = 1
 		a_2 = 2.001
 		b_2 = 1
-		mu_b = rep(0,dim(myData)[2] - 1)
-		Sigma = 100*diag(dim(myData)[2] - 1)
+		mu_b = rep(0,dim(X)[2])
+		Sigma = 100*diag(dim(X)[2])
 	}
 	
 		
@@ -1112,7 +1141,8 @@ compute_map_and_hdis <- function(myData, retained_mcmc, prior_parameters = NULL,
 	}
 	
 	ct = exp(exp(-1))
-	x <- cbind(1, myData[, -(1:2)])
+	X <- as.matrix(X)
+	x <- X
 	nCov <- dim(x)[2]
 	log_S_p <- function(tau, g, lambda, a1, a2, b, x){
 		theta <- exp(x %*% b)
@@ -1138,11 +1168,16 @@ compute_map_and_hdis <- function(myData, retained_mcmc, prior_parameters = NULL,
 	
 	logL <- logP <- numeric(m)
 	tz <- 0
-	bIndices <- paste0('b',1:nCov - 1,'_mcmc')
+	if(length(unique(X[,1])) == 1){
+		bIndices <- paste0('b',1:nCov - 1,'_mcmc')	
+	}else{
+		bIndices <- paste0('b',1:nCov,'_mcmc')
+	}
+	
 	for(iter in ind){
 
 
-		logS <- log_S_p(tau = myData[,'Y'], 
+		logS <- log_S_p(tau = y, 
 			g = retained_mcmc[iter,'g_mcmc'], 
 			lambda = retained_mcmc[iter,'lambda_mcmc'], 
 			a1 = retained_mcmc[iter,'a1_mcmc'], 
@@ -1150,7 +1185,7 @@ compute_map_and_hdis <- function(myData, retained_mcmc, prior_parameters = NULL,
 			b = retained_mcmc[iter, bIndices], 
 			x = x)
 
-		logf <- log_f_p(tau = myData[,'Y'], 
+		logf <- log_f_p(tau = y, 
 			g = retained_mcmc[iter,'g_mcmc'], 
 			lambda = retained_mcmc[iter,'lambda_mcmc'], 
 			a1 = retained_mcmc[iter,'a1_mcmc'], 
@@ -1159,7 +1194,7 @@ compute_map_and_hdis <- function(myData, retained_mcmc, prior_parameters = NULL,
 			logS = logS
 			)
 		tz <- tz + 1
-		logL[tz] <- sum(myData[,'Censoring_status'] * logf) + sum((1-myData[,'Censoring_status'])*logS)
+		logL[tz] <- sum(Censoring_status * logf) + sum((1-Censoring_status)*logS)
 		g = retained_mcmc[iter,'g_mcmc']
 		lambda = retained_mcmc[iter,'lambda_mcmc']
 		a1 = retained_mcmc[iter,'a1_mcmc']
@@ -1178,7 +1213,7 @@ compute_map_and_hdis <- function(myData, retained_mcmc, prior_parameters = NULL,
 		
 	}
 	cat('\n')
-	n <- dim(myData)[1]
+	n <- dim(X)[1]
 	n_parameters <- dim(x)[2] + 4
 	BIC <- -2 * max(logL) + n_parameters * log(n)
 	map_estimate <- retained_mcmc[which.max(logP), ]
@@ -1193,7 +1228,7 @@ compute_map_and_hdis <- function(myData, retained_mcmc, prior_parameters = NULL,
 
 }
 
-plot.bayesCureModel <- function(retained_mcmc, map_estimate = NULL, alpha = 0.05, gamma_mix = TRUE, K_gamma = 2, plot = TRUE){
+plot.bayesCureModel <- function(retained_mcmc, map_estimate = NULL, alpha = 0.05, gamma_mix = TRUE, K_gamma = 2, plot = TRUE, bw = 'ucv'){
 	nPars <- dim(retained_mcmc)[2]
 	myXlim <- matrix(NA, nPars, 2)
 	for(i in 1:nPars){
@@ -1209,8 +1244,10 @@ plot.bayesCureModel <- function(retained_mcmc, map_estimate = NULL, alpha = 0.05
 		bquote(lambda), 
 		bquote(alpha[1]), 
 		bquote(alpha[2])))
+	b_ind <- as.numeric(unlist(lapply(strsplit(unlist(lapply(strsplit(colnames(retained_mcmc)[-(1:4)], 
+		split = '_'), function(x)x[1])), split = 'b'), function(x)x[2])))
 	for(i in 5:nPars){
-		varnames[i] <- as.expression(bquote(beta[.(i-5)]))
+		varnames[i] <- as.expression(bquote(beta[.(b_ind[i-4])]))
 	}
 
 	hdi_alpha = alpha
@@ -1224,10 +1261,10 @@ plot.bayesCureModel <- function(retained_mcmc, map_estimate = NULL, alpha = 0.05
 		}
 		x <- retained_mcmc[ind,i]
 
-		myD <- density(x, bw = 'ucv')
-		if(i < 5){
-			myD <- density(x, bw = 'bcv')			
-		}
+		myD <- density(x, bw = bw)
+#		if(i < 5){
+#			myD <- density(x, bw = 'bcv')			
+#		}
 		if(i == 1){
 		if(gamma_mix){
 		fit <- Mclust(x,G=1:K_gamma, modelNames = "V")
@@ -1296,7 +1333,7 @@ plot.bayesCureModel <- function(retained_mcmc, map_estimate = NULL, alpha = 0.05
 			if(plot){
 	par(ask=FALSE)
 	}
-	names(hdis) <- c('g', 'lambda', 'a1', 'a2',paste0('b',5:nPars - 5))
+	names(hdis) <- c('g', 'lambda', 'a1', 'a2',paste0('b',b_ind))
 	return(hdis)
 
 }
