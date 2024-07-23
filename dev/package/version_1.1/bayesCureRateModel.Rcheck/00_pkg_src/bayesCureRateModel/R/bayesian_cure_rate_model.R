@@ -1063,7 +1063,7 @@ cure_rate_mcmc <- function( y, X, Censoring_status,  m, alpha = 1,
 cure_rate_MC3 <- function( y, X, Censoring_status, nChains = 12, 
 				mcmc_cycles = 15000, 
 				alpha = NULL, 
-				nCores = 8, 
+				nCores = 1, 
 				sweep = 5,
 				mu_g = 1, s2_g = 1, a_l = 2.1, b_l = 1.1, 
 				mu_b = rep(0,dim(X)[2]), Sigma = 100*diag(dim(X)[2]),
@@ -1081,7 +1081,13 @@ cure_rate_MC3 <- function( y, X, Censoring_status, nChains = 12,
 					single_MH_in_f = 0.2
 					){
 	X <- as.matrix(X)
-
+	
+	if( .Platform$OS.type == 'windows' && nCores > 1){
+		cat('   [WARNING]: parallelization is not suggested in Windows.', '\n')
+		cat('              Consider setting nCores = 1.', '\n')
+	}
+	
+	
 #	specify default priors per distribution family
 	if(is.null(promotion_time$prior_parameters)){
 		if(promotion_time$distribution == 'exponential'){
@@ -2073,7 +2079,7 @@ cat(paste0('Among ', length(latent_cured_status) ,' censored observations, I fou
 
 #' @export
 
-plot.bayesCureModel <- function(x, burn = NULL, alpha = 0.05, gamma_mix = TRUE, K_gamma = 5, plot_graphs = TRUE, bw = 'nrd0', what = NULL, p_cured_output = NULL, index_of_main_mode = NULL, ...){
+plot.bayesCureModel <- function(x, burn = NULL, alpha = 0.05, gamma_mix = TRUE, K_gamma = 5, plot_graphs = TRUE, bw = 'nrd0', what = NULL, p_cured_output = NULL, index_of_main_mode = NULL, draw_legend = TRUE, ...){
 	retained_mcmc = x$mcmc_sample
 	map_estimate = x$map_estimate
 #	if(plot_graphs){
@@ -2190,9 +2196,11 @@ plot.bayesCureModel <- function(x, burn = NULL, alpha = 0.05, gamma_mix = TRUE, 
 				)
 			}
 		}
+		if(draw_legend){
 		lText <- paste0(apply(round(p_cured_output$covariate_levels,2), 1, function(y)paste0(y, collapse=', ')))
 		legend('bottomright', col = 2:(nLevels+1), lty = 1, 
 			title = paste0('covariate levels\n',paste0(p_cured_output$Xnames, collapse=', ')), lText)
+		}
 #		p_cured_given_tau_low <- p_cured_given_tau_up <- numeric(length(p_cured_output$tau_values))
 #		for(j in 1:nLevels){
 #		for(k in 1:length(p_cured_output$tau_values)){
@@ -2253,10 +2261,11 @@ plot.bayesCureModel <- function(x, burn = NULL, alpha = 0.05, gamma_mix = TRUE, 
 				)
 			}
 		}
+		if(draw_legend){
 		lText <- paste0(apply(round(p_cured_output$covariate_levels,2), 1, function(y)paste0(y, collapse=', ')))
 		legend('bottomright', col = 2:(nLevels+1), lty = 1, 
 			title = paste0('covariate levels\n',paste0(p_cured_output$Xnames, collapse=', ')), lText)
-
+		}
 	}else{
 	for(i in what){
 #		pdf(file = paste0("../img/recidivism_new_data_parameter_",i,".pdf"), width = 12, height = 3)

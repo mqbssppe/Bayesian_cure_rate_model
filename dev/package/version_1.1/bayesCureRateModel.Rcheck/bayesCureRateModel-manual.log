@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2024.3.16)  23 JUL 2024 10:45
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2024.3.16)  23 JUL 2024 11:58
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -501,13 +501,13 @@ m/m/n/10 value of the []\T1/pcr/m/n/10 summary.bayesCureRateModel
  []
 
 [21]
-Overfull \hbox (85.38034pt too wide) in paragraph at lines 1082--1082
+Overfull \hbox (85.38034pt too wide) in paragraph at lines 1085--1085
  []\T1/pcr/m/n/9 # plot the marginal posterior distribution of the first parame
 ter in returned mcmc output[] 
  []
 
 
-Overfull \hbox (16.74937pt too wide) in paragraph at lines 1117--1118
+Overfull \hbox (16.74937pt too wide) in paragraph at lines 1120--1121
 []\T1/ptm/m/n/10 An ob-ject of class []\T1/pcr/m/n/10 bayesCureModel[]\T1/ptm/m
 /n/10 , which is re-turned by the []\T1/pcr/m/n/10 cure_rate_MC3
  []
@@ -570,7 +570,7 @@ helvetic/uhvr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmb8a
 .pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/shar
 e/texlive/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/share/texlive/texmf
 -dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on Rd2.pdf (26 pages, 275692 bytes).
+Output written on Rd2.pdf (26 pages, 276127 bytes).
 PDF statistics:
  519 PDF objects out of 1000 (max. 8388607)
  446 compressed objects within 5 object streams

@@ -9,7 +9,7 @@ Plot method
 \usage{
 \method{plot}{bayesCureModel}(x, burn = NULL, alpha = 0.05, gamma_mix = TRUE, 
 	K_gamma = 5, plot_graphs = TRUE, bw = "nrd0", what = NULL, p_cured_output = NULL,  
-	index_of_main_mode = NULL,...)
+	index_of_main_mode = NULL, draw_legend = TRUE,...)
 }
 \arguments{
   \item{x}{
@@ -42,6 +42,9 @@ bandwidth
 }
   \item{index_of_main_mode}{
 If NULL (default), all modes are plotted. Otherwise, it is a subset of the retained MCMC iterations in order to identify the main mode of the posterior distribution, as returned by the \code{index_of_main_mode} value of the \code{summary.bayesCureRateModel} function. 
+}
+  \item{draw_legend}{
+	Boolean. If TRUE (default), a legend is plotted in the case where \code{what = 'survival'} or \code{what = 'cured_prob'}.  
 }
 \item{...}{
         arguments passed by other methods.

@@ -182,11 +182,11 @@ Overfull \hbox (67.07999pt too wide) in paragraph at lines 1049--1050
 \T1/ptm/m/n/10 as re-turned by the []\T1/pcr/m/n/10 index_of_main_mode []\T1/pt
 m/m/n/10 value of the []\T1/pcr/m/n/10 summary.bayesCureRateModel
 [21]
-Overfull \hbox (85.38034pt too wide) in paragraph at lines 1082--1082
+Overfull \hbox (85.38034pt too wide) in paragraph at lines 1085--1085
  []\T1/pcr/m/n/9 # plot the marginal posterior distribution of the first parame
 ter in returned mcmc output[] 
 
-Overfull \hbox (16.74937pt too wide) in paragraph at lines 1117--1118
+Overfull \hbox (16.74937pt too wide) in paragraph at lines 1120--1121
 []\T1/ptm/m/n/10 An ob-ject of class []\T1/pcr/m/n/10 bayesCureModel[]\T1/ptm/m
 /n/10 , which is re-turned by the []\T1/pcr/m/n/10 cure_rate_MC3
 [22] [23] [24]
@@ -231,7 +231,7 @@ s/type1/urw/helvetic/uhvr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/
 times/utmb8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmr8a.pf
 b></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/share/t
 exlive/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on Rd2.pdf (25 pages, 260790 bytes).
+Output written on Rd2.pdf (25 pages, 261307 bytes).
 Transcript written on Rd2.log.
 This is makeindex, version 2.15 [TeX Live 2022/dev] (kpathsea + Thai support).
 Scanning input file Rd2.idx....done (30 entries accepted, 0 rejected).
@@ -418,11 +418,11 @@ Overfull \hbox (67.07999pt too wide) in paragraph at lines 1049--1050
 \T1/ptm/m/n/10 as re-turned by the []\T1/pcr/m/n/10 index_of_main_mode []\T1/pt
 m/m/n/10 value of the []\T1/pcr/m/n/10 summary.bayesCureRateModel
 [21]
-Overfull \hbox (85.38034pt too wide) in paragraph at lines 1082--1082
+Overfull \hbox (85.38034pt too wide) in paragraph at lines 1085--1085
  []\T1/pcr/m/n/9 # plot the marginal posterior distribution of the first parame
 ter in returned mcmc output[] 
 
-Overfull \hbox (16.74937pt too wide) in paragraph at lines 1117--1118
+Overfull \hbox (16.74937pt too wide) in paragraph at lines 1120--1121
 []\T1/ptm/m/n/10 An ob-ject of class []\T1/pcr/m/n/10 bayesCureModel[]\T1/ptm/m
 /n/10 , which is re-turned by the []\T1/pcr/m/n/10 cure_rate_MC3
 [22] [23] [24] (./Rd2.ind [25]
@@ -470,7 +470,7 @@ helvetic/uhvr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmb8a
 .pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/shar
 e/texlive/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/share/texlive/texmf
 -dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on Rd2.pdf (26 pages, 275593 bytes).
+Output written on Rd2.pdf (26 pages, 276024 bytes).
 Transcript written on Rd2.log.
 This is makeindex, version 2.15 [TeX Live 2022/dev] (kpathsea + Thai support).
 Scanning input file Rd2.idx....done (30 entries accepted, 0 rejected).
@@ -657,11 +657,11 @@ Overfull \hbox (67.07999pt too wide) in paragraph at lines 1049--1050
 \T1/ptm/m/n/10 as re-turned by the []\T1/pcr/m/n/10 index_of_main_mode []\T1/pt
 m/m/n/10 value of the []\T1/pcr/m/n/10 summary.bayesCureRateModel
 [21]
-Overfull \hbox (85.38034pt too wide) in paragraph at lines 1082--1082
+Overfull \hbox (85.38034pt too wide) in paragraph at lines 1085--1085
  []\T1/pcr/m/n/9 # plot the marginal posterior distribution of the first parame
 ter in returned mcmc output[] 
 
-Overfull \hbox (16.74937pt too wide) in paragraph at lines 1117--1118
+Overfull \hbox (16.74937pt too wide) in paragraph at lines 1120--1121
 []\T1/ptm/m/n/10 An ob-ject of class []\T1/pcr/m/n/10 bayesCureModel[]\T1/ptm/m
 /n/10 , which is re-turned by the []\T1/pcr/m/n/10 cure_rate_MC3
 [22] [23] [24] (./Rd2.ind [25]
@@ -703,8 +703,8 @@ helvetic/uhvr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmb8a
 .pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/shar
 e/texlive/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/share/texlive/texmf
 -dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on Rd2.pdf (26 pages, 275692 bytes).
+Output written on Rd2.pdf (26 pages, 276127 bytes).
 Transcript written on Rd2.log.
 Saving output to ‘bayesCureRateModel-manual.pdf’ ...
 Done
-You may want to clean up by 'rm -Rf /tmp/Rtmpr0pwGy/Rd2pdf60fe409d5528'
+You may want to clean up by 'rm -Rf /tmp/Rtmp72W4Ri/Rd2pdfb2477a1a10b4'
