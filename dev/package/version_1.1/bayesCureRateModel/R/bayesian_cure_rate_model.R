@@ -1159,7 +1159,7 @@ cure_rate_MC3 <- function( y, X, Censoring_status, nChains = 12,
 			alpha <- 1/1.001^{(1:nChains)^5 - 1}
 		}else{	
 			if(nChains < 9){
-				1/1.001^{(1:nChains)^3.5 - 1}
+				alpha <- 1/1.001^{(1:nChains)^3.5 - 1}
 			}else{
 				alpha <- 1/1.001^{(1:nChains)^3 - 1}
 			}

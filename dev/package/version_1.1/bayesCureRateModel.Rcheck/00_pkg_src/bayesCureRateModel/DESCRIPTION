@@ -23,7 +23,7 @@ Imports: Rcpp (>= 1.0.12),doParallel, parallel, foreach, mclust, coda,
         HDInterval, VGAM, calculus, flexsurv
 LinkingTo: Rcpp, RcppArmadillo
 NeedsCompilation: yes
-Packaged: 2024-07-19 09:46:47 UTC; panos
+Packaged: 2024-07-23 07:44:00 UTC; panagiotis
 Author: Panagiotis Papastamoulis [aut, cre]
     (<https://orcid.org/0000-0001-9468-7613>),
   Fotios Milienos [aut] (<https://orcid.org/0000-0003-1423-7132>)

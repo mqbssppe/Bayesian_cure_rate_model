@@ -120,16 +120,16 @@ Among 2 censored observations, I found 1 cured subjects (FDR = 0.1).
 By default, I will discard the first one third of the mcmc sample as burn-in period.
  Alternatively, you may set the "burn" parameter to another value. 
                            MCMC summary 
-            MAP_estimate               HPD_interval
-g_mcmc             -2.83 (-2.86, -2.8)U(2.62, 2.87)
-lambda_mcmc         1.94  (1.02, 1.22)U(1.91, 1.96)
-a1_mcmc             0.10  (0.07, 0.13)U(0.25, 0.49)
-a2_mcmc             0.33  (0.01, 0.04)U(0.33, 0.34)
-a3_mcmc             0.05      (0, 0.1)U(0.62, 1.01)
-a4_mcmc             0.69   (0.14, 1.51)U(2.2, 7.98)
-w1                  0.26  (0.24, 0.27)U(0.58, 0.72)
-b0_mcmc             1.04  (1.03, 1.06)U(1.66, 1.77)
-b1_mcmc             0.78  (0.75, 0.81)U(1.22, 1.45)
+            MAP_estimate                  HPD_interval
+g_mcmc             -3.40  (-3.69, -3.59)U(-0.9, -0.57)
+lambda_mcmc         0.55                  (0.46, 0.57)
+a1_mcmc             1.40        (0.3, 0.6)U(0.63, 0.7)
+a2_mcmc             1.11     (0.12, 0.22)U(0.95, 0.98)
+a3_mcmc             2.37     (0.61, 1.58)U(3.01, 3.29)
+a4_mcmc             1.04      (0.31, 0.5)U(0.96, 1.01)
+w1                  0.60                  (0.48, 0.71)
+b0_mcmc             0.05   (-0.17, -0.06)U(0.05, 0.08)
+b1_mcmc            -0.12 (-2.68, -2.52)U(-0.19, -0.14)
 
 Among 2 censored observations, I found 0 cured subjects (FDR = 0.1).
 > ## End(No test)
@@ -578,7 +578,7 @@ Among 2 censored observations, I found 1 cured subjects (FDR = 0.1).
 > cleanEx()
 > options(digits = 7L)
 > base::cat("Time elapsed: ", proc.time() - base::get("ptime", pos = 'CheckExEnv'),"\n")
-Time elapsed:  2.207 0.1 2.722 0.554 0.226 
+Time elapsed:  2.764 0.156 3.552 0.821 0.233 
 > grDevices::dev.off()
 null device 
           1 
