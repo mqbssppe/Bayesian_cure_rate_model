@@ -1,8 +1,8 @@
 # Bayesian_cure_rate_model
 Bayesian inference and cure rate modeling
 
-Code for the paper **Papastamoulis and Milienos (2023)**. *Bayesian inference and cure rate
-modeling for event history data*. [arXiv:2310.06926](https://arxiv.org/abs/2310.06926)
+Code for the paper **Papastamoulis and Milienos (2024)**. [*Bayesian inference and cure rate
+modeling for event history data*](https://doi.org/10.1007/s11749-024-00942-w). TEST. 
 
 ## Illustrative examples
 
@@ -25,5 +25,6 @@ The package `bayesCureRateModel` (version 1.1) is now available on [CRAN](https:
 Developer versions will be available here 
 
 * [version 1.1](https://github.com/mqbssppe/Bayesian_cure_rate_model/tree/main/dev/package/version_1.1): fixed a bug on Windows 
+* [version 1.2](https://github.com/mqbssppe/Bayesian_cure_rate_model/tree/main/dev/package/version_1.2): major updates after editorial comments (not yet on CRAN)
 
 
