@@ -34,8 +34,8 @@ Boolean, if FALSE only HDIs are computed.
 bandwidth
 }
   \item{what}{
-  	Integer or a character string with possible values equal to \code{'cured_prob'} or \code{'survival'}.
-	An integer entry indicates which parameter should be plotted. If set to \code{NULL} (default), all parameters are plotted one by one. If set to \code{'cured_prob'} or \code{'survival'} the estimated cured probability or survival function is plotted, conditional on a set of covariates defined in the \code{p_cured_output} argument. 
+  	Integer or a character string with possible values equal to \code{'cured_prob'}, \code{'survival'} or \code{'residuals'}.
+	An integer entry indicates which parameter should be plotted. If set to \code{NULL} (default), all parameters are plotted one by one. If set to \code{'cured_prob'} or \code{'survival'} the estimated cured probability or survival function is plotted, conditional on a set of covariates defined in the \code{p_cured_output} argument. In case where \code{what = 'residuals'} the residuals of the fitted model are plotted versus the quantity \eqn{-log(S)} where \eqn{S} denotes the estimated survival function arising from the Kaplan-Meier estimate based on the residuals and the censoring times.
 }
   \item{p_cured_output}{
 	Optional argument (list) which is required only when \code{what = 'cured_prob'} or \code{what = 'survival'}. It is returned by the \code{summary.bayesCureRateModel} function.  

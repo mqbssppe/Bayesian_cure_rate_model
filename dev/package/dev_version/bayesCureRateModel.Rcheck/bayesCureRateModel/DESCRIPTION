@@ -23,9 +23,9 @@ Imports: Rcpp (>= 1.0.12), survival, doParallel, parallel, foreach,
         mclust, coda, HDInterval, VGAM, calculus, flexsurv
 LinkingTo: Rcpp, RcppArmadillo
 NeedsCompilation: yes
-Packaged: 2024-08-28 14:27:07 UTC; panagiotis
+Packaged: 2024-08-30 09:07:23 UTC; panos
 Author: Panagiotis Papastamoulis [aut, cre]
     (<https://orcid.org/0000-0001-9468-7613>),
   Fotios Milienos [aut] (<https://orcid.org/0000-0003-1423-7132>)
 Depends: R (>= 3.5.0)
-Built: R 4.2.1; x86_64-pc-linux-gnu; 2024-08-28 14:27:31 UTC; unix
+Built: R 4.2.1; x86_64-pc-linux-gnu; 2024-08-30 09:08:21 UTC; unix

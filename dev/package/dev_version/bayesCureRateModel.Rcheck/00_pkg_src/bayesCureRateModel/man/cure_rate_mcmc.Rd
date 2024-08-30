@@ -92,7 +92,7 @@ A list containing the following entries
 \item{log_prior_density}{Logarithm of the prior density per MCMC iteration.}
 }
 \note{
-In the case where the promotion time distribution is a Gamma mixture model, the mixing proportions \eqn{w_1,\ldots,w_K} are reparameterized according to the following transformation
+In the case where the promotion time distribution is a mixture model, the mixing proportions \eqn{w_1,\ldots,w_K} are reparameterized according to the following transformation
 \deqn{w_j = \frac{\rho_j}{\sum_{i=1}^{K}\rho_i}, j = 1,\ldots,K}
 where \eqn{\rho_i > 0} for \eqn{i=1,\ldots,K-1} and \eqn{\rho_{K}=1}. The sampler returns the parameters \eqn{\rho_1,\ldots,\rho_{K-1}}, not the mixing proportions. 
 }

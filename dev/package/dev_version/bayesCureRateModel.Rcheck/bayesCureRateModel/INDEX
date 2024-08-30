@@ -16,6 +16,10 @@ log_user_mixture        PDF and CDF of a Gamma mixture distribution
 log_weibull             PDF and CDF of the Weibull distribution
 marriage_dataset        Marriage data
 plot.bayesCureModel     Plot method
+predict.bayesCureModel
+                        Predict method.
 print.bayesCureModel    Print method
+residuals.bayesCureModel
+                        Computation of residuals.
 summary.bayesCureModel
                         Summary method.

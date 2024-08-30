@@ -127,19 +127,19 @@ Among 2 censored observations, I found 1 cured subjects (FDR = 0.1).
 By default, I will discard the first one third of the mcmc sample as burn-in period.
  Alternatively, you may set the "burn" parameter to another value. 
                            MCMC summary 
-            MAP_estimate                                HPD_interval
-g_mcmc             -0.33 (-0.51, -0.46)U(-0.45, -0.3)U(-0.18, -0.13)
-lambda_mcmc         0.21                                (0.13, 0.25)
-a1_mcmc             0.97                   (0.57, 0.65)U(0.74, 1.07)
-a2_mcmc             0.78                   (0.48, 0.57)U(0.68, 1.08)
-a3_mcmc             1.35                                (1.07, 3.02)
-a4_mcmc             0.25                                (0.22, 0.48)
-w1                  0.31                                 (0.3, 0.42)
-b0_mcmc             1.05                                (1.02, 1.15)
-b1_mcmc            -1.87                              (-1.96, -1.87)
-b2_mcmc            -0.42                (-0.54, -0.5)U(-0.44, -0.28)
+            MAP_estimate                                 HPD_interval
+g_mcmc             -0.34 (-0.37, -0.34)U(-0.25, -0.22)U(-0.16, -0.15)
+lambda_mcmc         0.67                                 (0.63, 0.77)
+a1_mcmc             0.27                    (0.23, 0.33)U(0.35, 0.38)
+a2_mcmc             1.34                     (1.27, 1.4)U(1.81, 2.37)
+a3_mcmc             2.25                                 (0.55, 2.42)
+a4_mcmc             2.57                    (1.61, 2.08)U(2.51, 2.63)
+w1                  0.44                                 (0.39, 0.62)
+b0_mcmc             0.73                                 (0.69, 0.84)
+b1_mcmc             1.21                                  (1.1, 1.24)
+b2_mcmc             3.37                                 (3.34, 3.43)
 
-Among 2 censored observations, I found 0 cured subjects (FDR = 0.1).
+Among 2 censored observations, I found 1 cured subjects (FDR = 0.1).
 > ## End(No test)
 > 
 > 
@@ -600,6 +600,85 @@ Among 2 censored observations, I found 1 cured subjects (FDR = 0.1).
 > base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
 > base::cat("plot.bayesCureModel", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
 > cleanEx()
+> nameEx("predict.bayesCureModel")
+> ### * predict.bayesCureModel
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: predict.bayesCureModel
+> ### Title: Predict method.
+> ### Aliases: predict.bayesCureModel
+> 
+> ### ** Examples
+> 
+> # simulate toy data just for cran-check purposes        
+> 	set.seed(1)
+>         n = 4
+>         stat = rbinom(n, size = 1, prob = 0.5)
+>         x <- matrix(rnorm(2*n), n, 2)
+>         y <- rexp(n)
+> #	the response variable should be a Surv object 
+> #		(see the `survival` package)        
+>         time <- survival::Surv(y, stat)
+> #	define a data frame with the response and the covariates        
+>         my_data_frame <- data.frame(time, x1 = x[,1], x2 = x[,2])
+> # run a weibull model with default prior setup
+> # considering 2 heated chains 
+> 	fit1 <- cure_rate_MC3(time ~ x1 + x2, data = my_data_frame, 
++ 		promotion_time = list(distribution = 'exponential'),
++ 		nChains = 2, 
++ 		nCores = 1, 
++ 		mcmc_cycles = 3, sweep=2)
+
+> 	newdata <- data.frame(x1 = c(0.2,-1), x2 = c(-1,0))
+> 	my_prediction <- predict(fit1, newdata = newdata, burn = 0)
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("predict.bayesCureModel", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("residuals.bayesCureModel")
+> ### * residuals.bayesCureModel
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: residuals.bayesCureModel
+> ### Title: Computation of residuals.
+> ### Aliases: residuals.bayesCureModel
+> 
+> ### ** Examples
+> 
+> # simulate toy data just for cran-check purposes        
+> 	set.seed(1)
+>         n = 4
+>         stat = rbinom(n, size = 1, prob = 0.5)
+>         x <- matrix(rnorm(2*n), n, 2)
+>         y <- rexp(n)
+> #	the response variable should be a Surv object 
+> #		(see the `survival` package)        
+>         time <- survival::Surv(y, stat)
+> #	define a data frame with the response and the covariates        
+>         my_data_frame <- data.frame(time, x1 = x[,1], x2 = x[,2])
+> # run a weibull model with default prior setup
+> # considering 2 heated chains 
+> 	fit1 <- cure_rate_MC3(time ~ x1 + x2, data = my_data_frame, 
++ 		promotion_time = list(distribution = 'exponential'),
++ 		nChains = 2, 
++ 		nCores = 1, 
++ 		mcmc_cycles = 3, sweep=2)
+
+> 	my_residuals <- residuals(fit1)
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("residuals.bayesCureModel", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
 > nameEx("summary.bayesCureModel")
 > ### * summary.bayesCureModel
 > 
@@ -653,7 +732,7 @@ Among 2 censored observations, I found 1 cured subjects (FDR = 0.1).
 > cleanEx()
 > options(digits = 7L)
 > base::cat("Time elapsed: ", proc.time() - base::get("ptime", pos = 'CheckExEnv'),"\n")
-Time elapsed:  2.933 0.178 3.798 0.934 0.396 
+Time elapsed:  2.527 0.12 3.151 0.638 0.284 
 > grDevices::dev.off()
 null device 
           1 

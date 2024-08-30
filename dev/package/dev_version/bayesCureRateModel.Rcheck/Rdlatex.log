@@ -23,6 +23,12 @@ Document Class: book 2021/10/04 v1.4n Standard LaTeX document class
 (/usr/share/texlive/texmf-dist/tex/generic/iftex/iftex.sty)
 (/usr/share/texlive/texmf-dist/tex/latex/base/fontenc.sty)
 (/usr/share/texlive/texmf-dist/tex/latex/psnfss/times.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/inconsolata/zi4.sty
+`inconsolata-zi4' v1.12, 2019/05/17 Text macros for Inconsolata (msharpe)
+(/usr/share/texlive/texmf-dist/tex/latex/xkeyval/xkeyval.sty
+(/usr/share/texlive/texmf-dist/tex/generic/xkeyval/xkeyval.tex
+(/usr/share/texlive/texmf-dist/tex/generic/xkeyval/xkvutils.tex
+(/usr/share/texlive/texmf-dist/tex/generic/xkeyval/keyval.tex)))))
 (/usr/share/texlive/texmf-dist/tex/latex/graphics/color.sty
 (/usr/share/texlive/texmf-dist/tex/latex/graphics-cfg/color.cfg)
 (/usr/share/texlive/texmf-dist/tex/latex/graphics-def/pdftex.def))
@@ -30,7 +36,6 @@ Document Class: book 2021/10/04 v1.4n Standard LaTeX document class
 (/usr/share/texlive/texmf-dist/tex/generic/ltxcmds/ltxcmds.sty)
 (/usr/share/texlive/texmf-dist/tex/generic/pdftexcmds/pdftexcmds.sty
 (/usr/share/texlive/texmf-dist/tex/generic/infwarerr/infwarerr.sty))
-(/usr/share/texlive/texmf-dist/tex/latex/graphics/keyval.sty)
 (/usr/share/texlive/texmf-dist/tex/generic/kvsetkeys/kvsetkeys.sty)
 (/usr/share/texlive/texmf-dist/tex/generic/kvdefinekeys/kvdefinekeys.sty)
 (/usr/share/texlive/texmf-dist/tex/generic/pdfescape/pdfescape.sty)
@@ -69,7 +74,7 @@ No file Rd2.aux.
 ) (/usr/share/texlive/texmf-dist/tex/latex/hyperref/nameref.sty
 (/usr/share/texlive/texmf-dist/tex/latex/refcount/refcount.sty)
 (/usr/share/texlive/texmf-dist/tex/generic/gettitlestring/gettitlestring.sty))
-(/usr/share/texlive/texmf-dist/tex/latex/psnfss/t1pcr.fd)
+(/usr/share/texlive/texmf-dist/tex/latex/inconsolata/t1zi4.fd)
 (/usr/share/texlive/texmf-dist/tex/latex/psnfss/t1phv.fd) [1{/var/lib/texmf/fon
 ts/map/pdftex/updmap/pdftex.map}]
 (/usr/share/texlive/texmf-dist/tex/latex/psnfss/ts1ptm.fd) [2]
@@ -86,34 +91,10 @@ it/10 p[]\OT1/cmr/m/n/10 (\OML/cmm/b/it/10 x[]\OML/cmm/m/it/10 ; \OML/cmm/b/it/
 10 ^^R\OT1/cmr/m/n/10 ))\OML/cmm/m/it/10 S[]\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 y
 []\OT1/cmr/m/n/10 ; \OML/cmm/b/it/10 ^^R\OML/cmm/m/it/10 ; \OML/cmm/b/it/10 x[]
 \OT1/cmr/m/n/10 )\OMS/cmsy/m/n/10 g[]\OML/cmm/m/it/10 :
-
-Overfull \hbox (18.78088pt too wide) in paragraph at lines 100--100
- []                        \T1/pcr/m/n/10 Bayesian Cure Rate Modeling for Time-
-to-Event[] 
-
-Overfull \hbox (12.78088pt too wide) in paragraph at lines 103--103
- []                        \T1/pcr/m/n/10 Logarithm of the complete log-likelih
-ood for[] 
-
-Overfull \hbox (6.78088pt too wide) in paragraph at lines 109--109
- []\T1/pcr/m/n/10 log_gamma_mixture       PDF and CDF of a Gamma mixture distri
-bution[] 
-
-Overfull \hbox (18.78088pt too wide) in paragraph at lines 111--111
- []\T1/pcr/m/n/10 log_logLogistic         PDF and CDF of the log-Logistic distr
-ibution.[] 
-[3]
-Overfull \hbox (6.78088pt too wide) in paragraph at lines 113--113
- []\T1/pcr/m/n/10 log_user_mixture        PDF and CDF of a Gamma mixture distri
-bution[] 
-(/usr/share/texlive/texmf-dist/tex/latex/base/t1cmtt.fd)
+[3] (/usr/share/texlive/texmf-dist/tex/latex/base/t1cmtt.fd)
 (/usr/share/texlive/texmf-dist/tex/latex/base/ts1cmtt.fd)
-(/usr/share/texlive/texmf-dist/tex/latex/psnfss/ts1pcr.fd) [4]
-Overfull \hbox (36.7804pt too wide) in paragraph at lines 169--169
- []\T1/pcr/m/n/9 #        should take _larger_ values. E.g. a typical implement
-ation consists of:[] 
-[5]
-Overfull \hbox (1.74841pt too wide) detected at line 224
+(/usr/share/texlive/texmf-dist/tex/latex/inconsolata/ts1zi4.fd) [4] [5]
+Overfull \hbox (1.74841pt too wide) detected at line 228
 \OML/cmm/m/it/10 L[]\OT1/cmr/m/n/10 (\OML/cmm/b/it/10 ^^R\OT1/cmr/m/n/10 ; \OML
 /cmm/b/it/10 y\OML/cmm/m/it/10 ; \OML/cmm/b/it/10 I\OT1/cmr/m/n/10 ) = [](1 \OM
 S/cmsy/m/n/10 ^^@ \OML/cmm/m/it/10 p[]\OT1/cmr/m/n/10 (\OML/cmm/b/it/10 x[]\OML
@@ -127,88 +108,46 @@ it/10 p[]\OT1/cmr/m/n/10 (\OML/cmm/b/it/10 x[]\OML/cmm/m/it/10 ; \OML/cmm/b/it/
 []\OT1/cmr/m/n/10 ; \OML/cmm/b/it/10 ^^R\OML/cmm/m/it/10 ; \OML/cmm/b/it/10 x[]
 \OT1/cmr/m/n/10 )\OMS/cmsy/m/n/10 g[]\OML/cmm/m/it/10 :
 [6]
-Overfull \hbox (6.78088pt too wide) in paragraph at lines 283--283
- []\T1/pcr/m/n/10 prior_parameters = matrix(rep(c(2.1, 1.1), 2), byrow = TRUE, 
-2, 2),[] 
-
-Overfull \hbox (4.57414pt too wide) in paragraph at lines 297--298
+Overfull \hbox (4.57414pt too wide) in paragraph at lines 301--302
 []\T1/ptm/m/n/10 Positive in-te-ger cor-re-spond-ing to the num-ber of heated c
 hains in the MC$[]$ scheme. 
 [7]
-Overfull \hbox (18.93675pt too wide) in paragraph at lines 359--360
+Overfull \hbox (18.93675pt too wide) in paragraph at lines 363--364
 []\T1/ptm/m/n/10 The prob-a-bil-ity for at-tempt-ing a se-ries of sin-gle site 
 up-dates in the typ-i-cal Metropolis-
-
-Overfull \hbox (8.94846pt too wide) in paragraph at lines 359--360
-\T1/ptm/m/n/10 Hastings move. Oth-er-wise, with prob-a-bil-ity 1 - []\T1/pcr/m/
-n/10 single_MH_in_f []\T1/ptm/m/n/10 a Metropolis-
 [8]
-Overfull \hbox (26.66971pt too wide) in paragraph at lines 375--376
-[]\T1/ptm/m/n/10 Relevant only in the case of the []\TS1/pcr/m/n/10 '\T1/pcr/m/
-n/10 gamma_mixture\TS1/pcr/m/n/10 '[]\T1/ptm/m/n/10 .
-
-Overfull \hbox (28.85892pt too wide) in paragraph at lines 379--380
-\T1/ptm/m/n/10 char-ac-ter string with avail-able choices: []\TS1/pcr/m/n/10 '\
-T1/pcr/m/n/10 exponential\TS1/pcr/m/n/10 '[]\T1/ptm/m/n/10 , []\TS1/pcr/m/n/10 
-'\T1/pcr/m/n/10 weibull\TS1/pcr/m/n/10 '[]\T1/ptm/m/n/10 , []\TS1/pcr/m/n/10 '\
-T1/pcr/m/n/10 gamma\TS1/pcr/m/n/10 '[]\T1/ptm/m/n/10 , []\TS1/pcr/m/n/10 '\T1/p
-cr/m/n/10 logLogistic\TS1/pcr/m/n/10 '[]\T1/ptm/m/n/10 ,
-
-Overfull \hbox (4.7297pt too wide) in paragraph at lines 379--380
-[]\TS1/pcr/m/n/10 '\T1/pcr/m/n/10 gompertz\TS1/pcr/m/n/10 '[]\T1/ptm/m/n/10 , [
-]\TS1/pcr/m/n/10 '\T1/pcr/m/n/10 lomax\TS1/pcr/m/n/10 '[]\T1/ptm/m/n/10 , []\TS
-1/pcr/m/n/10 '\T1/pcr/m/n/10 dagum\TS1/pcr/m/n/10 '[]\T1/ptm/m/n/10 , []\TS1/pc
-r/m/n/10 '\T1/pcr/m/n/10 gamma_mixture\TS1/pcr/m/n/10 '[]\T1/ptm/m/n/10 . Also 
-avail-able is the op-tion []\TS1/pcr/m/n/10 '\T1/pcr/m/n/10 user\TS1/pcr/m/n/10
- '[]\T1/ptm/m/n/10 .
-[9] [10]
-Overfull \hbox (36.78088pt too wide) in paragraph at lines 455--455
- []\T1/pcr/m/n/10 cure_rate_mcmc(y, X, Censoring_status, m, alpha = 1, mu_g = 1
-, s2_g = 1, 
-
-Overfull \hbox (18.78088pt too wide) in paragraph at lines 456--456
- []\T1/pcr/m/n/10 a_l = 2.1, b_l = 1.1, promotion_time = list(distribution = "w
-eibull",[] 
-
-Overfull \hbox (6.78088pt too wide) in paragraph at lines 457--457
- []\T1/pcr/m/n/10 prior_parameters = matrix(rep(c(2.1, 1.1), 2), byrow = TRUE, 
-2, 2),[] 
-
-Overfull \hbox (42.78088pt too wide) in paragraph at lines 458--458
- []\T1/pcr/m/n/10 prop_scale = c(0.2, 0.03)), mu_b = NULL, Sigma = NULL, g_prop
-_sd = 0.045,[] 
-[11]
-Overfull \hbox (2.95644pt too wide) in paragraph at lines 528--529
+Overfull \hbox (16.56929pt too wide) in paragraph at lines 380--381
+[]\T1/ptm/m/n/10 Optional. Rel-e-vant only in the case of the []\TS1/zi4/m/n/10
+ '\T1/zi4/m/n/10 gamma_mixture\TS1/zi4/m/n/10 '
+[9]
+Overfull \hbox (3.0361pt too wide) in paragraph at lines 432--433
+[]\T1/ptm/m/n/10 Therneau T (2024). A Pack-age for Sur-vival Anal-y-sis in R. R
+ pack-age ver-sion 3.7-0, https://CRAN.R-
+[10] [11]
+Overfull \hbox (2.95644pt too wide) in paragraph at lines 538--539
 []\T1/ptm/m/n/10 Probability of at-tempt-ing a single-site MH move in the ba-si
 c Metropolis-Hastings
-[12] [13] [14] [15] [16] [17] [18] [19] [20]
-Overfull \hbox (90.78088pt too wide) in paragraph at lines 1090--1090
- []\T1/pcr/m/n/10 K_gamma = 5, plot_graphs = TRUE, bw = "nrd0", what = NULL, p_
-cured_output = NULL,[] 
-[21]
-Overfull \hbox (27.70836pt too wide) in paragraph at lines 1119--1121
-\T1/ptm/m/n/10 func-tion is plot-ted, con-di-tional on a set of co-vari-ates de
--fined in the []\T1/pcr/m/n/10 p_cured_output
+[12] [13] [14] [15] [16] [17] [18] [19] [20] [21]
+Overfull \hbox (21.22856pt too wide) in paragraph at lines 1129--1131
+[]\T1/ptm/m/n/10 Integer or a char-ac-ter string with pos-si-ble val-ues equal 
+to []\TS1/zi4/m/n/10 '\T1/zi4/m/n/10 cured_prob\TS1/zi4/m/n/10 '[]\T1/ptm/m/n/1
+0 , []\TS1/zi4/m/n/10 '\T1/zi4/m/n/10 survival\TS1/zi4/m/n/10 '
 
-Overfull \hbox (26.50012pt too wide) in paragraph at lines 1123--1124
-[]\T1/ptm/m/n/10 or []\T1/pcr/m/n/10 what = \TS1/pcr/m/n/10 '\T1/pcr/m/n/10 sur
-vival\TS1/pcr/m/n/10 '[]\T1/ptm/m/n/10 . It is re-turned by the []\T1/pcr/m/n/1
-0 summary.bayesCureRateModel
+Overfull \hbox (23.07999pt too wide) in paragraph at lines 1136--1137
+\T1/ptm/m/n/10 as re-turned by the []\T1/zi4/m/n/10 index_of_main_mode []\T1/pt
+m/m/n/10 value of the []\T1/zi4/m/n/10 summary.bayesCureRateModel
 
-Overfull \hbox (67.07999pt too wide) in paragraph at lines 1126--1127
-\T1/ptm/m/n/10 as re-turned by the []\T1/pcr/m/n/10 index_of_main_mode []\T1/pt
-m/m/n/10 value of the []\T1/pcr/m/n/10 summary.bayesCureRateModel
+Overfull \hbox (18.0381pt too wide) in paragraph at lines 1139--1140
+[]\T1/ptm/m/n/10 Boolean. If TRUE (de-fault), a leg-end is plot-ted in the case
+ where []\T1/zi4/m/n/10 what = \TS1/zi4/m/n/10 '\T1/zi4/m/n/10 survival\TS1/zi4
+/m/n/10 '
 [22]
-Overfull \hbox (85.38034pt too wide) in paragraph at lines 1166--1166
- []\T1/pcr/m/n/9 # plot the marginal posterior distribution of the first parame
-ter in returned mcmc output[] 
-
-Overfull \hbox (16.74937pt too wide) in paragraph at lines 1201--1202
-[]\T1/ptm/m/n/10 An ob-ject of class []\T1/pcr/m/n/10 bayesCureModel[]\T1/ptm/m
-/n/10 , which is re-turned by the []\T1/pcr/m/n/10 cure_rate_MC3
-[23] [24] [25]
+Overfull \hbox (6.39984pt too wide) in paragraph at lines 1204--1204
+ []\T1/zi4/m/n/10 predict(object, newdata, tau_values = NULL, burn = NULL, K_ma
+x = 3, alpha = 0.1, ...)[] 
+[23] [24] [25] [26] [27] [28] [29]
 No file Rd2.ind.
-[26] (./Rd2.aux)
+[30] (./Rd2.aux)
 
 Package rerunfilecheck Warning: File `Rd2.out' has changed.
 (rerunfilecheck)                Rerun to get outlines right
@@ -230,31 +169,33 @@ pdfTeX warning (dest): name{Rfn.dgamma} has been referenced but does not exist,
 pdfTeX warning (dest): name{Rfn.ddagum} has been referenced but does not exist,
  replaced by a fixed one
 
- </home/panagiotis/.texlive2021/texmf-var/fonts/pk/ljfour/jknappen/ec/tctt0900.
-600pk>{/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/share/te
-xlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/share/texlive/
-texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/share/texlive/texmf-
-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texlive/texmf-dist/f
-onts/type1/public/amsfonts/cm/cmmi5.pfb></usr/share/texlive/texmf-dist/fonts/ty
-pe1/public/amsfonts/cm/cmmi7.pfb></usr/share/texlive/texmf-dist/fonts/type1/pub
-lic/amsfonts/cm/cmmib10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/a
-msfonts/cmextra/cmmib7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/am
-sfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/
-cm/cmr5.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.
-pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></
-usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy5.pfb></usr/sha
-re/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/share/texl
-ive/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb></usr/share/texlive/texmf-dis
-t/fonts/type1/urw/helvetic/uhvr8a.pfb></usr/share/texlive/texmf-dist/fonts/type
-1/urw/times/utmb8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utm
-r8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/s
-hare/texlive/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on Rd2.pdf (26 pages, 265053 bytes).
+{/usr/share/texlive/texmf-dist/fonts/enc/dvips/inconsolata/i4-ts1.enc} </home/p
+anos/.texlive2021/texmf-var/fonts/pk/ljfour/jknappen/ec/tctt0900.600pk>{/usr/sh
+are/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc}{/usr/share/texlive/texmf-di
+st/fonts/enc/dvips/inconsolata/i4-t1-0.enc}</usr/share/texlive/texmf-dist/fonts
+/type1/public/inconsolata/Inconsolata-zi4r.pfb></usr/share/texlive/texmf-dist/f
+onts/type1/public/amsfonts/cm/cmbx10.pfb></usr/share/texlive/texmf-dist/fonts/t
+ype1/public/amsfonts/cm/cmex10.pfb></usr/share/texlive/texmf-dist/fonts/type1/p
+ublic/amsfonts/cm/cmmi10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/
+amsfonts/cm/cmmi5.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfont
+s/cm/cmmi7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cm
+mib10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cmextra/cm
+mib7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pf
+b></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr5.pfb></usr/
+share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/share/te
+xlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/
+texmf-dist/fonts/type1/public/amsfonts/cm/cmsy5.pfb></usr/share/texlive/texmf-d
+ist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/share/texlive/texmf-dist/fon
+ts/type1/urw/helvetic/uhvr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw
+/times/utmb8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmr8a.p
+fb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/share/
+texlive/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
+Output written on Rd2.pdf (30 pages, 278069 bytes).
 Transcript written on Rd2.log.
 This is makeindex, version 2.15 [TeX Live 2022/dev] (kpathsea + Thai support).
-Scanning input file Rd2.idx....done (31 entries accepted, 0 rejected).
-Sorting entries....done (157 comparisons).
-Generating output file Rd2.ind....done (57 lines written, 0 warnings).
+Scanning input file Rd2.idx....done (35 entries accepted, 0 rejected).
+Sorting entries....done (185 comparisons).
+Generating output file Rd2.ind....done (64 lines written, 0 warnings).
 Output written in Rd2.ind.
 Transcript written in Rd2.ilg.
 This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex)
@@ -277,6 +218,12 @@ Document Class: book 2021/10/04 v1.4n Standard LaTeX document class
 (/usr/share/texlive/texmf-dist/tex/generic/iftex/iftex.sty)
 (/usr/share/texlive/texmf-dist/tex/latex/base/fontenc.sty)
 (/usr/share/texlive/texmf-dist/tex/latex/psnfss/times.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/inconsolata/zi4.sty
+`inconsolata-zi4' v1.12, 2019/05/17 Text macros for Inconsolata (msharpe)
+(/usr/share/texlive/texmf-dist/tex/latex/xkeyval/xkeyval.sty
+(/usr/share/texlive/texmf-dist/tex/generic/xkeyval/xkeyval.tex
+(/usr/share/texlive/texmf-dist/tex/generic/xkeyval/xkvutils.tex
+(/usr/share/texlive/texmf-dist/tex/generic/xkeyval/keyval.tex)))))
 (/usr/share/texlive/texmf-dist/tex/latex/graphics/color.sty
 (/usr/share/texlive/texmf-dist/tex/latex/graphics-cfg/color.cfg)
 (/usr/share/texlive/texmf-dist/tex/latex/graphics-def/pdftex.def))
@@ -284,7 +231,6 @@ Document Class: book 2021/10/04 v1.4n Standard LaTeX document class
 (/usr/share/texlive/texmf-dist/tex/generic/ltxcmds/ltxcmds.sty)
 (/usr/share/texlive/texmf-dist/tex/generic/pdftexcmds/pdftexcmds.sty
 (/usr/share/texlive/texmf-dist/tex/generic/infwarerr/infwarerr.sty))
-(/usr/share/texlive/texmf-dist/tex/latex/graphics/keyval.sty)
 (/usr/share/texlive/texmf-dist/tex/generic/kvsetkeys/kvsetkeys.sty)
 (/usr/share/texlive/texmf-dist/tex/generic/kvdefinekeys/kvdefinekeys.sty)
 (/usr/share/texlive/texmf-dist/tex/generic/pdfescape/pdfescape.sty)
@@ -323,7 +269,7 @@ Writing index file Rd2.idx
 (/usr/share/texlive/texmf-dist/tex/latex/refcount/refcount.sty)
 (/usr/share/texlive/texmf-dist/tex/generic/gettitlestring/gettitlestring.sty))
 (./Rd2.out) (./Rd2.out)
-(/usr/share/texlive/texmf-dist/tex/latex/psnfss/t1pcr.fd)
+(/usr/share/texlive/texmf-dist/tex/latex/inconsolata/t1zi4.fd)
 (/usr/share/texlive/texmf-dist/tex/latex/psnfss/t1phv.fd) (./Rd2.toc [1{/var/li
 b/texmf/fonts/map/pdftex/updmap/pdftex.map}])
 (/usr/share/texlive/texmf-dist/tex/latex/psnfss/ts1ptm.fd) [2]
@@ -340,34 +286,10 @@ it/10 p[]\OT1/cmr/m/n/10 (\OML/cmm/b/it/10 x[]\OML/cmm/m/it/10 ; \OML/cmm/b/it/
 10 ^^R\OT1/cmr/m/n/10 ))\OML/cmm/m/it/10 S[]\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 y
 []\OT1/cmr/m/n/10 ; \OML/cmm/b/it/10 ^^R\OML/cmm/m/it/10 ; \OML/cmm/b/it/10 x[]
 \OT1/cmr/m/n/10 )\OMS/cmsy/m/n/10 g[]\OML/cmm/m/it/10 :
-[3]
-Overfull \hbox (18.78088pt too wide) in paragraph at lines 100--100
- []                        \T1/pcr/m/n/10 Bayesian Cure Rate Modeling for Time-
-to-Event[] 
-
-Overfull \hbox (12.78088pt too wide) in paragraph at lines 103--103
- []                        \T1/pcr/m/n/10 Logarithm of the complete log-likelih
-ood for[] 
-
-Overfull \hbox (6.78088pt too wide) in paragraph at lines 109--109
- []\T1/pcr/m/n/10 log_gamma_mixture       PDF and CDF of a Gamma mixture distri
-bution[] 
-
-Overfull \hbox (18.78088pt too wide) in paragraph at lines 111--111
- []\T1/pcr/m/n/10 log_logLogistic         PDF and CDF of the log-Logistic distr
-ibution.[] 
-
-Overfull \hbox (6.78088pt too wide) in paragraph at lines 113--113
- []\T1/pcr/m/n/10 log_user_mixture        PDF and CDF of a Gamma mixture distri
-bution[] 
-[4] (/usr/share/texlive/texmf-dist/tex/latex/base/t1cmtt.fd)
+[3] [4] (/usr/share/texlive/texmf-dist/tex/latex/base/t1cmtt.fd)
 (/usr/share/texlive/texmf-dist/tex/latex/base/ts1cmtt.fd)
-(/usr/share/texlive/texmf-dist/tex/latex/psnfss/ts1pcr.fd)
-Overfull \hbox (36.7804pt too wide) in paragraph at lines 169--169
- []\T1/pcr/m/n/9 #        should take _larger_ values. E.g. a typical implement
-ation consists of:[] 
-[5]
-Overfull \hbox (1.74841pt too wide) detected at line 224
+(/usr/share/texlive/texmf-dist/tex/latex/inconsolata/ts1zi4.fd) [5]
+Overfull \hbox (1.74841pt too wide) detected at line 228
 \OML/cmm/m/it/10 L[]\OT1/cmr/m/n/10 (\OML/cmm/b/it/10 ^^R\OT1/cmr/m/n/10 ; \OML
 /cmm/b/it/10 y\OML/cmm/m/it/10 ; \OML/cmm/b/it/10 I\OT1/cmr/m/n/10 ) = [](1 \OM
 S/cmsy/m/n/10 ^^@ \OML/cmm/m/it/10 p[]\OT1/cmr/m/n/10 (\OML/cmm/b/it/10 x[]\OML
@@ -380,91 +302,53 @@ it/10 p[]\OT1/cmr/m/n/10 (\OML/cmm/b/it/10 x[]\OML/cmm/m/it/10 ; \OML/cmm/b/it/
 10 ^^R\OT1/cmr/m/n/10 ))\OML/cmm/m/it/10 S[]\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 y
 []\OT1/cmr/m/n/10 ; \OML/cmm/b/it/10 ^^R\OML/cmm/m/it/10 ; \OML/cmm/b/it/10 x[]
 \OT1/cmr/m/n/10 )\OMS/cmsy/m/n/10 g[]\OML/cmm/m/it/10 :
-[6]
-Overfull \hbox (6.78088pt too wide) in paragraph at lines 283--283
- []\T1/pcr/m/n/10 prior_parameters = matrix(rep(c(2.1, 1.1), 2), byrow = TRUE, 
-2, 2),[] 
-[7]
-Overfull \hbox (4.57414pt too wide) in paragraph at lines 297--298
+[6] [7]
+Overfull \hbox (4.57414pt too wide) in paragraph at lines 301--302
 []\T1/ptm/m/n/10 Positive in-te-ger cor-re-spond-ing to the num-ber of heated c
 hains in the MC$[]$ scheme. 
 
-Overfull \hbox (18.93675pt too wide) in paragraph at lines 359--360
+Overfull \hbox (18.93675pt too wide) in paragraph at lines 363--364
 []\T1/ptm/m/n/10 The prob-a-bil-ity for at-tempt-ing a se-ries of sin-gle site 
 up-dates in the typ-i-cal Metropolis-
-
-Overfull \hbox (8.94846pt too wide) in paragraph at lines 359--360
-\T1/ptm/m/n/10 Hastings move. Oth-er-wise, with prob-a-bil-ity 1 - []\T1/pcr/m/
-n/10 single_MH_in_f []\T1/ptm/m/n/10 a Metropolis-
 [8]
-Overfull \hbox (26.66971pt too wide) in paragraph at lines 375--376
-[]\T1/ptm/m/n/10 Relevant only in the case of the []\TS1/pcr/m/n/10 '\T1/pcr/m/
-n/10 gamma_mixture\TS1/pcr/m/n/10 '[]\T1/ptm/m/n/10 .
-
-Overfull \hbox (28.85892pt too wide) in paragraph at lines 379--380
-\T1/ptm/m/n/10 char-ac-ter string with avail-able choices: []\TS1/pcr/m/n/10 '\
-T1/pcr/m/n/10 exponential\TS1/pcr/m/n/10 '[]\T1/ptm/m/n/10 , []\TS1/pcr/m/n/10 
-'\T1/pcr/m/n/10 weibull\TS1/pcr/m/n/10 '[]\T1/ptm/m/n/10 , []\TS1/pcr/m/n/10 '\
-T1/pcr/m/n/10 gamma\TS1/pcr/m/n/10 '[]\T1/ptm/m/n/10 , []\TS1/pcr/m/n/10 '\T1/p
-cr/m/n/10 logLogistic\TS1/pcr/m/n/10 '[]\T1/ptm/m/n/10 ,
-
-Overfull \hbox (4.7297pt too wide) in paragraph at lines 379--380
-[]\TS1/pcr/m/n/10 '\T1/pcr/m/n/10 gompertz\TS1/pcr/m/n/10 '[]\T1/ptm/m/n/10 , [
-]\TS1/pcr/m/n/10 '\T1/pcr/m/n/10 lomax\TS1/pcr/m/n/10 '[]\T1/ptm/m/n/10 , []\TS
-1/pcr/m/n/10 '\T1/pcr/m/n/10 dagum\TS1/pcr/m/n/10 '[]\T1/ptm/m/n/10 , []\TS1/pc
-r/m/n/10 '\T1/pcr/m/n/10 gamma_mixture\TS1/pcr/m/n/10 '[]\T1/ptm/m/n/10 . Also 
-avail-able is the op-tion []\TS1/pcr/m/n/10 '\T1/pcr/m/n/10 user\TS1/pcr/m/n/10
- '[]\T1/ptm/m/n/10 .
-[9] [10]
-Overfull \hbox (36.78088pt too wide) in paragraph at lines 455--455
- []\T1/pcr/m/n/10 cure_rate_mcmc(y, X, Censoring_status, m, alpha = 1, mu_g = 1
-, s2_g = 1, 
-
-Overfull \hbox (18.78088pt too wide) in paragraph at lines 456--456
- []\T1/pcr/m/n/10 a_l = 2.1, b_l = 1.1, promotion_time = list(distribution = "w
-eibull",[] 
-
-Overfull \hbox (6.78088pt too wide) in paragraph at lines 457--457
- []\T1/pcr/m/n/10 prior_parameters = matrix(rep(c(2.1, 1.1), 2), byrow = TRUE, 
-2, 2),[] 
-
-Overfull \hbox (42.78088pt too wide) in paragraph at lines 458--458
- []\T1/pcr/m/n/10 prop_scale = c(0.2, 0.03)), mu_b = NULL, Sigma = NULL, g_prop
-_sd = 0.045,[] 
-[11]
-Overfull \hbox (2.95644pt too wide) in paragraph at lines 528--529
+Overfull \hbox (16.56929pt too wide) in paragraph at lines 380--381
+[]\T1/ptm/m/n/10 Optional. Rel-e-vant only in the case of the []\TS1/zi4/m/n/10
+ '\T1/zi4/m/n/10 gamma_mixture\TS1/zi4/m/n/10 '
+[9]
+Overfull \hbox (3.0361pt too wide) in paragraph at lines 432--433
+[]\T1/ptm/m/n/10 Therneau T (2024). A Pack-age for Sur-vival Anal-y-sis in R. R
+ pack-age ver-sion 3.7-0, https://CRAN.R-
+[10] [11]
+Overfull \hbox (2.95644pt too wide) in paragraph at lines 538--539
 []\T1/ptm/m/n/10 Probability of at-tempt-ing a single-site MH move in the ba-si
 c Metropolis-Hastings
-[12] [13] [14] [15] [16] [17] [18] [19] [20] [21]
-Overfull \hbox (90.78088pt too wide) in paragraph at lines 1090--1090
- []\T1/pcr/m/n/10 K_gamma = 5, plot_graphs = TRUE, bw = "nrd0", what = NULL, p_
-cured_output = NULL,[] 
-[22]
-Overfull \hbox (27.70836pt too wide) in paragraph at lines 1119--1121
-\T1/ptm/m/n/10 func-tion is plot-ted, con-di-tional on a set of co-vari-ates de
--fined in the []\T1/pcr/m/n/10 p_cured_output
+[12] [13] [14] [15] [16] [17] [18] [19] [20] [21] [22]
+Overfull \hbox (21.22856pt too wide) in paragraph at lines 1129--1131
+[]\T1/ptm/m/n/10 Integer or a char-ac-ter string with pos-si-ble val-ues equal 
+to []\TS1/zi4/m/n/10 '\T1/zi4/m/n/10 cured_prob\TS1/zi4/m/n/10 '[]\T1/ptm/m/n/1
+0 , []\TS1/zi4/m/n/10 '\T1/zi4/m/n/10 survival\TS1/zi4/m/n/10 '
 
-Overfull \hbox (26.50012pt too wide) in paragraph at lines 1123--1124
-[]\T1/ptm/m/n/10 or []\T1/pcr/m/n/10 what = \TS1/pcr/m/n/10 '\T1/pcr/m/n/10 sur
-vival\TS1/pcr/m/n/10 '[]\T1/ptm/m/n/10 . It is re-turned by the []\T1/pcr/m/n/1
-0 summary.bayesCureRateModel
+Overfull \hbox (23.07999pt too wide) in paragraph at lines 1136--1137
+\T1/ptm/m/n/10 as re-turned by the []\T1/zi4/m/n/10 index_of_main_mode []\T1/pt
+m/m/n/10 value of the []\T1/zi4/m/n/10 summary.bayesCureRateModel
 
-Overfull \hbox (67.07999pt too wide) in paragraph at lines 1126--1127
-\T1/ptm/m/n/10 as re-turned by the []\T1/pcr/m/n/10 index_of_main_mode []\T1/pt
-m/m/n/10 value of the []\T1/pcr/m/n/10 summary.bayesCureRateModel
+Overfull \hbox (18.0381pt too wide) in paragraph at lines 1139--1140
+[]\T1/ptm/m/n/10 Boolean. If TRUE (de-fault), a leg-end is plot-ted in the case
+ where []\T1/zi4/m/n/10 what = \TS1/zi4/m/n/10 '\T1/zi4/m/n/10 survival\TS1/zi4
+/m/n/10 '
 [23]
-Overfull \hbox (85.38034pt too wide) in paragraph at lines 1166--1166
- []\T1/pcr/m/n/9 # plot the marginal posterior distribution of the first parame
-ter in returned mcmc output[] 
+Overfull \hbox (6.39984pt too wide) in paragraph at lines 1204--1204
+ []\T1/zi4/m/n/10 predict(object, newdata, tau_values = NULL, burn = NULL, K_ma
+x = 3, alpha = 0.1, ...)[] 
+[24] [25] [26] [27] [28] [29] [30] (./Rd2.ind [31]
 
-Overfull \hbox (16.74937pt too wide) in paragraph at lines 1201--1202
-[]\T1/ptm/m/n/10 An ob-ject of class []\T1/pcr/m/n/10 bayesCureModel[]\T1/ptm/m
-/n/10 , which is re-turned by the []\T1/pcr/m/n/10 cure_rate_MC3
-[24] [25] [26] (./Rd2.ind [27]
-Overfull \hbox (16.01662pt too wide) in paragraph at lines 10--12
-\T1/ptm/m/it/10 (\T1/pcr/m/sl/10 bayesCureRateModel-package\T1/ptm/m/it/10 )\T1
-/ptm/m/n/10 , 
-[28]) (./Rd2.aux)
+LaTeX Font Warning: Font shape `T1/zi4/m/it' undefined
+(Font)              using `T1/zi4/m/n' instead on input line 10.
+
+[32]) (./Rd2.aux)
+
+LaTeX Font Warning: Some font shapes were not available, defaults substituted.
+
 
 Package rerunfilecheck Warning: File `Rd2.out' has changed.
 (rerunfilecheck)                Rerun to get outlines right
@@ -486,32 +370,33 @@ pdfTeX warning (dest): name{Rfn.dgamma} has been referenced but does not exist,
 pdfTeX warning (dest): name{Rfn.ddagum} has been referenced but does not exist,
  replaced by a fixed one
 
-{/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc} </home/panagiotis/.
-texlive2021/texmf-var/fonts/pk/ljfour/jknappen/ec/tctt0900.600pk></usr/share/te
-xlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/share/texlive/
-texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/share/texlive/texmf-
-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texlive/texmf-dist/f
-onts/type1/public/amsfonts/cm/cmmi5.pfb></usr/share/texlive/texmf-dist/fonts/ty
-pe1/public/amsfonts/cm/cmmi7.pfb></usr/share/texlive/texmf-dist/fonts/type1/pub
-lic/amsfonts/cm/cmmib10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/a
-msfonts/cmextra/cmmib7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/am
-sfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/
-cm/cmr5.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.
-pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></
-usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy5.pfb></usr/sha
-re/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/share/texl
-ive/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb></usr/share/texlive/texmf-dis
-t/fonts/type1/urw/courier/ucrro8a.pfb></usr/share/texlive/texmf-dist/fonts/type
-1/urw/helvetic/uhvr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/
-utmb8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></us
-r/share/texlive/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/share/texlive
-/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on Rd2.pdf (28 pages, 280387 bytes).
+{/usr/share/texlive/texmf-dist/fonts/enc/dvips/inconsolata/i4-ts1.enc} </home/p
+anos/.texlive2021/texmf-var/fonts/pk/ljfour/jknappen/ec/tctt0900.600pk>{/usr/sh
+are/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc}{/usr/share/texlive/texmf-di
+st/fonts/enc/dvips/inconsolata/i4-t1-0.enc}</usr/share/texlive/texmf-dist/fonts
+/type1/public/inconsolata/Inconsolata-zi4r.pfb></usr/share/texlive/texmf-dist/f
+onts/type1/public/amsfonts/cm/cmbx10.pfb></usr/share/texlive/texmf-dist/fonts/t
+ype1/public/amsfonts/cm/cmex10.pfb></usr/share/texlive/texmf-dist/fonts/type1/p
+ublic/amsfonts/cm/cmmi10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/
+amsfonts/cm/cmmi5.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfont
+s/cm/cmmi7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cm
+mib10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cmextra/cm
+mib7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pf
+b></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr5.pfb></usr/
+share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/share/te
+xlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/
+texmf-dist/fonts/type1/public/amsfonts/cm/cmsy5.pfb></usr/share/texlive/texmf-d
+ist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/share/texlive/texmf-dist/fon
+ts/type1/urw/helvetic/uhvr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw
+/times/utmb8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmr8a.p
+fb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/share/
+texlive/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
+Output written on Rd2.pdf (32 pages, 284698 bytes).
 Transcript written on Rd2.log.
 This is makeindex, version 2.15 [TeX Live 2022/dev] (kpathsea + Thai support).
-Scanning input file Rd2.idx....done (31 entries accepted, 0 rejected).
-Sorting entries....done (157 comparisons).
-Generating output file Rd2.ind....done (57 lines written, 0 warnings).
+Scanning input file Rd2.idx....done (35 entries accepted, 0 rejected).
+Sorting entries....done (186 comparisons).
+Generating output file Rd2.ind....done (64 lines written, 1 warning).
 Output written in Rd2.ind.
 Transcript written in Rd2.ilg.
 This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex)
@@ -534,6 +419,12 @@ Document Class: book 2021/10/04 v1.4n Standard LaTeX document class
 (/usr/share/texlive/texmf-dist/tex/generic/iftex/iftex.sty)
 (/usr/share/texlive/texmf-dist/tex/latex/base/fontenc.sty)
 (/usr/share/texlive/texmf-dist/tex/latex/psnfss/times.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/inconsolata/zi4.sty
+`inconsolata-zi4' v1.12, 2019/05/17 Text macros for Inconsolata (msharpe)
+(/usr/share/texlive/texmf-dist/tex/latex/xkeyval/xkeyval.sty
+(/usr/share/texlive/texmf-dist/tex/generic/xkeyval/xkeyval.tex
+(/usr/share/texlive/texmf-dist/tex/generic/xkeyval/xkvutils.tex
+(/usr/share/texlive/texmf-dist/tex/generic/xkeyval/keyval.tex)))))
 (/usr/share/texlive/texmf-dist/tex/latex/graphics/color.sty
 (/usr/share/texlive/texmf-dist/tex/latex/graphics-cfg/color.cfg)
 (/usr/share/texlive/texmf-dist/tex/latex/graphics-def/pdftex.def))
@@ -541,7 +432,6 @@ Document Class: book 2021/10/04 v1.4n Standard LaTeX document class
 (/usr/share/texlive/texmf-dist/tex/generic/ltxcmds/ltxcmds.sty)
 (/usr/share/texlive/texmf-dist/tex/generic/pdftexcmds/pdftexcmds.sty
 (/usr/share/texlive/texmf-dist/tex/generic/infwarerr/infwarerr.sty))
-(/usr/share/texlive/texmf-dist/tex/latex/graphics/keyval.sty)
 (/usr/share/texlive/texmf-dist/tex/generic/kvsetkeys/kvsetkeys.sty)
 (/usr/share/texlive/texmf-dist/tex/generic/kvdefinekeys/kvdefinekeys.sty)
 (/usr/share/texlive/texmf-dist/tex/generic/pdfescape/pdfescape.sty)
@@ -580,10 +470,10 @@ Writing index file Rd2.idx
 (/usr/share/texlive/texmf-dist/tex/latex/refcount/refcount.sty)
 (/usr/share/texlive/texmf-dist/tex/generic/gettitlestring/gettitlestring.sty))
 (./Rd2.out) (./Rd2.out)
-(/usr/share/texlive/texmf-dist/tex/latex/psnfss/t1pcr.fd)
+(/usr/share/texlive/texmf-dist/tex/latex/inconsolata/t1zi4.fd)
 (/usr/share/texlive/texmf-dist/tex/latex/psnfss/t1phv.fd) (./Rd2.toc [1{/var/li
-b/texmf/fonts/map/pdftex/updmap/pdftex.map}])
-(/usr/share/texlive/texmf-dist/tex/latex/psnfss/ts1ptm.fd) [2]
+b/texmf/fonts/map/pdftex/updmap/pdftex.map}]) [2]
+(/usr/share/texlive/texmf-dist/tex/latex/psnfss/ts1ptm.fd)
 Overfull \hbox (1.74841pt too wide) detected at line 91
 \OML/cmm/m/it/10 L[]\OT1/cmr/m/n/10 (\OML/cmm/b/it/10 ^^R\OT1/cmr/m/n/10 ; \OML
 /cmm/b/it/10 y\OML/cmm/m/it/10 ; \OML/cmm/b/it/10 I\OT1/cmr/m/n/10 ) = [](1 \OM
@@ -597,34 +487,10 @@ it/10 p[]\OT1/cmr/m/n/10 (\OML/cmm/b/it/10 x[]\OML/cmm/m/it/10 ; \OML/cmm/b/it/
 10 ^^R\OT1/cmr/m/n/10 ))\OML/cmm/m/it/10 S[]\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 y
 []\OT1/cmr/m/n/10 ; \OML/cmm/b/it/10 ^^R\OML/cmm/m/it/10 ; \OML/cmm/b/it/10 x[]
 \OT1/cmr/m/n/10 )\OMS/cmsy/m/n/10 g[]\OML/cmm/m/it/10 :
-[3]
-Overfull \hbox (18.78088pt too wide) in paragraph at lines 100--100
- []                        \T1/pcr/m/n/10 Bayesian Cure Rate Modeling for Time-
-to-Event[] 
-
-Overfull \hbox (12.78088pt too wide) in paragraph at lines 103--103
- []                        \T1/pcr/m/n/10 Logarithm of the complete log-likelih
-ood for[] 
-
-Overfull \hbox (6.78088pt too wide) in paragraph at lines 109--109
- []\T1/pcr/m/n/10 log_gamma_mixture       PDF and CDF of a Gamma mixture distri
-bution[] 
-
-Overfull \hbox (18.78088pt too wide) in paragraph at lines 111--111
- []\T1/pcr/m/n/10 log_logLogistic         PDF and CDF of the log-Logistic distr
-ibution.[] 
-
-Overfull \hbox (6.78088pt too wide) in paragraph at lines 113--113
- []\T1/pcr/m/n/10 log_user_mixture        PDF and CDF of a Gamma mixture distri
-bution[] 
-[4] (/usr/share/texlive/texmf-dist/tex/latex/base/t1cmtt.fd)
+[3] [4] (/usr/share/texlive/texmf-dist/tex/latex/base/t1cmtt.fd)
 (/usr/share/texlive/texmf-dist/tex/latex/base/ts1cmtt.fd)
-(/usr/share/texlive/texmf-dist/tex/latex/psnfss/ts1pcr.fd)
-Overfull \hbox (36.7804pt too wide) in paragraph at lines 169--169
- []\T1/pcr/m/n/9 #        should take _larger_ values. E.g. a typical implement
-ation consists of:[] 
-[5]
-Overfull \hbox (1.74841pt too wide) detected at line 224
+(/usr/share/texlive/texmf-dist/tex/latex/inconsolata/ts1zi4.fd) [5]
+Overfull \hbox (1.74841pt too wide) detected at line 228
 \OML/cmm/m/it/10 L[]\OT1/cmr/m/n/10 (\OML/cmm/b/it/10 ^^R\OT1/cmr/m/n/10 ; \OML
 /cmm/b/it/10 y\OML/cmm/m/it/10 ; \OML/cmm/b/it/10 I\OT1/cmr/m/n/10 ) = [](1 \OM
 S/cmsy/m/n/10 ^^@ \OML/cmm/m/it/10 p[]\OT1/cmr/m/n/10 (\OML/cmm/b/it/10 x[]\OML
@@ -637,91 +503,54 @@ it/10 p[]\OT1/cmr/m/n/10 (\OML/cmm/b/it/10 x[]\OML/cmm/m/it/10 ; \OML/cmm/b/it/
 10 ^^R\OT1/cmr/m/n/10 ))\OML/cmm/m/it/10 S[]\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 y
 []\OT1/cmr/m/n/10 ; \OML/cmm/b/it/10 ^^R\OML/cmm/m/it/10 ; \OML/cmm/b/it/10 x[]
 \OT1/cmr/m/n/10 )\OMS/cmsy/m/n/10 g[]\OML/cmm/m/it/10 :
-[6]
-Overfull \hbox (6.78088pt too wide) in paragraph at lines 283--283
- []\T1/pcr/m/n/10 prior_parameters = matrix(rep(c(2.1, 1.1), 2), byrow = TRUE, 
-2, 2),[] 
-[7]
-Overfull \hbox (4.57414pt too wide) in paragraph at lines 297--298
+[6] [7]
+Overfull \hbox (4.57414pt too wide) in paragraph at lines 301--302
 []\T1/ptm/m/n/10 Positive in-te-ger cor-re-spond-ing to the num-ber of heated c
 hains in the MC$[]$ scheme. 
 
-Overfull \hbox (18.93675pt too wide) in paragraph at lines 359--360
+Overfull \hbox (18.93675pt too wide) in paragraph at lines 363--364
 []\T1/ptm/m/n/10 The prob-a-bil-ity for at-tempt-ing a se-ries of sin-gle site 
 up-dates in the typ-i-cal Metropolis-
-
-Overfull \hbox (8.94846pt too wide) in paragraph at lines 359--360
-\T1/ptm/m/n/10 Hastings move. Oth-er-wise, with prob-a-bil-ity 1 - []\T1/pcr/m/
-n/10 single_MH_in_f []\T1/ptm/m/n/10 a Metropolis-
 [8]
-Overfull \hbox (26.66971pt too wide) in paragraph at lines 375--376
-[]\T1/ptm/m/n/10 Relevant only in the case of the []\TS1/pcr/m/n/10 '\T1/pcr/m/
-n/10 gamma_mixture\TS1/pcr/m/n/10 '[]\T1/ptm/m/n/10 .
-
-Overfull \hbox (28.85892pt too wide) in paragraph at lines 379--380
-\T1/ptm/m/n/10 char-ac-ter string with avail-able choices: []\TS1/pcr/m/n/10 '\
-T1/pcr/m/n/10 exponential\TS1/pcr/m/n/10 '[]\T1/ptm/m/n/10 , []\TS1/pcr/m/n/10 
-'\T1/pcr/m/n/10 weibull\TS1/pcr/m/n/10 '[]\T1/ptm/m/n/10 , []\TS1/pcr/m/n/10 '\
-T1/pcr/m/n/10 gamma\TS1/pcr/m/n/10 '[]\T1/ptm/m/n/10 , []\TS1/pcr/m/n/10 '\T1/p
-cr/m/n/10 logLogistic\TS1/pcr/m/n/10 '[]\T1/ptm/m/n/10 ,
-
-Overfull \hbox (4.7297pt too wide) in paragraph at lines 379--380
-[]\TS1/pcr/m/n/10 '\T1/pcr/m/n/10 gompertz\TS1/pcr/m/n/10 '[]\T1/ptm/m/n/10 , [
-]\TS1/pcr/m/n/10 '\T1/pcr/m/n/10 lomax\TS1/pcr/m/n/10 '[]\T1/ptm/m/n/10 , []\TS
-1/pcr/m/n/10 '\T1/pcr/m/n/10 dagum\TS1/pcr/m/n/10 '[]\T1/ptm/m/n/10 , []\TS1/pc
-r/m/n/10 '\T1/pcr/m/n/10 gamma_mixture\TS1/pcr/m/n/10 '[]\T1/ptm/m/n/10 . Also 
-avail-able is the op-tion []\TS1/pcr/m/n/10 '\T1/pcr/m/n/10 user\TS1/pcr/m/n/10
- '[]\T1/ptm/m/n/10 .
-[9] [10]
-Overfull \hbox (36.78088pt too wide) in paragraph at lines 455--455
- []\T1/pcr/m/n/10 cure_rate_mcmc(y, X, Censoring_status, m, alpha = 1, mu_g = 1
-, s2_g = 1, 
-
-Overfull \hbox (18.78088pt too wide) in paragraph at lines 456--456
- []\T1/pcr/m/n/10 a_l = 2.1, b_l = 1.1, promotion_time = list(distribution = "w
-eibull",[] 
-
-Overfull \hbox (6.78088pt too wide) in paragraph at lines 457--457
- []\T1/pcr/m/n/10 prior_parameters = matrix(rep(c(2.1, 1.1), 2), byrow = TRUE, 
-2, 2),[] 
-
-Overfull \hbox (42.78088pt too wide) in paragraph at lines 458--458
- []\T1/pcr/m/n/10 prop_scale = c(0.2, 0.03)), mu_b = NULL, Sigma = NULL, g_prop
-_sd = 0.045,[] 
-[11]
-Overfull \hbox (2.95644pt too wide) in paragraph at lines 528--529
+Overfull \hbox (16.56929pt too wide) in paragraph at lines 380--381
+[]\T1/ptm/m/n/10 Optional. Rel-e-vant only in the case of the []\TS1/zi4/m/n/10
+ '\T1/zi4/m/n/10 gamma_mixture\TS1/zi4/m/n/10 '
+[9]
+Overfull \hbox (3.0361pt too wide) in paragraph at lines 432--433
+[]\T1/ptm/m/n/10 Therneau T (2024). A Pack-age for Sur-vival Anal-y-sis in R. R
+ pack-age ver-sion 3.7-0, https://CRAN.R-
+[10] [11]
+Overfull \hbox (2.95644pt too wide) in paragraph at lines 538--539
 []\T1/ptm/m/n/10 Probability of at-tempt-ing a single-site MH move in the ba-si
 c Metropolis-Hastings
-[12] [13] [14] [15] [16] [17] [18] [19] [20] [21]
-Overfull \hbox (90.78088pt too wide) in paragraph at lines 1090--1090
- []\T1/pcr/m/n/10 K_gamma = 5, plot_graphs = TRUE, bw = "nrd0", what = NULL, p_
-cured_output = NULL,[] 
-[22]
-Overfull \hbox (27.70836pt too wide) in paragraph at lines 1119--1121
-\T1/ptm/m/n/10 func-tion is plot-ted, con-di-tional on a set of co-vari-ates de
--fined in the []\T1/pcr/m/n/10 p_cured_output
+[12] [13] [14] [15] [16] [17] [18] [19] [20] [21] [22]
+Overfull \hbox (21.22856pt too wide) in paragraph at lines 1129--1131
+[]\T1/ptm/m/n/10 Integer or a char-ac-ter string with pos-si-ble val-ues equal 
+to []\TS1/zi4/m/n/10 '\T1/zi4/m/n/10 cured_prob\TS1/zi4/m/n/10 '[]\T1/ptm/m/n/1
+0 , []\TS1/zi4/m/n/10 '\T1/zi4/m/n/10 survival\TS1/zi4/m/n/10 '
 
-Overfull \hbox (26.50012pt too wide) in paragraph at lines 1123--1124
-[]\T1/ptm/m/n/10 or []\T1/pcr/m/n/10 what = \TS1/pcr/m/n/10 '\T1/pcr/m/n/10 sur
-vival\TS1/pcr/m/n/10 '[]\T1/ptm/m/n/10 . It is re-turned by the []\T1/pcr/m/n/1
-0 summary.bayesCureRateModel
+Overfull \hbox (23.07999pt too wide) in paragraph at lines 1136--1137
+\T1/ptm/m/n/10 as re-turned by the []\T1/zi4/m/n/10 index_of_main_mode []\T1/pt
+m/m/n/10 value of the []\T1/zi4/m/n/10 summary.bayesCureRateModel
 
-Overfull \hbox (67.07999pt too wide) in paragraph at lines 1126--1127
-\T1/ptm/m/n/10 as re-turned by the []\T1/pcr/m/n/10 index_of_main_mode []\T1/pt
-m/m/n/10 value of the []\T1/pcr/m/n/10 summary.bayesCureRateModel
+Overfull \hbox (18.0381pt too wide) in paragraph at lines 1139--1140
+[]\T1/ptm/m/n/10 Boolean. If TRUE (de-fault), a leg-end is plot-ted in the case
+ where []\T1/zi4/m/n/10 what = \TS1/zi4/m/n/10 '\T1/zi4/m/n/10 survival\TS1/zi4
+/m/n/10 '
 [23]
-Overfull \hbox (85.38034pt too wide) in paragraph at lines 1166--1166
- []\T1/pcr/m/n/9 # plot the marginal posterior distribution of the first parame
-ter in returned mcmc output[] 
+Overfull \hbox (6.39984pt too wide) in paragraph at lines 1204--1204
+ []\T1/zi4/m/n/10 predict(object, newdata, tau_values = NULL, burn = NULL, K_ma
+x = 3, alpha = 0.1, ...)[] 
+[24] [25] [26] [27] [28] [29] [30] (./Rd2.ind [31]
 
-Overfull \hbox (16.74937pt too wide) in paragraph at lines 1201--1202
-[]\T1/ptm/m/n/10 An ob-ject of class []\T1/pcr/m/n/10 bayesCureModel[]\T1/ptm/m
-/n/10 , which is re-turned by the []\T1/pcr/m/n/10 cure_rate_MC3
-[24] [25] [26] (./Rd2.ind [27]
-Overfull \hbox (16.01662pt too wide) in paragraph at lines 10--12
-\T1/ptm/m/it/10 (\T1/pcr/m/sl/10 bayesCureRateModel-package\T1/ptm/m/it/10 )\T1
-/ptm/m/n/10 , 
-[28]) (./Rd2.aux) )
+LaTeX Font Warning: Font shape `T1/zi4/m/it' undefined
+(Font)              using `T1/zi4/m/n' instead on input line 10.
+
+[32]) (./Rd2.aux)
+
+LaTeX Font Warning: Some font shapes were not available, defaults substituted.
+
+ )
 (see the transcript file for additional information)pdfTeX warning (dest): name
 {Rfn.dlomax} has been referenced but does not exist, replaced by a fixed one
 
@@ -737,28 +566,29 @@ pdfTeX warning (dest): name{Rfn.dgamma} has been referenced but does not exist,
 pdfTeX warning (dest): name{Rfn.ddagum} has been referenced but does not exist,
  replaced by a fixed one
 
-{/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc} </home/panagiotis/.
-texlive2021/texmf-var/fonts/pk/ljfour/jknappen/ec/tctt0900.600pk></usr/share/te
-xlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/share/texlive/
-texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/share/texlive/texmf-
-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texlive/texmf-dist/f
-onts/type1/public/amsfonts/cm/cmmi5.pfb></usr/share/texlive/texmf-dist/fonts/ty
-pe1/public/amsfonts/cm/cmmi7.pfb></usr/share/texlive/texmf-dist/fonts/type1/pub
-lic/amsfonts/cm/cmmib10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/a
-msfonts/cmextra/cmmib7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/am
-sfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/
-cm/cmr5.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.
-pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></
-usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy5.pfb></usr/sha
-re/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/share/texl
-ive/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb></usr/share/texlive/texmf-dis
-t/fonts/type1/urw/courier/ucrro8a.pfb></usr/share/texlive/texmf-dist/fonts/type
-1/urw/helvetic/uhvr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/
-utmb8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></us
-r/share/texlive/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/share/texlive
-/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on Rd2.pdf (28 pages, 281185 bytes).
+{/usr/share/texlive/texmf-dist/fonts/enc/dvips/inconsolata/i4-ts1.enc} </home/p
+anos/.texlive2021/texmf-var/fonts/pk/ljfour/jknappen/ec/tctt0900.600pk>{/usr/sh
+are/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc}{/usr/share/texlive/texmf-di
+st/fonts/enc/dvips/inconsolata/i4-t1-0.enc}</usr/share/texlive/texmf-dist/fonts
+/type1/public/inconsolata/Inconsolata-zi4r.pfb></usr/share/texlive/texmf-dist/f
+onts/type1/public/amsfonts/cm/cmbx10.pfb></usr/share/texlive/texmf-dist/fonts/t
+ype1/public/amsfonts/cm/cmex10.pfb></usr/share/texlive/texmf-dist/fonts/type1/p
+ublic/amsfonts/cm/cmmi10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/
+amsfonts/cm/cmmi5.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfont
+s/cm/cmmi7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cm
+mib10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cmextra/cm
+mib7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pf
+b></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr5.pfb></usr/
+share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/share/te
+xlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/
+texmf-dist/fonts/type1/public/amsfonts/cm/cmsy5.pfb></usr/share/texlive/texmf-d
+ist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/share/texlive/texmf-dist/fon
+ts/type1/urw/helvetic/uhvr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw
+/times/utmb8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmr8a.p
+fb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/share/
+texlive/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
+Output written on Rd2.pdf (32 pages, 285705 bytes).
 Transcript written on Rd2.log.
 Saving output to ‘bayesCureRateModel-manual.pdf’ ...
 Done
-You may want to clean up by 'rm -Rf /tmp/RtmpM0tWwU/Rd2pdf10f05547707f0'
+You may want to clean up by 'rm -Rf /tmp/RtmpWSjgWQ/Rd2pdfcab37298a719a'

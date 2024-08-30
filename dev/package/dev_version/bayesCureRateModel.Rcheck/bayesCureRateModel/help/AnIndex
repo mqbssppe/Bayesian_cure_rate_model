@@ -13,5 +13,7 @@ log_user_mixture	log_user_mixture
 log_weibull	log_weibull
 marriage_dataset	marriage_dataset
 plot.bayesCureModel	plot.bayesCureModel
+predict.bayesCureModel	predict.bayesCureModel
 print.bayesCureModel	print.bayesCureModel
+residuals.bayesCureModel	residuals.bayesCureModel
 summary.bayesCureModel	summary.bayesCureModel

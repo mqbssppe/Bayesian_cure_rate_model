@@ -23,7 +23,7 @@ cure_rate_MC3(formula, data, nChains = 12, mcmc_cycles = 15000,
 an object of class \code{formula}: a symbolic description of the model to be fitted.
 }
 \item{data}{
- a data frame containing all variable names included in \code{formula}. The response variable should be a \code{Surv} object (see the \code{survival} package), where the binary censoring indicators are interpreted as a time-to-event (1) or as a censoring time (0).
+ a data frame containing all variable names included in \code{formula}. The response variable should be a \code{Surv} object (see the \pkg{survival} package), where the binary censoring indicators are interpreted as a time-to-event (1) or as a censoring time (0).
 }
 \item{nChains}{
   Positive integer corresponding to the number of heated chains in the MC\eqn{^3} scheme.
@@ -101,9 +101,10 @@ The \code{promotion_time} argument should be a list containing the following ent
 \item{\code{distribution} }{  Character string specifying the family of distributions \eqn{\{F(\cdot;\boldsymbol\alpha);\boldsymbol\alpha\in\mathcal A\}} describing the promotion time.}
 \item{\code{prior_parameters} }{  Values of hyper-parameters in the prior distribution of the parameters \eqn{\boldsymbol\alpha}.}
 \item{\code{prop_scale} }{  The scale of the proposal distributions for each parameter in \eqn{\boldsymbol\alpha}.}
-\item{\code{dirichlet_concentration_parameter} }{  Relevant only in the case of the \code{'gamma_mixture'}. Positive scalar (typically, set to 1) determining the (common) concentration parameter of the Dirichlet prior distribution of mixing proportions. }
+\item{\code{K} }{ Optional. The number of mixture components in case where a mixture model is fitted, that is, when setting \code{distribution} to either \code{'gamma_mixture'} or \code{'user_mixture'}. }
+\item{\code{dirichlet_concentration_parameter} }{  Optional. Relevant only in the case of the \code{'gamma_mixture'} or \code{'user_mixture'}. Positive scalar (typically, set to 1) determining the (common) concentration parameter of the Dirichlet prior distribution of mixing proportions. }
 }
-The \code{distribution} specifies the distributional family of promotion time and corresponds to a character string with available choices: \code{'exponential'}, \code{'weibull'}, \code{'gamma'}, \code{'logLogistic'}, \code{'gompertz'}, \code{'lomax'}, \code{'dagum'}, \code{'gamma_mixture'}. Also available is the option \code{'user'}. In this case, the user should specify the distributional family in a separate argument named \code{define} which is passed as an additional entry in the \code{promotion_time}. This function should accept two input arguments \code{y} and \code{a} corresponding to the observed data (vector of positive numbers) and the parameters of the distribution (vector of positives). Pay attention to the positivity requirement of the parameters: if this is not the case, the user should suitably reparameterize the distribution in terms of positive parameters.
+The \code{distribution} specifies the distributional family of promotion time and corresponds to a character string with available choices: \code{'exponential'}, \code{'weibull'}, \code{'gamma'}, \code{'logLogistic'}, \code{'gompertz'}, \code{'lomax'}, \code{'dagum'}, \code{'gamma_mixture'}. User defined promotion time distributions and finite mixtures of them can be also fitted using the options \code{'user'} and \code{'user_mixture'}, respectively. In this case, the user should specify the distributional family in a separate argument named \code{define} which is passed as an additional entry in the \code{promotion_time}. This function should accept two input arguments \code{y} and \code{a} corresponding to the observed data (vector of positive numbers) and the parameters of the distribution (vector of positives). Pay attention to the positivity requirement of the parameters: if this is not the case, the user should suitably reparameterize the distribution in terms of positive parameters.
 
 The joint prior distribution of \eqn{\boldsymbol\alpha = (\alpha_1,\ldots,\alpha_d)} factorizes into products of inverse Gamma distributions for all (positive) parameters of \eqn{F}. Moreover, in the case of \code{'gamma_mixture'}, the joint prior also consists of another term to the Dirichlet prior distribution  on the mixing proportions. 
 
@@ -120,18 +121,23 @@ An object of class \code{bayesCureModel}, i.e. a list with the following entries
 \item{\code{b1_mcmc}... }{ Sampled values for the regression coefficient for the first explanatory variable, and similar for all subsequent columns.}
 }
 }
-\item{complete_log_likelihood }{The complete log-likelihood for the target chain.}
-\item{all_cll_values }{The complete log-likelihood for all chains}
 \item{latent_status_censored }{ A data frame with the simulated binary latent status for each censored item. }
+\item{complete_log_likelihood }{The complete log-likelihood for the target chain.}
 \item{swap_accept_rate}{ the acceptance rate of proposed swappings between adjacent MCMC chains.}
-\item{input_data_and_model_prior}{the input data and specification of the prior parameters.}
-\item{log_posterior}{the logarithm of the posterior distribution, up to a normalizing constant.}
-\item{map_estimate}{The Maximum A Posterior estimate of parameters}
-\item{BIC}{Bayesian Information Criterion.}
-\item{AIC}{Akaike Information Criterion.}
+\item{all_cll_values }{The complete log-likelihood for all chains.}
+\item{input_data_and_model_prior}{the input data, model specification and selected prior parameters values.}
+\item{log_posterior}{the logarithm of the (non-augmented) posterior distribution (after integrating the latent cured-status parameters out), up to a normalizing constant.}
+\item{map_estimate}{The Maximum A Posterior estimate of parameters.}
+\item{BIC}{Bayesian Information Criterion of the fitted model.}
+\item{AIC}{Akaike Information Criterion of the fitted model.}
+\item{residuals}{The Cox-Snell residuals of the fitted model.}
 }
 \references{
 Papastamoulis and Milienos (2024). Bayesian inference and cure rate modeling for event history data. TEST doi: 10.1007/s11749-024-00942-w.
+
+Plummer M, Best N, Cowles K, Vines K (2006). "CODA: Convergence Diagnosis and Output Analysis for MCMC." R News, 6(1), 7-11. 
+
+Therneau T (2024). A Package for Survival Analysis in R. R package version 3.7-0, https://CRAN.R-project.org/package=survival. 
 }
 \author{
 Panagiotis Papastamoulis

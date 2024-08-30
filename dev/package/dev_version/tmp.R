@@ -171,6 +171,24 @@ fit <- cure_rate_MC3(formula = formu, data = my_data_frame,
   promotion_time = promotion_time, verbose = TRUE)
 
 
+mcmc_cycles = 10000; nChains = 8; nCores = 4
+set.seed(10, kind = "L'Ecuyer-CMRG")
+fit <- cure_rate_MC3(formula = formu, data = my_data_frame,                
+  nChains = nChains, mcmc_cycles = mcmc_cycles,  nCores = nCores, 
+  promotion_time = list(distribution = "exponential"), verbose = TRUE)
+
+set.seed(10, kind = "L'Ecuyer-CMRG")
+fit2 <- cure_rate_MC3(formula = formu, data = my_data_frame,                
+  nChains = nChains, mcmc_cycles = mcmc_cycles,  nCores = nCores, 
+  promotion_time = list(distribution = "exponential"), verbose = TRUE)
+
+set.seed(10, kind = "L'Ecuyer-CMRG")
+fit3 <- cure_rate_MC3(formula = formu, data = my_data_frame,                
+  nChains = nChains, mcmc_cycles = mcmc_cycles,  nCores = nCores, 
+  promotion_time = list(distribution = "weibull"), verbose = TRUE)
+
+
+
 covariate_levels = data.frame(age = 0, kids = 1, race = 1)
 	
 x1 <- (20 - age_mean)/age_sd
@@ -178,10 +196,35 @@ x2 <- (30 - age_mean)/age_sd
 x3 <- (40 - age_mean)/age_sd
 covariate_levels1 <- data.frame(age = c(x1, x2, x3), kids = c(0,0,0), race = c(1,1,1))
 covariate_levels2 <- data.frame(age = c(x1, x2, x3), kids = c(1,1,1), race = c(1,1,1))
+covariate_levels3 <- data.frame(age = c(x1, x2, x3), kids = c(0,0,0), race = c(2,2,2))
+covariate_levels4 <- data.frame(age = c(x1, x2, x3), kids = c(1,1,1), race = c(2,2,2))
+covariate_levels5 <- data.frame(age = c(x1, x2, x3), kids = c(0,0,0), race = c(4,4,4))
+covariate_levels6 <- data.frame(age = c(x1, x2, x3), kids = c(1,1,1), race = c(4,4,4))
 
-ss_exp1 <- summary(fit, covariate_levels = covariate_levels1, burn = 700)
-ss_exp2 <- summary(fit, covariate_levels = covariate_levels2, burn = 700)
+ss_exp1 <- summary(fit, covariate_levels = covariate_levels1)
+ss_exp2 <- summary(fit, covariate_levels = covariate_levels2)
+ss_exp3 <- summary(fit, covariate_levels = covariate_levels3)
+ss_exp4 <- summary(fit, covariate_levels = covariate_levels4)
+ss_exp5 <- summary(fit, covariate_levels = covariate_levels5)
+ss_exp6 <- summary(fit, covariate_levels = covariate_levels6)
 
+covariate_levels <- rbind(covariate_levels1, covariate_levels2, covariate_levels3, covariate_levels4, covariate_levels5, covariate_levels6)
+
+my_predictions <- predict(fit, newdata = covariate_levels)
+
+res <- residuals(fit)
+
+km <- survfit(Surv(res, marriage_dataset$censoring)~1)
+my_index <- numeric(length(km$time));for(i in 1:length(res)){my_index[i] <- which(res == km$time[i])[1]}
+del <- which(is.na(my_index))
+
+plot(res[my_index[-del]], -log(km$surv)); abline(0,1)
+
+
+res2 <- -log(km$surv)
+qqplot(x=qexp(ppoints(length(res2))), y=res2, main="Exponential Q-Q Plot",
+       xlab="Theoretical Quantiles", ylab= "Your Data Quantiles")
+abline(0,1)
 
 ###################################################
 ### code chunk number 9: visualization2
@@ -196,6 +239,4 @@ plot(fit, what='cured_prob', p_cured_output = ss_exp1$p_cured_output,
 plot(fit, what='cured_prob', p_cured_output = ss_exp2$p_cured_output, 
   ylim = c(0,1), cex.axis = 2.0, cex.lab = 2.5, alpha = 0.1)
 
-	
-	
 	

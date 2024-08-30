@@ -404,6 +404,83 @@ base::assign(".ptime", proc.time(), pos = "CheckExEnv")
 base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
 base::cat("plot.bayesCureModel", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
 cleanEx()
+nameEx("predict.bayesCureModel")
+### * predict.bayesCureModel
+
+flush(stderr()); flush(stdout())
+
+base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+### Name: predict.bayesCureModel
+### Title: Predict method.
+### Aliases: predict.bayesCureModel
+
+### ** Examples
+
+# simulate toy data just for cran-check purposes        
+	set.seed(1)
+        n = 4
+        stat = rbinom(n, size = 1, prob = 0.5)
+        x <- matrix(rnorm(2*n), n, 2)
+        y <- rexp(n)
+#	the response variable should be a Surv object 
+#		(see the `survival` package)        
+        time <- survival::Surv(y, stat)
+#	define a data frame with the response and the covariates        
+        my_data_frame <- data.frame(time, x1 = x[,1], x2 = x[,2])
+# run a weibull model with default prior setup
+# considering 2 heated chains 
+	fit1 <- cure_rate_MC3(time ~ x1 + x2, data = my_data_frame, 
+		promotion_time = list(distribution = 'exponential'),
+		nChains = 2, 
+		nCores = 1, 
+		mcmc_cycles = 3, sweep=2)
+	newdata <- data.frame(x1 = c(0.2,-1), x2 = c(-1,0))
+	my_prediction <- predict(fit1, newdata = newdata, burn = 0)
+
+
+
+
+base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+base::cat("predict.bayesCureModel", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+cleanEx()
+nameEx("residuals.bayesCureModel")
+### * residuals.bayesCureModel
+
+flush(stderr()); flush(stdout())
+
+base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+### Name: residuals.bayesCureModel
+### Title: Computation of residuals.
+### Aliases: residuals.bayesCureModel
+
+### ** Examples
+
+# simulate toy data just for cran-check purposes        
+	set.seed(1)
+        n = 4
+        stat = rbinom(n, size = 1, prob = 0.5)
+        x <- matrix(rnorm(2*n), n, 2)
+        y <- rexp(n)
+#	the response variable should be a Surv object 
+#		(see the `survival` package)        
+        time <- survival::Surv(y, stat)
+#	define a data frame with the response and the covariates        
+        my_data_frame <- data.frame(time, x1 = x[,1], x2 = x[,2])
+# run a weibull model with default prior setup
+# considering 2 heated chains 
+	fit1 <- cure_rate_MC3(time ~ x1 + x2, data = my_data_frame, 
+		promotion_time = list(distribution = 'exponential'),
+		nChains = 2, 
+		nCores = 1, 
+		mcmc_cycles = 3, sweep=2)
+	my_residuals <- residuals(fit1)
+
+
+
+
+base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+base::cat("residuals.bayesCureModel", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+cleanEx()
 nameEx("summary.bayesCureModel")
 ### * summary.bayesCureModel
 
