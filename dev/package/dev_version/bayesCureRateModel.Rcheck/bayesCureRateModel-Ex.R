@@ -35,17 +35,18 @@ base::assign(".ptime", proc.time(), pos = "CheckExEnv")
 # simulate toy data 
 	set.seed(10)
         n = 4
+        # censoring indicators
         stat = rbinom(n, size = 1, prob = 0.5)
+        # covariates
         x <- matrix(rnorm(2*n), n, 2)
+        # observed response variable 
         y <- rexp(n)
-#	the response variable should be a Surv object 
-#		(see the `survival` package)        
-        time <- survival::Surv(y, stat)
 #	define a data frame with the response and the covariates        
-        my_data_frame <- data.frame(time, x1 = x[,1], x2 = x[,2])
+        my_data_frame <- data.frame(y, stat, x1 = x[,1], x2 = x[,2])
 # run a weibull model with default prior setup
 # considering 2 heated chains 
-	fit1 <- cure_rate_MC3(time ~ x1 + x2, data = my_data_frame, 
+	fit1 <- cure_rate_MC3(survival::Surv(y, stat) ~ x1 + x2, 
+		data = my_data_frame, 
 		promotion_time = list(distribution = 'weibull'),
 		nChains = 2, 
 		nCores = 1, 
@@ -62,7 +63,7 @@ base::assign(".ptime", proc.time(), pos = "CheckExEnv")
 	
 ## No test: 
 # run a Gamma mixture model with K = 2 components and default prior setup
-	fit2 <- cure_rate_MC3(time ~ x1 + x2, data = my_data_frame, 
+	fit2 <- cure_rate_MC3(survival::Surv(y, stat) ~ x1 + x2, data = my_data_frame, 
 		promotion_time = list(
 			distribution = 'gamma_mixture',
 		        K = 2),
@@ -126,12 +127,16 @@ base::assign(".ptime", proc.time(), pos = "CheckExEnv")
 # simulate toy data just for cran-check purposes        
 	set.seed(10)
         n = 4
+        # censoring indicators
         stat = rbinom(n, size = 1, prob = 0.5)
+        # covariates
         x <- matrix(rnorm(2*n), n, 2)
+        # observed response variable 
         y <- rexp(n)
-        time <- survival::Surv(y, stat)
-        my_data_frame <- data.frame(time, x1 = x[,1], x2 = x[,2])
-	fit1 <- cure_rate_MC3(time ~ x1 + x2, data = my_data_frame,
+#	define a data frame with the response and the covariates        
+        my_data_frame <- data.frame(y, stat, x1 = x[,1], x2 = x[,2])
+	fit1 <- cure_rate_MC3(survival::Surv(y, stat) ~ x1 + x2, 
+		data = my_data_frame,
 		promotion_time = list(distribution = 'weibull'),
 		nChains = 2, nCores = 1, 
 		mcmc_cycles = 3, sweep = 2)
@@ -364,19 +369,19 @@ base::assign(".ptime", proc.time(), pos = "CheckExEnv")
 ### ** Examples
 
 # simulate toy data just for cran-check purposes        
-	set.seed(1)
+	set.seed(10)
         n = 4
+        # censoring indicators
         stat = rbinom(n, size = 1, prob = 0.5)
+        # covariates
         x <- matrix(rnorm(2*n), n, 2)
+        # observed response variable 
         y <- rexp(n)
-#	the response variable should be a Surv object 
-#		(see the `survival` package)        
-        time <- survival::Surv(y, stat)
 #	define a data frame with the response and the covariates        
-        my_data_frame <- data.frame(time, x1 = x[,1], x2 = x[,2])
+        my_data_frame <- data.frame(y, stat, x1 = x[,1], x2 = x[,2])
 # run a weibull model with default prior setup
 # considering 2 heated chains 
-	fit1 <- cure_rate_MC3(time ~ x1 + x2, data = my_data_frame, 
+	fit1 <- cure_rate_MC3(survival::Surv(y, stat) ~ x1 + x2, data = my_data_frame, 
 		promotion_time = list(distribution = 'exponential'),
 		nChains = 2, 
 		nCores = 1, 
@@ -386,13 +391,14 @@ base::assign(".ptime", proc.time(), pos = "CheckExEnv")
 	plot(fit1, what = 1, burn = 0)
 # using 'cured_prob'
 ## No test: 
-	#compute cured probability for two individuals with 
+	#compute predictions for two individuals with 
 	#	x1 = 0.2 and x2 = -1
 	#	and 
 	#	x1 = -1 and x2 = 0
 	covariate_levels1 <- data.frame(x1 = c(0.2,-1), x2 = c(-1,0))
-	summary1 <- summary(fit1, covariate_levels = covariate_levels1, burn = 0)
-	plot(fit1, what='cured_prob', p_cured_output = summary1$p_cured_output, 
+	predictions <- predict(fit1, newdata = covariate_levels1, burn = 0)
+	# plot cured probabilities based on the previous output
+	plot(fit1, what='cured_prob', predict_output = predictions, 
 	  ylim = c(0,1))
 	
 ## End(No test)
@@ -417,25 +423,27 @@ base::assign(".ptime", proc.time(), pos = "CheckExEnv")
 ### ** Examples
 
 # simulate toy data just for cran-check purposes        
-	set.seed(1)
+	set.seed(10)
         n = 4
+        # censoring indicators
         stat = rbinom(n, size = 1, prob = 0.5)
+        # covariates
         x <- matrix(rnorm(2*n), n, 2)
+        # observed response variable 
         y <- rexp(n)
-#	the response variable should be a Surv object 
-#		(see the `survival` package)        
-        time <- survival::Surv(y, stat)
 #	define a data frame with the response and the covariates        
-        my_data_frame <- data.frame(time, x1 = x[,1], x2 = x[,2])
+        my_data_frame <- data.frame(y, stat, x1 = x[,1], x2 = x[,2])
 # run a weibull model with default prior setup
 # considering 2 heated chains 
-	fit1 <- cure_rate_MC3(time ~ x1 + x2, data = my_data_frame, 
+	fit1 <- cure_rate_MC3(survival::Surv(y, stat) ~ x1 + x2, data = my_data_frame, 
 		promotion_time = list(distribution = 'exponential'),
 		nChains = 2, 
 		nCores = 1, 
 		mcmc_cycles = 3, sweep=2)
 	newdata <- data.frame(x1 = c(0.2,-1), x2 = c(-1,0))
-	my_prediction <- predict(fit1, newdata = newdata, burn = 0)
+	# return predicted values at tau = c(0.5, 1)
+	my_prediction <- predict(fit1, newdata = newdata, 
+		burn = 0, tau_values = c(0.5, 1))
 
 
 
@@ -456,19 +464,20 @@ base::assign(".ptime", proc.time(), pos = "CheckExEnv")
 ### ** Examples
 
 # simulate toy data just for cran-check purposes        
-	set.seed(1)
+	set.seed(10)
         n = 4
+        # censoring indicators
         stat = rbinom(n, size = 1, prob = 0.5)
+        # covariates
         x <- matrix(rnorm(2*n), n, 2)
+        # observed response variable 
         y <- rexp(n)
-#	the response variable should be a Surv object 
-#		(see the `survival` package)        
-        time <- survival::Surv(y, stat)
 #	define a data frame with the response and the covariates        
-        my_data_frame <- data.frame(time, x1 = x[,1], x2 = x[,2])
+        my_data_frame <- data.frame(y, stat, x1 = x[,1], x2 = x[,2])
 # run a weibull model with default prior setup
 # considering 2 heated chains 
-	fit1 <- cure_rate_MC3(time ~ x1 + x2, data = my_data_frame, 
+	fit1 <- cure_rate_MC3(survival::Surv(y, stat) ~ x1 + x2, 
+		data = my_data_frame, 
 		promotion_time = list(distribution = 'exponential'),
 		nChains = 2, 
 		nCores = 1, 
@@ -494,19 +503,20 @@ base::assign(".ptime", proc.time(), pos = "CheckExEnv")
 ### ** Examples
 
 # simulate toy data just for cran-check purposes        
-	set.seed(1)
+	set.seed(10)
         n = 4
+        # censoring indicators
         stat = rbinom(n, size = 1, prob = 0.5)
+        # covariates
         x <- matrix(rnorm(2*n), n, 2)
+        # observed response variable 
         y <- rexp(n)
-#	the response variable should be a Surv object 
-#		(see the `survival` package)        
-        time <- survival::Surv(y, stat)
 #	define a data frame with the response and the covariates        
-        my_data_frame <- data.frame(time, x1 = x[,1], x2 = x[,2])
+        my_data_frame <- data.frame(y, stat, x1 = x[,1], x2 = x[,2])
 # run a weibull model with default prior setup
 # considering 2 heated chains 
-	fit1 <- cure_rate_MC3(time ~ x1 + x2, data = my_data_frame, 
+	fit1 <- cure_rate_MC3(survival::Surv(y, stat) ~ x1 + x2, 
+		data = my_data_frame, 
 		promotion_time = list(distribution = 'exponential'),
 		nChains = 2, 
 		nCores = 1, 

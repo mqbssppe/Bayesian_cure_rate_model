@@ -20,10 +20,10 @@ cure_rate_MC3(formula, data, nChains = 12, mcmc_cycles = 15000,
 }
 \arguments{
 \item{formula}{
-an object of class \code{formula}: a symbolic description of the model to be fitted.
+an object of class \code{formula}: a symbolic description of the model to be fitted. The left-hand side should be a \code{Surv} object, a class inherited from the \pkg{survival} package. The binary censoring indicators are interpreted as a time-to-event (1) or as a censoring time (0).
 }
 \item{data}{
- a data frame containing all variable names included in \code{formula}. The response variable should be a \code{Surv} object (see the \pkg{survival} package), where the binary censoring indicators are interpreted as a time-to-event (1) or as a censoring time (0).
+ a data frame containing all variable names included in \code{formula}. 
 }
 \item{nChains}{
   Positive integer corresponding to the number of heated chains in the MC\eqn{^3} scheme.
@@ -152,12 +152,16 @@ The core function is \code{\link{cure_rate_mcmc}}.
 # simulate toy data just for cran-check purposes        
 	set.seed(10)
         n = 4
+        # censoring indicators
         stat = rbinom(n, size = 1, prob = 0.5)
+        # covariates
         x <- matrix(rnorm(2*n), n, 2)
+        # observed response variable 
         y <- rexp(n)
-        time <- survival::Surv(y, stat)
-        my_data_frame <- data.frame(time, x1 = x[,1], x2 = x[,2])
-	fit1 <- cure_rate_MC3(time ~ x1 + x2, data = my_data_frame,
+#	define a data frame with the response and the covariates        
+        my_data_frame <- data.frame(y, stat, x1 = x[,1], x2 = x[,2])
+	fit1 <- cure_rate_MC3(survival::Surv(y, stat) ~ x1 + x2, 
+		data = my_data_frame,
 		promotion_time = list(distribution = 'weibull'),
 		nChains = 2, nCores = 1, 
 		mcmc_cycles = 3, sweep = 2)

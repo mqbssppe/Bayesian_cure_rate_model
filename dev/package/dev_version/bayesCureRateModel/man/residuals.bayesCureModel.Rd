@@ -34,19 +34,20 @@ Panagiotis Papastamoulis
 }
 \examples{
 # simulate toy data just for cran-check purposes        
-	set.seed(1)
+	set.seed(10)
         n = 4
+        # censoring indicators
         stat = rbinom(n, size = 1, prob = 0.5)
+        # covariates
         x <- matrix(rnorm(2*n), n, 2)
+        # observed response variable 
         y <- rexp(n)
-#	the response variable should be a Surv object 
-#		(see the `survival` package)        
-        time <- survival::Surv(y, stat)
 #	define a data frame with the response and the covariates        
-        my_data_frame <- data.frame(time, x1 = x[,1], x2 = x[,2])
+        my_data_frame <- data.frame(y, stat, x1 = x[,1], x2 = x[,2])
 # run a weibull model with default prior setup
 # considering 2 heated chains 
-	fit1 <- cure_rate_MC3(time ~ x1 + x2, data = my_data_frame, 
+	fit1 <- cure_rate_MC3(survival::Surv(y, stat) ~ x1 + x2, 
+		data = my_data_frame, 
 		promotion_time = list(distribution = 'exponential'),
 		nChains = 2, 
 		nCores = 1, 

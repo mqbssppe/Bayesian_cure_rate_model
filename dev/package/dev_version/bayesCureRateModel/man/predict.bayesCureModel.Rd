@@ -7,7 +7,8 @@ Predict method.
 Returns MAP estimates of the survival function and the conditional cured probability for a given set of covariates. 
 }
 \usage{
-\method{predict}{bayesCureModel}(object, newdata, tau_values = NULL, burn = NULL, K_max = 3, alpha = 0.1, ...)
+\method{predict}{bayesCureModel}(object, newdata, tau_values = NULL, burn = NULL, 
+	K_max = 3, alpha = 0.1, nDigits = 3, verbose = TRUE, ...)
 }
 \arguments{
   \item{object}{
@@ -27,6 +28,12 @@ Positive integer corresponding to the number of mcmc iterations to discard as bu
 }
 \item{alpha}{
 Scalar between 0 and 1 corresponding to 1 - confidencel level for computing Highest Density Intervals. If set to NULL, the confidence intervals are not computed.
+}
+\item{nDigits}{
+A positive integer for printing the output, after rounding to the corresponding number of digits. Default: \code{nDigits = 3}.
+}
+\item{verbose}{
+Boolean. If set to TRUE (default) the function prints a summary of the predictions. 
 }
 \item{...}{
         ignored.
@@ -68,25 +75,27 @@ Panagiotis Papastamoulis
 }
 \examples{
 # simulate toy data just for cran-check purposes        
-	set.seed(1)
+	set.seed(10)
         n = 4
+        # censoring indicators
         stat = rbinom(n, size = 1, prob = 0.5)
+        # covariates
         x <- matrix(rnorm(2*n), n, 2)
+        # observed response variable 
         y <- rexp(n)
-#	the response variable should be a Surv object 
-#		(see the `survival` package)        
-        time <- survival::Surv(y, stat)
 #	define a data frame with the response and the covariates        
-        my_data_frame <- data.frame(time, x1 = x[,1], x2 = x[,2])
+        my_data_frame <- data.frame(y, stat, x1 = x[,1], x2 = x[,2])
 # run a weibull model with default prior setup
 # considering 2 heated chains 
-	fit1 <- cure_rate_MC3(time ~ x1 + x2, data = my_data_frame, 
+	fit1 <- cure_rate_MC3(survival::Surv(y, stat) ~ x1 + x2, data = my_data_frame, 
 		promotion_time = list(distribution = 'exponential'),
 		nChains = 2, 
 		nCores = 1, 
 		mcmc_cycles = 3, sweep=2)
 	newdata <- data.frame(x1 = c(0.2,-1), x2 = c(-1,0))
-	my_prediction <- predict(fit1, newdata = newdata, burn = 0)
+	# return predicted values at tau = c(0.5, 1)
+	my_prediction <- predict(fit1, newdata = newdata, 
+		burn = 0, tau_values = c(0.5, 1))
 
 }
 

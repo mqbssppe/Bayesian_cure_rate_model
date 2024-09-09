@@ -1290,12 +1290,23 @@ cure_rate_MC3 <- function( formula, data,
 					single_MH_in_f = 0.2, c_under = 1e-9
 					){
 	X <- model.matrix(object = formula, data = data)
-	if(is.Surv(data[[all.vars(formula)[1]]]) == FALSE){
+	y <- data[[all.vars(formula)[1]]]
+	Censoring_status = data[[all.vars(formula)[2]]]
+	if(all(names(table(Censoring_status)) %in% c(0,1)) == FALSE){
+		stop(paste0("The censoring status variable (",all.vars(formula)[2],") should take values in the discrete set {0,1}."))
+	}
+	surv_object <- with(data, eval(formula[[2]]))
+	if(is.Surv(surv_object) == FALSE){
 		stop("the response variable should be a `Surv` object.", '\n')
 	}
-	y <- data[[all.vars(formula)[1]]][,1]
-	Censoring_status = data[[all.vars(formula)[1]]][,2]
+#	y_index <- which(colnames(data) == all.vars(formula)[1])
+#	stat_index <- which(colnames(data) == all.vars(formula)[2])
+#	data <- cbind(surv_object, data[,all.vars(formula)[-(1:2)]])
+#	if(is.Surv(data[[all.vars(formula)[1]]]) == FALSE){
+#		stop("the response variable should be a `Surv` object.", '\n')
+#	}
 	X <- as.matrix(X)
+	data <- cbind(surv_object, data[,all.vars(formula)[-(1:2)]])
 	
 	if( .Platform$OS.type == 'windows' && nCores > 1){
 		cat('   [WARNING]: parallelization is not suggested in Windows.', '\n')
@@ -2033,10 +2044,10 @@ cure_rate_MC3 <- function( formula, data,
 }
 
 #' @export
-predict.bayesCureModel <- function(object, newdata, tau_values = NULL, burn = NULL, K_max = 3, alpha = 0.1, ...){
+predict.bayesCureModel <- function(object, newdata, tau_values = NULL, burn = NULL, K_max = 3, alpha = 0.1, nDigits = 3, verbose = TRUE, ...){
 	if(is.null(burn)){
 		burn = floor(dim(object$mcmc_sample)[1]/3)
-		cat(paste0('By default, I will discard the first one third of the mcmc sample as burn-in period.\n Alternatively, you may set the "burn" parameter to another value.'),'\n')
+#		cat(paste0('By default, I will discard the first one third of the mcmc sample as burn-in period.\n Alternatively, you may set the "burn" parameter to another value.'),'\n')
 	}else{
 		if(burn > dim(object$mcmc_sample)[1] - 1){stop('burn in period not valid.')}
 		if(burn < 0){stop('burn in period not valid.')}		
@@ -2106,11 +2117,11 @@ predict.bayesCureModel <- function(object, newdata, tau_values = NULL, burn = NU
 
 
 
-	log_f_p <- function(g, lambda, log_f, log_F, b, logS){
+	log_f_p <- function(g, lambda, log_f, log_F, b, logS, x){
 		# logS = log_S_p(tau = tau, g = g, lambda = lambda, a1 = a1, a2 = a2, b0 = b0, b1 = b1, b2 = b2)
 		log_theta <- x %*% b
 		return(
-		        (1 + g) * logS + log(lambda) + log_theta +
+		        (1 + g) * c(logS) + log(lambda) + log_theta +
 		        g*exp(log_theta)*log(ct) + 
 		        (lambda - 1)*log_F + #### NOTE: this causes the log -> -inf, so now it regulated.
 		        log_f
@@ -2149,9 +2160,9 @@ predict.bayesCureModel <- function(object, newdata, tau_values = NULL, burn = NU
 
 	p_cured_given_tau <- p_cured_given_tau_values <- NULL 
 	if(is.data.frame(newdata) == FALSE){stop("newdata should be a data frame.", '\n')}
-	# check names and type of covariate levels
-	xs <- sum(colnames(newdata) == all.vars(object$input_data_and_model_prior$formula)[-1])
-	if(xs != length(all.vars(object$input_data_and_model_prior$formula)[-1])){stop("newdata should have same column names as the input data", '\n')}
+
+	xs <- sum(colnames(newdata) == all.vars(object$input_data_and_model_prior$formula)[-(1:2)])
+	if(xs != length(all.vars(object$input_data_and_model_prior$formula)[-(1:2)])){stop("covariate_levels should have same column names as the input data", '\n')}
 	nLines <- dim(newdata)[1]
 	originalCovLevels <- newdata
 	yName <- colnames(object$input_data_and_model_prior$data)[1]
@@ -2159,15 +2170,22 @@ predict.bayesCureModel <- function(object, newdata, tau_values = NULL, burn = NU
 	for(i in names(newdata)){
 		if( is.factor(object$input_data_and_model_prior$data[,i]) ){
 			if(all(newdata[,i] %in% new_df[,i]) == FALSE){
-				stop(paste0('The levels in newdata do not match for factor variable "',i,'".'),'\n')
+				stop(paste0('The levels in covariate_levels do not match for factor variable "',i,'".'),'\n')
 			}
 		}
 	}
 	new_df = cbind(rexp(dim(new_df)[1], rate = 1), new_df)
 	colnames(new_df)[1] <- yName	
-	covariate_levels <- matrix(model.matrix(object$input_data_and_model_prior$formula, new_df)[1:nLines,], 
+	y1 <- all.vars(formula)[1]
+	y2 <- all.vars(formula)[2]
+	new_df2 <- cbind(c(rexp(nLines), y), c(sample(0:1, nLines, replace = TRUE), Censoring_status), new_df)
+	colnames(new_df2)[1:2] <-  all.vars(object$input_data_and_model_prior$formula)[1:2]
+	covariate_levels <- matrix(model.matrix(object$input_data_and_model_prior$formula, new_df2)[1:nLines,], 
 		nrow = nLines, ncol = ncol(object$input_data_and_model_prior$X))
+
+
 	nLevels <- dim(covariate_levels)[1]
+	
 	if(length(covariate_levels[1,])!=dim(X)[2]){
 		stop("the length of distinct covariate_levels should be equal to the number of columns in the design matrix (X).")
 	}
@@ -2176,7 +2194,12 @@ predict.bayesCureModel <- function(object, newdata, tau_values = NULL, burn = NU
 	}
 	S_p <- p_cured_given_tau <- array(NA, dim = c(length(tau_values), nLevels))
 	S_p_values <- p_cured_given_tau_values <- array(data = 0, dim = c(length(tau_values), dim(retained_mcmc)[1], nLevels))
-
+	#cumulative hazard function
+	H_p <-array(NA, dim = c(length(tau_values), nLevels))
+	H_p_values <- array(data = 0, dim = c(length(tau_values), dim(retained_mcmc)[1], nLevels))
+	#hazard function
+	h_p <-array(NA, dim = c(length(tau_values), nLevels))
+	h_p_values <- array(data = 0, dim = c(length(tau_values), dim(retained_mcmc)[1], nLevels))
 
 
 	
@@ -2254,22 +2277,26 @@ predict.bayesCureModel <- function(object, newdata, tau_values = NULL, burn = NU
 
 						
 		log_F = lw$log_F
+		log_f = lw$log_f
 		i <- 0
 		for(tau in tau_values){
 			i <- i + 1
 			for(j in 1:nLevels){
-			testam <- log_S_p(g = g, lambda = lambda,
-							log_F = log_F[i], 
-							b = b,
-							x = covariate_levels[j,]
+				testam <- log_S_p(g = g, lambda = lambda,
+								log_F = log_F[i], 
+								b = b,
+								x = covariate_levels[j,]
+								)
+				H_p_values[i,iter,j] <- testam
+				S_p_values[i,iter,j] <- exp(testam)
+				p_cured_given_tau_values[i, iter,j] <- exp(log_p0(g = g, 
+								b = b,
+								x = covariate_levels[j,]) - 
+							testam
 							)
-
-			S_p_values[i,iter,j] <- exp(testam)
-			p_cured_given_tau_values[i, iter,j] <- exp(log_p0(g = g, 
-							b = b,
-							x = covariate_levels[j,]) - 
-						testam
-						)
+				h_p_values[i,iter,j] = exp(log_f_p(g = g, lambda = lambda, 
+					log_f = log_f[i], log_F = log_F[i], 
+					b = b, logS = testam, x = covariate_levels[j,])	- testam) 
 			}
 			#p_cured_given_tau[i] <- p_cured_given_tau[i] +  p_cured_given_tau_values[i, iter]           				
 		}
@@ -2277,11 +2304,13 @@ predict.bayesCureModel <- function(object, newdata, tau_values = NULL, burn = NU
 			for(j in 1:nLevels){
 				p_cured_given_tau[,j] <- p_cured_given_tau_values[,iter,j]
 				S_p[,j] <- S_p_values[,iter,j]
+				H_p[,j] <- H_p_values[,iter,j]
+				h_p[,j] <- h_p_values[,iter,j]
 			}
 		}
 	}
 
-	res <- vector('list', length = 9)
+	res <- vector('list', length = 13)
 	res[[1]] <- p_cured_given_tau_values
 	res[[2]] <- p_cured_given_tau
 	res[[3]] <- tau_values
@@ -2294,28 +2323,69 @@ predict.bayesCureModel <- function(object, newdata, tau_values = NULL, burn = NU
 	res[[7]] <- 	S_p_values
 	res[[8]] <- S_p
 	res[[9]] <- newdata
-	names(res) <- c('mcmc', 'map', 'tau_values', 'covariate_levels', 'index_of_main_mode', 'Xnames', 'mcmc_Sp', 'map_Sp', 'original_covariate_levels')
+	res[[10]] <- H_p_values
+	res[[11]] <- H_p
+	res[[12]] <- h_p_values
+	res[[13]] <- h_p
+	names(res) <- c('mcmc', 'map', 'tau_values', 'covariate_levels', 'index_of_main_mode', 'Xnames', 'mcmc_Sp', 'map_Sp', 'original_covariate_levels', 'mcmc_Hp', 'map_Hp', 'mcmc_hp', 'map_hp')
 	result <- vector('list', length = 3)
-	result[[3]] <- res
-	rownames(S_p) <- rownames(p_cured_given_tau) <- tau_values
-	result[[1]] <- vector('list', length = length(tau_values))
-	for(i in 1:length(tau_values)){
-		names(result[[1]])[i] <- paste0("t = ", tau_values[i])
-		if(is.null(alpha)==FALSE){
-			hd1 <- hd2 <- matrix(NA, nrow = dim(newdata)[1], ncol = 2)
-			for(j in 1:dim(newdata)[1]){
-				hd1[j,] <- as.numeric(hdi(p_cured_given_tau_values[i,main_mode_index,j], credMass = 1 - alpha))
-				hd2[j,] <- as.numeric(hdi(S_p_values[i,main_mode_index,j], credMass = 1 - alpha))				
-			}
-			result[[1]][[i]] <- cbind(newdata, S_p[i,], hd2, p_cured_given_tau[i,], hd1)			
-			colnames(result[[1]][[i]])[-(1:dim(newdata)[2])] <- c(paste0('S_p[t]'), 'S_p[t]_l', 'S_p[t]_u', 'P[cured|T > t]', 'P_l[cured|T > t]', 'P_u[cured|T > t]')			
-		}else{
-			result[[1]][[i]] <- cbind(newdata, S_p[i,], p_cured_given_tau[i,])			
-			colnames(result[[1]][[i]])[-(1:dim(newdata)[2])] <- c(paste0('S_p[t]'), 'P[cured|T > t]')			
-		
+	result[[2]] <- res
+	
+	rownames(S_p) <- rownames(H_p) <- rownames(h_p) <- rownames(p_cured_given_tau) <- tau_values
+	print_summary <- result[[1]] <- result[[3]] <- vector('list', length = length(tau_values))
+	nnn <- newdata
+	for(j in 1:dim(newdata)[2]){
+		if(is.numeric(newdata[,j])){
+		nnn[,j] <- round(newdata[,j], nDigits)
 		}
 	}
-	names(result) <- c('summary', 'mcmc')
+	for(i in 1:length(tau_values)){
+		names(result[[1]])[i] <- names(result[[3]])[i] <- paste0("t = ", tau_values[i])
+		if(is.null(alpha)==FALSE){
+			hd1 <- hd2 <- hd3 <- hd4 <- matrix(NA, nrow = dim(newdata)[1], ncol = 2)
+			for(j in 1:dim(newdata)[1]){
+				hd1[j,] <- as.numeric(hdi(p_cured_given_tau_values[i,main_mode_index,j], credMass = 1 - alpha))
+				hd2[j,] <- as.numeric(hdi(S_p_values[i,main_mode_index,j], credMass = 1 - alpha))
+				hd3[j,] <- as.numeric(hdi(H_p_values[i,main_mode_index,j], credMass = 1 - alpha))
+				hd4[j,] <- as.numeric(hdi(h_p_values[i,main_mode_index,j], credMass = 1 - alpha))
+			}
+			h1 <- apply(hd1, 1, function(u){paste0("(",round(u[1], nDigits),", ", round(u[2], nDigits), ")")})
+			h2 <- apply(hd2, 1, function(u){paste0("(",round(u[1],  nDigits),", ", round(u[2], nDigits), ")")})
+			h3 <- apply(hd3, 1, function(u){paste0("(",round(u[1],  nDigits),", ", round(u[2], nDigits), ")")})
+			h4 <- apply(hd4, 1, function(u){paste0("(",round(u[1],  nDigits),", ", round(u[2], nDigits), ")")})
+			result[[3]][[i]] <- data.frame(nnn,  round(S_p[i,],nDigits), h2, round(H_p[i,],nDigits), h3, 
+				round(h_p[i,],nDigits), h4, 
+				round(p_cured_given_tau[i,],nDigits), h1)			
+			names(result[[3]][[i]]) <- c(names(newdata), 'S_p[t]', paste0('S_p[t]_',100*(1-alpha),'%'),  
+				'H_p[t]', paste0('H_p[t]_',100*(1-alpha),'%'),  
+				'h_p[t]', paste0('h_p[t]_',100*(1-alpha),'%'),  
+				'P[cured|T > t]', paste0('P[cured|T > t]_',100*(1-alpha),'%'))
+			result[[1]][[i]] <- cbind(newdata, S_p[i,], hd2, H_p[i,], hd3, 
+						h_p[i,], hd4, p_cured_given_tau[i,], hd1)			
+			colnames(result[[1]][[i]])[-(1:dim(newdata)[2])] <- c(paste0('S_p[t]'), 
+			paste0('S_p[t]^low_',1-alpha), 
+			paste0('S_p[t]^up_',1-alpha), 
+			paste0('H_p[t]'), 
+			paste0('H_p[t]^low_',1-alpha), 
+			paste0('H_p[t]^up_',1-alpha), 
+			paste0('h_p[t]'), 
+			paste0('h_p[t]^low_',1-alpha), 
+			paste0('h_p[t]^up_',1-alpha), 
+			'P[cured|T > t]', paste0('P[cured|T > t]^low_',1-alpha), paste0('P[cured|T > t]^up_',1-alpha))			
+		}else{
+			result[[1]][[i]] <- cbind(newdata, S_p[i,], H_p[i,], h_p[i,], p_cured_given_tau[i,])			
+			colnames(result[[1]][[i]])[-(1:dim(newdata)[2])] <- c(paste0('S_p[t]'), 'H_p[t]', 'h_p[t]', 'P[cured|T > t]')
+			result[[3]][[i]] <- data.frame(nnn,  round(S_p[i,],nDigits), round(H_p[i,],nDigits), 
+				round(h_p[i,],nDigits), 
+				round(p_cured_given_tau[i,],nDigits))			
+			names(result[[3]][[i]]) <- c(names(newdata), 'S_p[t]',  'H_p[t]', 'h_p[t]', 
+				'P[cured|T > t]')
+		}
+	}
+	names(result) <- c('summary', 'mcmc', 'printed_summary')
+	if(verbose){
+	print(result$printed_summary)
+	}
 	return(result)
 }
 
@@ -2528,6 +2598,7 @@ residuals.bayesCureModel <- function(object, type = "cox-snell", ...){
 
 
 
+
 #' @export
 summary.bayesCureModel <- function(object, burn = NULL, gamma_mix = TRUE, K_gamma = 3, K_max = 3, fdr = 0.1, covariate_levels = NULL, yRange = NULL, alpha = 0.1, ...){
 
@@ -2674,8 +2745,8 @@ summary.bayesCureModel <- function(object, burn = NULL, gamma_mix = TRUE, K_gamm
 	if(is.null(covariate_levels) == FALSE){
 	if(is.data.frame(covariate_levels) == FALSE){stop("covariate_levels should be a data frame.", '\n')}
 	# check names and type of covariate levels
-	xs <- sum(colnames(covariate_levels) == all.vars(object$input_data_and_model_prior$formula)[-1])
-	if(xs != length(all.vars(object$input_data_and_model_prior$formula)[-1])){stop("covariate_levels should have same column names as the input data", '\n')}
+	xs <- sum(colnames(covariate_levels) == all.vars(object$input_data_and_model_prior$formula)[-(1:2)])
+	if(xs != length(all.vars(object$input_data_and_model_prior$formula)[-(1:2)])){stop("covariate_levels should have same column names as the input data", '\n')}
 	nLines <- dim(covariate_levels)[1]
 	originalCovLevels <- covariate_levels
 	yName <- colnames(object$input_data_and_model_prior$data)[1]
@@ -2689,7 +2760,11 @@ summary.bayesCureModel <- function(object, burn = NULL, gamma_mix = TRUE, K_gamm
 	}
 	new_df = cbind(rexp(dim(new_df)[1], rate = 1), new_df)
 	colnames(new_df)[1] <- yName	
-	covariate_levels <- matrix(model.matrix(object$input_data_and_model_prior$formula, new_df)[1:nLines,], 
+	y1 <- all.vars(formula)[1]
+	y2 <- all.vars(formula)[2]
+	new_df2 <- cbind(c(rexp(nLines), y), c(sample(0:1, nLines, replace = TRUE), Censoring_status), new_df)
+	colnames(new_df2)[1:2] <-  all.vars(object$input_data_and_model_prior$formula)[1:2]
+	covariate_levels <- matrix(model.matrix(object$input_data_and_model_prior$formula, new_df2)[1:nLines,], 
 		nrow = nLines, ncol = ncol(object$input_data_and_model_prior$X))
 	nLevels <- dim(covariate_levels)[1]
 	if(length(covariate_levels[1,])!=dim(X)[2]){
@@ -2893,7 +2968,7 @@ cat(paste0('Among ', length(latent_cured_status) ,' censored observations, I fou
 
 #' @export
 
-plot.bayesCureModel <- function(x, burn = NULL, alpha = 0.05, gamma_mix = TRUE, K_gamma = 5, plot_graphs = TRUE, bw = 'nrd0', what = NULL, p_cured_output = NULL, index_of_main_mode = NULL, draw_legend = TRUE, ...){
+plot.bayesCureModel <- function(x, burn = NULL, alpha = 0.05, gamma_mix = TRUE, K_gamma = 5, plot_graphs = TRUE, bw = 'nrd0', what = NULL, predict_output = NULL, index_of_main_mode = NULL, draw_legend = TRUE, ...){
 	retained_mcmc = x$mcmc_sample
 	map_estimate = x$map_estimate
 #	if(plot_graphs){
@@ -2978,6 +3053,7 @@ plot.bayesCureModel <- function(x, burn = NULL, alpha = 0.05, gamma_mix = TRUE, 
 		what <- 1:nPars
 	}
 	if(what[1] == 'cured_prob'){
+		p_cured_output <- predict_output$mcmc
 		plot(
 			p_cured_output$tau_values, 
 			p_cured_output$map[,1], 
@@ -3025,7 +3101,13 @@ plot.bayesCureModel <- function(x, burn = NULL, alpha = 0.05, gamma_mix = TRUE, 
 			}
 		}
 		if(draw_legend){
-		lText <- paste0(apply(round(p_cured_output$original_covariate_levels,2), 1, function(y)paste0(y, collapse=', ')))
+		which_num <- which(sapply(p_cured_output$original_covariate_levels, is.numeric) == TRUE)
+		if(length(which_num) > 0){
+			for (i in which_num){
+				p_cured_output$original_covariate_levels[,i] <- round(p_cured_output$original_covariate_levels[,i], 2)
+			}
+		}
+		lText <- paste0(apply(p_cured_output$original_covariate_levels, 1, function(y)paste0(y, collapse=', ')))
 		legend('bottomright', col = 2:(nLevels+1), lty = 1, 
 			title = paste0('covariate levels\n',paste0(names(p_cured_output$original_covariate_levels), 
 				collapse=', ')), lText)
@@ -3044,6 +3126,7 @@ plot.bayesCureModel <- function(x, burn = NULL, alpha = 0.05, gamma_mix = TRUE, 
 	
 	}else{
 	if(what[1] == 'survival'){
+		p_cured_output <- predict_output$mcmc
 		plot(
 			p_cured_output$tau_values, 
 			p_cured_output$map_Sp[,1], 
@@ -3091,14 +3174,20 @@ plot.bayesCureModel <- function(x, burn = NULL, alpha = 0.05, gamma_mix = TRUE, 
 			}
 		}
 		if(draw_legend){
-		lText <- paste0(apply(round(p_cured_output$original_covariate_levels,2), 1, function(y)paste0(y, collapse=', ')))
+		which_num <- which(sapply(p_cured_output$original_covariate_levels, is.numeric) == TRUE)
+		if(length(which_num) > 0){
+			for (i in which_num){
+				p_cured_output$original_covariate_levels[,i] <- round(p_cured_output$original_covariate_levels[,i], 2)
+			}
+		}
+		lText <- paste0(apply(p_cured_output$original_covariate_levels, 1, function(y)paste0(y, collapse=', ')))
 		legend('bottomright', col = 2:(nLevels+1), lty = 1, 
 			title = paste0('covariate levels\n',paste0(names(p_cured_output$original_covariate_levels), 
 				collapse=', ')), lText)
 		}
 	}else{
 	if(what[1] == 'residuals'){
-		res <- x$residuals
+		res <- x$residual
 		km <- survfit(Surv(res, x$input_data_and_model_prior$Censoring_status)~1)
 		my_index <- numeric(length(km$time));for(i in 1:length(res)){my_index[i] <- which(res == km$time[i])[1]}
 		del <- which(is.na(my_index))

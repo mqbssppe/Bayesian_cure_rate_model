@@ -208,6 +208,7 @@ ss_exp4 <- summary(fit, covariate_levels = covariate_levels4)
 ss_exp5 <- summary(fit, covariate_levels = covariate_levels5)
 ss_exp6 <- summary(fit, covariate_levels = covariate_levels6)
 
+
 covariate_levels <- rbind(covariate_levels1, covariate_levels2, covariate_levels3, covariate_levels4, covariate_levels5, covariate_levels6)
 
 my_predictions <- predict(fit, newdata = covariate_levels)
@@ -238,5 +239,204 @@ plot(fit, what='cured_prob', p_cured_output = ss_exp1$p_cured_output,
   ylim = c(0,1), cex.axis = 2.0, cex.lab = 2.5, alpha = 0.1, draw_legend = TRUE)
 plot(fit, what='cured_prob', p_cured_output = ss_exp2$p_cured_output, 
   ylim = c(0,1), cex.axis = 2.0, cex.lab = 2.5, alpha = 0.1)
+
+	
+	
+
+#' @export
+fitted.bayesCureModel <- function(object, fdr = 0.1, quant = 0.5, ...){
+	y = object$input_data_and_model_prior$y
+	X = object$input_data_and_model_prior$X
+	Censoring_status = object$input_data_and_model_prior$Censoring_status
+	promotion_time = object$input_data_and_model_prior$promotion_time
+	n <- dim(X)[1]
+	ss <- summary(object, fdr = fdr)	
+	cured_status <- rep('susceptible', n)
+	cured_status[Censoring_status == 0] <- ss$cured_at_given_FDR
+	fitted_values <- rep(NA, n)
+	fitted_values[cured_status == 'cured'] <- Inf
+	
+	burn = 0
+	K_max = 3	
+	if(is.null(burn)){
+		burn = floor(dim(object$mcmc_sample)[1]/3)
+	}else{
+		if(burn > dim(object$mcmc_sample)[1] - 1){stop('burn in period not valid.')}
+		if(burn < 0){stop('burn in period not valid.')}		
+	}
+
+	if(burn > 0){
+	retained_mcmc = object$mcmc_sample[-(1:burn),]
+	}else{retained_mcmc = object$mcmc_sample}
+	mu_g = object$input_data_and_model_prior$mu_g
+	s2_g = object$input_data_and_model_prior$s2_g	
+	mu_b = object$input_data_and_model_prior$mu_b
+	Sigma = object$input_data_and_model_prior$Sigma
+	a_l = object$input_data_and_model_prior$a_l
+	b_l = object$input_data_and_model_prior$b_l
+	map_index <- 1
+	retained_mcmc <- rbind(object$map_estimate, retained_mcmc)	
+
+	c_under = 1e-9
+	ct = exp(exp(-1))
+	X <- as.matrix(X)
+	x <- X
+	nCov <- dim(x)[2]
+
+	n_pars_f <- dim(promotion_time$prior_parameters)[1]
+
+	if(promotion_time$distribution == 'gamma_mixture'){
+		K = promotion_time$K
+		if(dim(promotion_time$prior_parameters)[3] != K){stop("incosistent number of mixture components")}		
+		n_pars_f = K * n_pars_f + K - 1# note that we include all mixing weights
+	}
+	if(promotion_time$distribution == 'user_mixture'){
+		K = promotion_time$K
+		n_pars_f_k = n_pars_f
+		if(dim(promotion_time$prior_parameters)[3] != K){stop("incosistent number of mixture components")}		
+		n_pars_f = K * n_pars_f + K - 1# note that we include all mixing weights
+	}
+
+	
+	a <- numeric(n_pars_f)
+
+	log_S_p <- function(g, lambda, log_F, b, x){
+		theta <- exp(x %*% b)
+		return(-log(1 + c(g * theta * ct^{g*theta}) * exp(log_F)^lambda)/g)
+
+	}
+
+	log_p0 <- function(g, b, x){
+		theta <- exp(x %*% b)
+		return(-(log(1 + g*theta*ct^(g*theta)))/g)
+	}
+
+
+
+	log_f_p <- function(g, lambda, log_f, log_F, b, logS){
+		# logS = log_S_p(tau = tau, g = g, lambda = lambda, a1 = a1, a2 = a2, b0 = b0, b1 = b1, b2 = b2)
+		log_theta <- x %*% b
+		return(
+		        (1 + g) * logS + log(lambda) + log_theta +
+		        g*exp(log_theta)*log(ct) + 
+		        (lambda - 1)*log_F + #### NOTE: this causes the log -> -inf, so now it regulated.
+		        log_f
+		)
+	 }
+
+	if(length(unique(X[,1])) == 1){
+		bIndices <- paste0('b',1:nCov - 1,'_mcmc')	
+	}else{
+		bIndices <- paste0('b',1:nCov,'_mcmc')
+	}
+
+
+	F_u <- function(tau, x){
+		# tau is the time
+		# x denotes the covariates
+		g = retained_mcmc[1,'g_mcmc']
+		lambda = retained_mcmc[1,'lambda_mcmc']
+		b = retained_mcmc[1, bIndices]
+		if(promotion_time$distribution == 'exponential'){
+			lw <- log_weibull(y = tau, a1 = retained_mcmc[iter,'a1_mcmc'], 
+			a2 = 1,  c_under = c_under)
+		}
+		if(promotion_time$distribution == 'weibull'){
+			lw <- log_weibull(y = tau, a1 = retained_mcmc[iter,'a1_mcmc'], 
+				a2 = retained_mcmc[iter,'a2_mcmc'],  c_under = c_under)
+		}
+		if(promotion_time$distribution == 'gamma'){
+			lw <- log_gamma(y = tau, a1 = retained_mcmc[iter,'a1_mcmc'], 
+				a2 = retained_mcmc[iter,'a2_mcmc'],  c_under = c_under)
+		}
+		if(promotion_time$distribution == 'gompertz'){
+			lw <- log_gompertz(y = tau, a1 = retained_mcmc[iter,'a1_mcmc'], 
+				a2 = retained_mcmc[iter,'a2_mcmc'],  c_under = c_under)
+		}
+		if(promotion_time$distribution == 'logLogistic'){
+			lw <- log_logLogistic(y = tau, a1 = retained_mcmc[iter,'a1_mcmc'], 
+				a2 = retained_mcmc[iter,'a2_mcmc'],  c_under = c_under)
+		}
+		if(promotion_time$distribution == 'lomax'){
+			lw <- log_lomax(y = tau, a1 = retained_mcmc[iter,'a1_mcmc'], 
+				a2 = retained_mcmc[iter,'a2_mcmc'],  c_under = c_under)
+		}
+		if(promotion_time$distribution == 'dagum'){
+			lw <- log_dagum(y = tau, a1 = retained_mcmc[iter,'a1_mcmc'], a2 = retained_mcmc[iter,'a2_mcmc'], 
+				a3 = retained_mcmc[iter,'a3_mcmc'], c_under = c_under)
+		}
+		if(promotion_time$distribution == 'gamma_mixture'){
+			K = promotion_time$K
+			a = retained_mcmc[iter,3:(3+n_pars_f - 1)]
+			w <- c(a[-(1:(2*K))], 1)
+			p <- w/sum(w)
+			a1_ind <- seq(1, 2*K, by = 2)
+			a2_ind <- seq(2, 2*K, by = 2)		
+			a1 = a[a1_ind]
+			a2 = a[a2_ind]		
+			lw <- log_gamma_mixture(y = tau, a1 = a1, a2 = a2, p = p, c_under = c_under)
+		}
+		if(promotion_time$distribution == 'user_mixture'){
+			K = promotion_time$K
+			a = retained_mcmc[iter,3:(3+n_pars_f - 1)]
+			w <- c(a[-(1:(n_pars_f_k*K))], 1)
+			p <- w/sum(w)
+			a_matrix = matrix(a[1:(n_pars_f_k*K)], n_pars_f_k, K, byrow = TRUE)
+			lw <- log_user_mixture(user_f = promotion_time$define, y = tau, a = a_matrix, p = p, c_under = c_under)
+		}
+		if(promotion_time$distribution == 'user'){
+			lw <- promotion_time$define(y = tau, a = retained_mcmc[iter, 3:(2+n_pars_f)])	
+	
+		}
+
+		log_F = lw$log_F
+		Sp <- exp(log_S_p(g, lambda, log_F, b, x))
+		p0 <- exp(log_p0(g, b, x))
+		return((1 - Sp)/c((1-p0)))
+	}
+#	define equation to solve
+	my_objective_function <- function(tau, x, a){
+		if(a < 0){stop("a should be between 0 and 1.")}
+		if(a > 1){stop("a should be between 0 and 1.")}
+		return(-a + F_u(tau, x))
+	}
+#	define function for computing numerically the inverse of F_u
+	tau_max <- 2 * max(object$input_data_and_model_prior$y)
+	event_subjects <- which(Censoring_status == 1)
+	for(i in event_subjects){
+		invert_cdf <- function(a_quant)return(uniroot(my_objective_function, 
+				c(0, tau_max), x = X[i, ], a = a_quant, tol = 0.00001)$root)
+		fitted_values[i] <- invert_cdf(quant)
+	
+	}
+
+
+
+
+
+	n <- dim(X)[1]
+	n_parameters <- dim(x)[2] + 2 + n_pars_f
+	map_estimate <- object$map_estimate
+
+	p_cured_given_tau <-  NULL 
+	covariate_levels <- X
+	tau_values <- y
+	cox_snell <- numeric(n)
+	
+	
+	for(iter in 1:1){
+
+		i <- 0
+		for(tau in tau_values){
+			i <- i + 1
+			cox_snell[i] <- - log_S_p(g = g, lambda = lambda,
+							log_F = log_F[i], 
+							b = b,
+							x = covariate_levels[i,]
+							)
+		}
+	}
+	return(cox_snell)
+}
 
 	
