@@ -20,11 +20,11 @@ The file [Recidivism_Iowa_5000.txt](https://github.com/mqbssppe/Bayesian_cure_ra
 
 ## Updates	
 
-The package `bayesCureRateModel` (version 1.1) is now available on [CRAN](https://CRAN.R-project.org/package=bayesCureRateModel ) 
+The most recent release (version 1.2)  of the `bayesCureRateModel` package is now available on [CRAN](https://CRAN.R-project.org/package=bayesCureRateModel ) 
 
-Developer versions will be available here 
+Developer versions will be available [here](https://github.com/mqbssppe/Bayesian_cure_rate_model/tree/main/dev/package/dev_version)
 
 * [version 1.1](https://github.com/mqbssppe/Bayesian_cure_rate_model/tree/main/dev/package/version_1.1): fixed a bug on Windows 
-* [version 1.2](https://github.com/mqbssppe/Bayesian_cure_rate_model/tree/main/dev/package/dev_version): major updates after editorial comments (not yet on CRAN)
+* [version 1.2](https://github.com/mqbssppe/Bayesian_cure_rate_model/tree/main/dev/package/version_1.2): major updates after editorial comments 
 
 
