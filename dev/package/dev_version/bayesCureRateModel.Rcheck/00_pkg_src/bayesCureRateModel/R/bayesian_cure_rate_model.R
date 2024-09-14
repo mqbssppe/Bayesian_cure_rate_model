@@ -678,7 +678,7 @@ cure_rate_mcmc <- function( y, X, Censoring_status,  m, alpha = 1,
 				a_matrix_prop = matrix(a_prop[(1:(n_pars_f_k*K))], n_pars_f_k, K)
 				lw_prop <- log_user_mixture(user_f = promotion_time$define, y, a_matrix_prop, p = p_prop, c_under = c_under)
 				if(i < n_pars_f_k*K + 1){
-					k <- floor(i/K+0.5)
+					k <- floor(i/n_pars_f_k+(n_pars_f_k-1)/n_pars_f_k) #floor(i/K+0.5)
 					j = (i+1)%%n_pars_f_k + 1
 					log_prior_diff <- alpha*diff(log_inv_gamma_kernel(c(a[i], a_prop[i]), 
 						promotion_time$prior_parameters[j,1,k], promotion_time$prior_parameters[j,2,k]))
@@ -845,7 +845,7 @@ cure_rate_mcmc <- function( y, X, Censoring_status,  m, alpha = 1,
 					p = p_prop, c_under = c_under)
 				log_prior_diff <- 0				
 				for(i in 1:(n_pars_f_k*K)){
-					k <- floor(i/K+0.5)
+					k <- floor(i/n_pars_f_k+(n_pars_f_k-1)/n_pars_f_k)
 					j = (i+1)%%n_pars_f_k + 1
 					log_prior_diff <- log_prior_diff + alpha*diff(log_inv_gamma_kernel(c(a[i], a_prop[i]), 
 						promotion_time$prior_parameters[j,1,k], promotion_time$prior_parameters[j,2,k]))
@@ -1065,11 +1065,11 @@ cure_rate_mcmc <- function( y, X, Censoring_status,  m, alpha = 1,
 					w_prop2 <- c(w_prop, 1)
 					p_prop <- w_prop2/sum(w_prop2)
 					a_matrix_prop = matrix(a_prop[1:(n_pars_f_k*K)], 
-						n_pars_f_k, K, byrow = TRUE)
+						n_pars_f_k, K)
 					lw_prop <- log_user_mixture(user_f = promotion_time$define, y, a = a_matrix_prop, p = p_prop, c_under = c_under)
 					log_prior_diff <- 0				
 					for(i in 1:(n_pars_f_k*K)){
-						k <- floor(i/K+0.5)
+						k <- floor(i/n_pars_f_k+(n_pars_f_k-1)/n_pars_f_k)
 						j = (i+1)%%n_pars_f_k + 1
 						log_prior_diff <- log_prior_diff + alpha*diff(log_inv_gamma_kernel(c(a[i], a_prop[i]), 
 							promotion_time$prior_parameters[j,1,k], promotion_time$prior_parameters[j,2,k]))
@@ -1275,10 +1275,10 @@ cure_rate_MC3 <- function( formula, data,
 				nCores = 1, 
 				sweep = 5,
 				mu_g = 1, s2_g = 1, a_l = 2.1, b_l = 1.1, 
-				mu_b = rep(0,dim(X)[2]), Sigma = 100*diag(dim(X)[2]),
+				mu_b = NULL, Sigma = NULL,
 				g_prop_sd = 0.045, 
 				lambda_prop_scale = 0.03, 
-				b_prop_sd = rep(0.022, dim(X)[2]), 
+				b_prop_sd = NULL, 
 				initialValues = NULL, 
 				plot = TRUE,
 				adjust_scales = FALSE,
@@ -1290,6 +1290,10 @@ cure_rate_MC3 <- function( formula, data,
 					single_MH_in_f = 0.2, c_under = 1e-9
 					){
 	X <- model.matrix(object = formula, data = data)
+	if(is.null(mu_b)){mu_b <- rep(0,dim(X)[2])}
+	if(is.null(Sigma)){Sigma <- 100*diag(dim(X)[2])}
+	if(is.null(b_prop_sd)){b_prop_sd = rep(0.022, dim(X)[2])}	
+	
 	y <- data[[all.vars(formula)[1]]]
 	Censoring_status = data[[all.vars(formula)[2]]]
 	if(all(names(table(Censoring_status)) %in% c(0,1)) == FALSE){
@@ -2260,7 +2264,7 @@ predict.bayesCureModel <- function(object, newdata, tau_values = NULL, burn = NU
 			a = retained_mcmc[iter,3:(3+n_pars_f - 1)]
 			w <- c(a[-(1:(n_pars_f_k*K))], 1)
 			p <- w/sum(w)
-			a_matrix = matrix(a[1:(n_pars_f_k*K)], n_pars_f_k, K, byrow = TRUE)
+			a_matrix = matrix(a[1:(n_pars_f_k*K)], n_pars_f_k, K)
 			lw <- log_user_mixture(user_f = promotion_time$define, y = tau_values, a = a_matrix, p = p, c_under = c_under)
 		}
 
@@ -2497,16 +2501,6 @@ residuals.bayesCureModel <- function(object, type = "cox-snell", ...){
 	logP <- object$log_posterior[-(1:burn)]
 	map_estimate <- object$map_estimate
 	hdis <- NULL
-	if(length(logP) < 100){K_max = 1}
-	trans_logP <- log(-min(logP)+logP+abs(mean(logP))+0.0001)
-	hh <- Mclust(trans_logP, G = 1:K_max, verbose = FALSE)
-	ind <- which(hh$classification == hh$G)
-#	if(map_index %in% ind){
-#		ind <- ind
-#	}else{
-#		ind <- sort(union(ind, map_index))
-#	}
-	main_mode_index <- ind
 
 	p_cured_given_tau <-  NULL 
 	covariate_levels <- X
@@ -2570,7 +2564,7 @@ residuals.bayesCureModel <- function(object, type = "cox-snell", ...){
 			a = retained_mcmc[iter,3:(3+n_pars_f - 1)]
 			w <- c(a[-(1:(n_pars_f_k*K))], 1)
 			p <- w/sum(w)
-			a_matrix = matrix(a[1:(n_pars_f_k*K)], n_pars_f_k, K, byrow = TRUE)
+			a_matrix = matrix(a[1:(n_pars_f_k*K)], n_pars_f_k, K)
 			lw <- log_user_mixture(user_f = promotion_time$define, y = tau_values, a = a_matrix, p = p, c_under = c_under)
 		}
 
@@ -2600,7 +2594,7 @@ residuals.bayesCureModel <- function(object, type = "cox-snell", ...){
 
 
 #' @export
-summary.bayesCureModel <- function(object, burn = NULL, gamma_mix = TRUE, K_gamma = 3, K_max = 3, fdr = 0.1, covariate_levels = NULL, yRange = NULL, alpha = 0.1, ...){
+summary.bayesCureModel <- function(object, burn = NULL, gamma_mix = TRUE, K_gamma = 3, K_max = 3, fdr = 0.1, covariate_levels = NULL, yRange = NULL, alpha = 0.1, quantiles = c(0.05, 0.5, 0.95), verbose = TRUE, ...){
 
 	if(is.null(burn)){
 		burn = floor(dim(object$mcmc_sample)[1]/3)
@@ -2838,7 +2832,7 @@ summary.bayesCureModel <- function(object, burn = NULL, gamma_mix = TRUE, K_gamm
 			a = retained_mcmc[iter,3:(3+n_pars_f - 1)]
 			w <- c(a[-(1:(n_pars_f_k*K))], 1)
 			p <- w/sum(w)
-			a_matrix = matrix(a[1:(n_pars_f_k*K)], n_pars_f_k, K, byrow = TRUE)
+			a_matrix = matrix(a[1:(n_pars_f_k*K)], n_pars_f_k, K)
 			lw <- log_user_mixture(user_f = promotion_time$define, y = tau_values, a = a_matrix, p = p, c_under = c_under)
 		}
 
@@ -2924,8 +2918,9 @@ summary.bayesCureModel <- function(object, burn = NULL, gamma_mix = TRUE, K_gamm
 	results[[4]] <- cured_at_given_FDR
 	results[[6]] <- main_mode_index
 	if(is.null(covariate_levels)){
-cat('                           MCMC summary','\n')
-	myDF <- data.frame(MAP_estimate = round(map_estimate,2), HPD_interval = character(n_parameters))
+
+	lllt <- paste0("HPD_",100*(1-alpha),'%')
+	myDF <- data.frame(MAP_estimate = round(map_estimate, 2), HPD_interval = character(n_parameters))
 	for(i in 1:n_parameters){
 		nIntervals <- dim(hdis[[i]])[1]
 		myInt <- paste0('(', paste0(round(hdis[[i]][1,], 2), collapse=', '), ")")
@@ -2936,11 +2931,18 @@ cat('                           MCMC summary','\n')
 		}
 		myDF$HPD_interval[i] <- myInt
 	}
+        txt <- colnames(object$input_data_and_model_prior$X)
+	rownames(myDF)[(n_parameters - nCov + 1):n_parameters] <- paste0(names(object$map_estimate)[(n_parameters - nCov + 1):n_parameters], ' [',txt,']')
+	colnames(myDF)[2] <- lllt
+	myDF <- cbind(myDF, round(summary(as.mcmc(retained_mcmc), quantiles = quantiles)$quantiles, 2))	
+	if(verbose){
+	cat('                           MCMC summary','\n')	
 	print(myDF)
 	cat('\n')
 
-cat(paste0('Among ', length(latent_cured_status) ,' censored observations, I found ', sum(cured_at_given_FDR == 'cured'), ' cured subjects (FDR = ', fdr, ').'))
+cat(paste0('Among ', length(latent_cured_status) ,' censored observations, ', sum(cured_at_given_FDR == 'cured'), ' items were identified as cured (FDR = ', fdr, ').'))
 	cat('\n')
+	}
 	}
 	if(is.null(covariate_levels)==FALSE){
 		p_cured_output <- vector('list', length = 9)
@@ -3323,4 +3325,54 @@ print.bayesCureModel <- function(x, ...){
         }
 }
 
+compute_fdr_tpr <- function(true_latent_status, posterior_probs, myCut = c(0.01, 0.05, 0.1, 0.15)){
+        l <- length(myCut)
+        realDE <- array(1-true_latent_status, dim = c(length(true_latent_status),1))
+        p <- matrix(1 - posterior_probs, ncol = 1)
+        perm <- order(p,decreasing = TRUE)
+        orderedP <- p[perm,]
+        nDE <- length(which(realDE==1))
+        aoua <- array(data = NA, dim =c(l,3))
+        iter <- 0
+        for (alpha in myCut){
+                iter <- iter + 1 
+
+                K <- dim(p)[1]
+                myList <-  1 - orderedP[1]
+                k <- 1 
+                criterion <- myList
+                while ((criterion < alpha) & (k < length(orderedP))){
+                        k <- k + 1 
+                        myList <- myList + 1 - orderedP[k]
+                        criterion <- myList/k
+                }
+                if(k > 1){
+                        ind <- perm[1:(k-1)]
+                }else{
+                        ind <- c()
+                }
+                if (dim(table(realDE[ind,1])) > 1){
+                        point1 <- as.numeric(table(realDE[ind,1])[1]/length(ind))  #achieved fdr
+                        point2 <- as.numeric(table(realDE[ind,1])[2]/nDE)  #achieved tpr
+                        if(length(nDE) == 0){
+                                point2 = 0
+                        }
+                }else{
+                        point1 <- 0
+                        if(nDE>0){
+                        point2 <- as.numeric(length(ind)/nDE)  #achieved tpr
+                        }else{
+                        point2 = 0
+                        }
+                }
+                if(sum(realDE) == 0){
+                        point1 <- min(length(ind), 1)
+                }
+                aoua[iter,] <- c(point1,point2,alpha)
+
+        }
+        colnames(aoua) <- c("achieved_fdr", "tpr", "nominal_fdr")
+        return(aoua)
+
+}
 

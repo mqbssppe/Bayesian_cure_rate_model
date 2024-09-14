@@ -2,10 +2,10 @@
 \alias{log_user_mixture}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
-PDF and CDF of a Gamma mixture distribution
+Define a finite mixture of a given family of distributions. 
 }
 \description{
-Computes the logarithm of the probability density function and cumulative density function per observation for each observation under a user-defined mixture of a given family of distributions.
+This function computes the logarithm of the probability density function and cumulative density function per observation for each observation under a user-defined mixture of a given family of distributions. The parameters of the given family of distributions should belong to (0, inf). 
 }
 \usage{
 log_user_mixture(user_f, y, a, p, c_under = 1e-09)
@@ -36,7 +36,7 @@ A list containing the following entries
 Panagiotis Papastamoulis
 }
 \examples{
-# We will define a mixture of exponentials.
+# We will define a mixture of 2 exponentials distributions.
 # First we pass the exponential distribution at user_f
 user_f <- function(y, a){
 	log_f <- dexp(y, rate = a, log = TRUE)

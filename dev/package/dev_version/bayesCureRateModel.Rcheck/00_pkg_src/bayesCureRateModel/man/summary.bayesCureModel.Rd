@@ -8,8 +8,9 @@ This function produces all summaries after fitting a cure rate model.
 }
 \usage{
 \method{summary}{bayesCureModel}(object, burn = NULL, gamma_mix = TRUE, 
-	K_gamma = 3,  K_max = 3, fdr = 0.1, 
-	covariate_levels = NULL, yRange = NULL, alpha = 0.1, ...)
+	K_gamma = 3,  K_max = 3, fdr = 0.1, covariate_levels = NULL, 
+	yRange = NULL, alpha = 0.1, quantiles = c(0.05, 0.5, 0.95), 
+	verbose = TRUE, ...)
 }
 \arguments{
   \item{object}{
@@ -38,6 +39,12 @@ Used only when \code{gamma_mix = TRUE} and corresponds to the number of normal m
 }
   \item{alpha}{
 	Scalar between 0 and 1 corresponding to 1 - confidencel level for computing Highest Density Intervals. If set to NULL, the confidence intervals are not computed.
+}
+  \item{quantiles}{
+	A vector of quantiles to evaluate for each variable.
+}
+  \item{verbose}{
+	Boolean: if TRUE the function prints the summary.
 }
 \item{...}{
         ignored.

@@ -9,9 +9,9 @@ Runs a Metropolis Coupled MCMC (MC\eqn{^3}) sampler in order to estimate the joi
 \usage{
 cure_rate_MC3(formula, data, nChains = 12, mcmc_cycles = 15000, 
 	alpha = NULL,nCores = 1, sweep = 5, mu_g = 1, s2_g = 1, 
-	a_l = 2.1, b_l = 1.1, mu_b = rep(0, dim(X)[2]), 
-	Sigma = 100 * diag(dim(X)[2]), g_prop_sd = 0.045, 
-	lambda_prop_scale = 0.03, b_prop_sd = rep(0.022, dim(X)[2]), 
+	a_l = 2.1, b_l = 1.1, mu_b = NULL, 
+	Sigma = NULL, g_prop_sd = 0.045, 
+	lambda_prop_scale = 0.03, b_prop_sd = NULL, 
 	initialValues = NULL, plot = TRUE, adjust_scales = FALSE, 
 	verbose = FALSE, tau_mala = 1.5e-05, mala = 0.15, 
 	promotion_time = list(distribution = "weibull", 
