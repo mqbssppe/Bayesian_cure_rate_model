@@ -1,4 +1,4 @@
-* using log directory ‘/myspace/Dropbox/cure_rate_models/cure_rate_shared_stuff/git_repo_stuff/Bayesian_cure_rate_model/dev/package/dev_version/bayesCureRateModel.Rcheck’
+* using log directory ‘/home/panos/Dropbox/cure_rate_models/cure_rate_shared_stuff/git_repo_stuff/Bayesian_cure_rate_model/dev/package/dev_version/bayesCureRateModel.Rcheck’
 * using R version 4.3.3 (2024-02-29)
 * using platform: x86_64-pc-linux-gnu (64-bit)
 * R was compiled by
@@ -9,9 +9,11 @@
 * using option ‘--as-cran’
 * checking for file ‘bayesCureRateModel/DESCRIPTION’ ... OK
 * checking extension type ... Package
-* this is package ‘bayesCureRateModel’ version ‘1.2’
-* checking CRAN incoming feasibility ... [5s/19s] Note_to_CRAN_maintainers
+* this is package ‘bayesCureRateModel’ version ‘1.3’
+* checking CRAN incoming feasibility ... [3s/15s] NOTE
 Maintainer: ‘Panagiotis Papastamoulis <papapast@yahoo.gr>’
+
+Days since last update: 2
 * checking package namespace information ... OK
 * checking package dependencies ... OK
 * checking if this is a source package ... OK
@@ -20,7 +22,7 @@ Maintainer: ‘Panagiotis Papastamoulis <papapast@yahoo.gr>’
 * checking for hidden files and directories ... OK
 * checking for portable file names ... OK
 * checking for sufficient/correct file permissions ... OK
-* checking whether package ‘bayesCureRateModel’ can be installed ... [18s/18s] OK
+* checking whether package ‘bayesCureRateModel’ can be installed ... [11s/11s] OK
 * used C++ compiler: ‘g++ (Ubuntu 13.2.0-23ubuntu4) 13.2.0’
 * checking installed package size ... OK
 * checking package directory ... OK
@@ -43,7 +45,7 @@ Maintainer: ‘Panagiotis Papastamoulis <papapast@yahoo.gr>’
 * checking S3 generic/method consistency ... OK
 * checking replacement functions ... OK
 * checking foreign function calls ... OK
-* checking R code for possible problems ... [12s/12s] OK
+* checking R code for possible problems ... OK
 * checking Rd files ... OK
 * checking Rd metadata ... OK
 * checking Rd line widths ... OK
@@ -75,4 +77,4 @@ Compilation used the following non-portable flag(s):
 * checking for non-standard things in the check directory ... OK
 * checking for detritus in the temp directory ... OK
 * DONE
-Status: 1 NOTE
+Status: 2 NOTEs

@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=pdflatex 2024.9.2)  14 SEP 2024 10:32
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=pdflatex 2024.9.3)  16 SEP 2024 11:19
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -546,12 +546,12 @@ Package rerunfilecheck Info: File `Rd2.out' has not changed.
 (rerunfilecheck)             Checksum: 16EC755CA2668A0B914408815C45820B;3030.
  ) 
 Here is how much of TeX's memory you used:
- 10859 strings out of 476182
- 162818 string characters out of 5795596
+ 10859 strings out of 476064
+ 162818 string characters out of 5792854
  1940975 words of memory out of 5000000
- 32442 multiletter control sequences out of 15000+600000
+ 32458 multiletter control sequences out of 15000+600000
  595404 words of font info for 83 fonts, out of 8000000 for 9000
- 14 hyphenation exceptions out of 8191
+ 81 hyphenation exceptions out of 8191
  92i,7n,95p,1071b,737s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
 pdfTeX warning (dest): name{Rfn.dlomax} has been referenced but does not exist,
@@ -591,7 +591,7 @@ e/texlive/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/share/texlive/texmf
 -dist/fonts/type1/urw/times/utmr8a.pfb></usr/share/texlive/texmf-dist/fonts/typ
 e1/urw/times/utmr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/ut
 mri8a.pfb>
-Output written on Rd2.pdf (34 pages, 290222 bytes).
+Output written on Rd2.pdf (34 pages, 290224 bytes).
 PDF statistics:
  639 PDF objects out of 1000 (max. 8388607)
  558 compressed objects within 6 object streams

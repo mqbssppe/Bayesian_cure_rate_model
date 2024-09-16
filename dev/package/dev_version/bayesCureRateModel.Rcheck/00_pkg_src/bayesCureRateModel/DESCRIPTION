@@ -1,8 +1,8 @@
 Package: bayesCureRateModel
 Type: Package
 Title: Bayesian Cure Rate Modeling for Time-to-Event Data
-Version: 1.2
-Date: 2024-09-13
+Version: 1.3
+Date: 2024-09-16
 Authors@R: 
     c(person(given = "Panagiotis",
              family = "Papastamoulis",
@@ -23,7 +23,7 @@ Imports: Rcpp (>= 1.0.12), survival, doParallel, parallel, foreach,
         mclust, coda, HDInterval, VGAM, calculus, flexsurv
 LinkingTo: Rcpp, RcppArmadillo
 NeedsCompilation: yes
-Packaged: 2024-09-14 07:31:09 UTC; panagiotis
+Packaged: 2024-09-16 08:18:20 UTC; panos
 Author: Panagiotis Papastamoulis [aut, cre]
     (<https://orcid.org/0000-0001-9468-7613>),
   Fotios Milienos [aut] (<https://orcid.org/0000-0003-1423-7132>)

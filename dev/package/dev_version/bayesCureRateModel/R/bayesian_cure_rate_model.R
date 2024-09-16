@@ -2291,7 +2291,7 @@ predict.bayesCureModel <- function(object, newdata, tau_values = NULL, burn = NU
 								b = b,
 								x = covariate_levels[j,]
 								)
-				H_p_values[i,iter,j] <- testam
+				H_p_values[i,iter,j] <- -testam
 				S_p_values[i,iter,j] <- exp(testam)
 				p_cured_given_tau_values[i, iter,j] <- exp(log_p0(g = g, 
 								b = b,
