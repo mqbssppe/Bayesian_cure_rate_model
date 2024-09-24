@@ -7,6 +7,7 @@ complete_log_likelihood_general
 compute_fdr_tpr         Compute the achieved FDR and TPR
 cure_rate_MC3           Main function of the package
 cure_rate_mcmc          The basic MCMC scheme.
+logLik.bayesCureModel   Extract the log-likelihood.
 log_dagum               PDF and CDF of the Dagum distribution
 log_gamma               PDF and CDF of the Gamma distribution
 log_gamma_mixture       PDF and CDF of a Gamma mixture distribution
@@ -18,9 +19,15 @@ log_user_mixture        Define a finite mixture of a given family of
 log_weibull             PDF and CDF of the Weibull distribution
 marriage_dataset        Marriage data
 plot.bayesCureModel     Plot method
+plot.predict_bayesCureModel
+                        Plot method
 predict.bayesCureModel
                         Predict method.
 print.bayesCureModel    Print method
+print.predict_bayesCureModel
+                        Print method for the 'predict' object
+print.summary_bayesCureModel
+                        Print method for the summary
 residuals.bayesCureModel
                         Computation of residuals.
 sim_mix_data            Simulated dataset

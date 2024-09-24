@@ -10,7 +10,7 @@ This function produces all summaries after fitting a cure rate model.
 \method{summary}{bayesCureModel}(object, burn = NULL, gamma_mix = TRUE, 
 	K_gamma = 3,  K_max = 3, fdr = 0.1, covariate_levels = NULL, 
 	yRange = NULL, alpha = 0.1, quantiles = c(0.05, 0.5, 0.95), 
-	verbose = TRUE, ...)
+	verbose = FALSE, ...)
 }
 \arguments{
   \item{object}{

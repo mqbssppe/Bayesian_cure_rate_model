@@ -1856,7 +1856,7 @@ cure_rate_MC3 <- function( formula, data,
 
 
 		}
-		result <- vector("list", length = 11)
+		result <- vector("list", length = 13)
 #		stopImplicitCluster()
 		if(promotion_time$distribution == 'gamma_mixture'){
 		# get mixing proportions
@@ -2040,15 +2040,24 @@ cure_rate_MC3 <- function( formula, data,
 	residual <- 123
 	result[[11]] <- residual
 #####################################################################################
-	 	names(result) <- c("mcmc_sample", "latent_status_censored", "complete_log_likelihood","swap_accept_rate",'all_cll_values', 'input_data_and_model_prior', 'log_posterior', 'map_estimate', 'BIC', 'AIC', 'residual')
+	 	names(result) <- c("mcmc_sample", "latent_status_censored", "complete_log_likelihood","swap_accept_rate",'all_cll_values', 'input_data_and_model_prior', 'log_posterior', 'map_estimate', 'BIC', 'AIC', 'residual', 'logLik', 'n_parameters')
 	 	class(result) <- c('bayesCureModel', 'list')
 	 	residual <- residuals(result)
-		result[[11]] <- residual	 	
+		result[[11]] <- residual	
+		result[[12]] <- max(logL)
+		result[[13]] <- n_parameters	
 	 	return(result)
 }
 
+#' export
+logLik.bayesCureModel <- function(object, ...){
+	ll <- object$logLik
+	attributes(ll) <- list(df = object$n_parameters, nobs = length(object$input_data_and_model_prior$y))
+	return(ll)
+}
+
 #' @export
-predict.bayesCureModel <- function(object, newdata, tau_values = NULL, burn = NULL, K_max = 3, alpha = 0.1, nDigits = 3, verbose = TRUE, ...){
+predict.bayesCureModel <- function(object, newdata = NULL, tau_values = NULL, burn = NULL, K_max = 1, alpha = 0.1, nDigits = 3, verbose = TRUE, ...){
 	if(is.null(burn)){
 		burn = floor(dim(object$mcmc_sample)[1]/3)
 #		cat(paste0('By default, I will discard the first one third of the mcmc sample as burn-in period.\n Alternatively, you may set the "burn" parameter to another value.'),'\n')
@@ -2110,7 +2119,7 @@ predict.bayesCureModel <- function(object, newdata, tau_values = NULL, burn = NU
 
 	log_S_p <- function(g, lambda, log_F, b, x){
 		theta <- exp(x %*% b)
-		return(-log(1 + g * theta * ct^{g*theta} * exp(log_F)^lambda)/g)
+		return(-log(1 + g * c(theta) * ct^{g*c(theta)} * c(exp(log_F))^lambda)/g)
 
 	}
 
@@ -2123,12 +2132,12 @@ predict.bayesCureModel <- function(object, newdata, tau_values = NULL, burn = NU
 
 	log_f_p <- function(g, lambda, log_f, log_F, b, logS, x){
 		# logS = log_S_p(tau = tau, g = g, lambda = lambda, a1 = a1, a2 = a2, b0 = b0, b1 = b1, b2 = b2)
-		log_theta <- x %*% b
+		log_theta <- c(x %*% b)
 		return(
 		        (1 + g) * c(logS) + log(lambda) + log_theta +
 		        g*exp(log_theta)*log(ct) + 
-		        (lambda - 1)*log_F + #### NOTE: this causes the log -> -inf, so now it regulated.
-		        log_f
+		        (lambda - 1)*c(log_F) + #### NOTE: this causes the log -> -inf, so now it regulated.
+		        c(log_f)
 		)
 	 }
 
@@ -2151,10 +2160,12 @@ predict.bayesCureModel <- function(object, newdata, tau_values = NULL, burn = NU
 	logP <- object$log_posterior[-(1:burn)]
 	map_estimate <- object$map_estimate
 	hdis <- NULL
+	if(K_max > 1){
 	if(length(logP) < 100){K_max = 1}
 	trans_logP <- log(-min(logP)+logP+abs(mean(logP))+0.0001)
 	hh <- Mclust(trans_logP, G = 1:K_max, verbose = FALSE)
 	ind <- which(hh$classification == hh$G)
+	}
 #	if(map_index %in% ind){
 #		ind <- ind
 #	}else{
@@ -2163,6 +2174,234 @@ predict.bayesCureModel <- function(object, newdata, tau_values = NULL, burn = NU
 	main_mode_index <- ind
 
 	p_cured_given_tau <- p_cured_given_tau_values <- NULL 
+	
+	if(is.null(newdata)){
+		newdata = as.data.frame(object$input_data_and_model_prior$data[,-1])
+		y = object$input_data_and_model_prior$y
+		nLevels <- length(y)
+		covariate_levels <- X
+		S_p <- p_cured_given_tau <- numeric(nLevels)
+		S_p_values <- p_cured_given_tau_values <- array(data = 0, dim = c(dim(retained_mcmc)[1], nLevels))
+		#cumulative hazard function
+		H_p <- numeric(nLevels)
+		H_p_values <- array(data = 0, dim = c(dim(retained_mcmc)[1], nLevels))
+		#hazard function
+		h_p <-numeric(nLevels)
+		h_p_values <- array(data = 0, dim = c(dim(retained_mcmc)[1], nLevels))
+
+		log_S_p_b <- function(g, lambda, log_F, b, x){
+			theta <- exp(x %*% b)
+			return(-log(1 + g * c(theta) * ct^{g*c(theta)} * c(exp(log_F))^lambda)/g)
+
+		}
+
+		log_p0_b <- function(g, b, x){
+			theta <- exp(x %*% b)
+			return(-(log(1 + g*theta*ct^(g*theta)))/g)
+		}
+
+
+
+		log_f_p_b <- function(g, lambda, log_f, log_F, b, logS, x){
+			# logS = log_S_p_b(tau = tau, g = g, lambda = lambda, a1 = a1, a2 = a2, b0 = b0, b1 = b1, b2 = b2)
+			log_theta <- c(x %*% b)
+			return(
+				(1 + g) * c(logS) + log(lambda) + log_theta +
+				g*exp(log_theta)*log(ct) + 
+				(lambda - 1)*c(log_F) + #### NOTE: this causes the log -> -inf, so now it regulated.
+				c(log_f)
+			)
+		 }
+
+
+
+
+
+		for(iter in 1:dim(retained_mcmc)[1]){
+			g = retained_mcmc[iter,'g_mcmc']
+			lambda = retained_mcmc[iter,'lambda_mcmc']
+			b = retained_mcmc[iter, bIndices]
+
+			if(promotion_time$distribution == 'exponential'){
+				lw <- log_weibull(y = y, a1 = retained_mcmc[iter,'a1_mcmc'], 
+				a2 = 1,  c_under = c_under)
+			}
+
+			if(promotion_time$distribution == 'weibull'){
+				lw <- log_weibull(y = y, a1 = retained_mcmc[iter,'a1_mcmc'], 
+					a2 = retained_mcmc[iter,'a2_mcmc'],  c_under = c_under)
+			}
+
+			if(promotion_time$distribution == 'gamma'){
+				lw <- log_gamma(y = y, a1 = retained_mcmc[iter,'a1_mcmc'], 
+					a2 = retained_mcmc[iter,'a2_mcmc'],  c_under = c_under)
+			}
+
+			if(promotion_time$distribution == 'gompertz'){
+				lw <- log_gompertz(y = y, a1 = retained_mcmc[iter,'a1_mcmc'], 
+					a2 = retained_mcmc[iter,'a2_mcmc'],  c_under = c_under)
+			}
+
+
+			if(promotion_time$distribution == 'logLogistic'){
+				lw <- log_logLogistic(y = y, a1 = retained_mcmc[iter,'a1_mcmc'], 
+					a2 = retained_mcmc[iter,'a2_mcmc'],  c_under = c_under)
+			}
+
+			if(promotion_time$distribution == 'lomax'){
+				lw <- log_lomax(y = y, a1 = retained_mcmc[iter,'a1_mcmc'], 
+					a2 = retained_mcmc[iter,'a2_mcmc'],  c_under = c_under)
+			}
+			if(promotion_time$distribution == 'dagum'){
+				lw <- log_dagum(y = y, a1 = retained_mcmc[iter,'a1_mcmc'], a2 = retained_mcmc[iter,'a2_mcmc'], 
+					a3 = retained_mcmc[iter,'a3_mcmc'], c_under = c_under)
+			}
+			if(promotion_time$distribution == 'gamma_mixture'){
+				K = promotion_time$K
+				a = retained_mcmc[iter,3:(3+n_pars_f - 1)]
+				w <- c(a[-(1:(2*K))], 1)
+				p <- w/sum(w)
+				a1_ind <- seq(1, 2*K, by = 2)
+				a2_ind <- seq(2, 2*K, by = 2)		
+				a1 = a[a1_ind]
+				a2 = a[a2_ind]		
+				lw <- log_gamma_mixture(y = y, a1 = a1, a2 = a2, p = p, c_under = c_under)
+			}
+
+			if(promotion_time$distribution == 'user_mixture'){
+				K = promotion_time$K
+				a = retained_mcmc[iter,3:(3+n_pars_f - 1)]
+				w <- c(a[-(1:(n_pars_f_k*K))], 1)
+				p <- w/sum(w)
+				a_matrix = matrix(a[1:(n_pars_f_k*K)], n_pars_f_k, K)
+				lw <- log_user_mixture(user_f = promotion_time$define, y = y, a = a_matrix, p = p, c_under = c_under)
+			}
+
+
+			if(promotion_time$distribution == 'user'){
+				lw <- promotion_time$define(y = y, a = retained_mcmc[iter, 3:(2+n_pars_f)])	
+	#			ind <- (lw$log_F < log_c_under)
+	#			if(length(ind) > 0){
+	#				lw$log_F[ind] <- log_c_under
+	#			}
+				
+			}
+
+
+							
+			log_F = lw$log_F
+			log_f = lw$log_f
+
+			testam <- log_S_p_b(g = g, lambda = lambda,
+							log_F = log_F, 
+							b = b,
+							x = covariate_levels
+							)
+			H_p_values[iter,] <- -testam
+			S_p_values[iter,] <- exp(testam)
+			p_cured_given_tau_values[iter,] <- exp(log_p0(g = g, 
+							b = b,
+							x = covariate_levels) - 
+						testam
+						)
+			h_p_values[iter,] = exp(log_f_p_b(g = g, lambda = lambda, 
+				log_f = log_f, log_F = log_F, 
+				b = b, logS = testam, x = covariate_levels)	- testam) 
+
+			if(iter == map_index){
+				p_cured_given_tau <- p_cured_given_tau_values[iter,]
+				S_p <- S_p_values[iter,]
+				H_p <- H_p_values[iter,]
+				h_p <- h_p_values[iter,]
+			}
+		}
+
+		res <- vector('list', length = 13)
+		res[[1]] <- p_cured_given_tau_values
+		res[[2]] <- p_cured_given_tau
+		res[[3]] <- y
+		res[[4]] <- covariate_levels
+		res[[5]] <- main_mode_index	
+		if(is.null(colnames(object$input_data_and_model_prior$X))){
+			colnames(object$input_data_and_model_prior$X) <- paste0('x_', 1:nCov)
+		}
+		res[[6]] <- colnames(object$input_data_and_model_prior$X)
+		res[[7]] <- 	S_p_values
+		res[[8]] <- S_p
+		res[[9]] <- newdata
+		res[[10]] <- H_p_values
+		res[[11]] <- H_p
+		res[[12]] <- h_p_values
+		res[[13]] <- h_p
+		names(res) <- c('mcmc', 'map', 'tau_values', 'covariate_levels', 'index_of_main_mode', 'Xnames', 'mcmc_Sp', 'map_Sp', 'original_covariate_levels', 'mcmc_Hp', 'map_Hp', 'mcmc_hp', 'map_hp')
+		result <- vector('list', length = 4)
+		result[[2]] <- res
+		
+		names(S_p) <- names(H_p) <- names(h_p) <- names(p_cured_given_tau) <- y
+		print_summary <- result[[1]] <- result[[3]] <- vector('list', length = length(y))
+		nnn <- newdata
+		for(j in 1:dim(newdata)[2]){
+			if(is.numeric(newdata[,j])){
+			nnn[,j] <- round(newdata[,j], nDigits)
+			}
+		}
+		
+		
+
+		if(is.null(alpha)==FALSE){
+			hd1 <- hd2 <- hd3 <- hd4 <- matrix(NA, nrow = dim(newdata)[1], ncol = 2)
+			for(j in 1:dim(newdata)[1]){
+				hd1[j,] <- as.numeric(hdi(p_cured_given_tau_values[main_mode_index,j], credMass = 1 - alpha))
+				hd2[j,] <- as.numeric(hdi(S_p_values[main_mode_index,j], credMass = 1 - alpha))
+				hd3[j,] <- as.numeric(hdi(H_p_values[main_mode_index,j], credMass = 1 - alpha))
+				hd4[j,] <- as.numeric(hdi(h_p_values[main_mode_index,j], credMass = 1 - alpha))
+			}
+			h1 <- apply(hd1, 1, function(u){paste0("(",round(u[1], nDigits),", ", round(u[2], nDigits), ")")})
+			h2 <- apply(hd2, 1, function(u){paste0("(",round(u[1],  nDigits),", ", round(u[2], nDigits), ")")})
+			h3 <- apply(hd3, 1, function(u){paste0("(",round(u[1],  nDigits),", ", round(u[2], nDigits), ")")})
+			h4 <- apply(hd4, 1, function(u){paste0("(",round(u[1],  nDigits),", ", round(u[2], nDigits), ")")})
+			result[[3]] <- data.frame(nnn,  round(S_p,nDigits), h2, round(H_p,nDigits), h3, 
+				round(h_p,nDigits), h4, 
+				round(p_cured_given_tau,nDigits), h1)			
+			names(result[[3]]) <- c(names(newdata), 'S_p[t]', paste0('S_p[t]_',100*(1-alpha),'%'),  
+				'H_p[t]', paste0('H_p[t]_',100*(1-alpha),'%'),  
+				'h_p[t]', paste0('h_p[t]_',100*(1-alpha),'%'),  
+				'P[cured|T > t]', paste0('P[cured|T > t]_',100*(1-alpha),'%'))
+			result[[1]] <- cbind(newdata, S_p, hd2, H_p, hd3, 
+						h_p, hd4, p_cured_given_tau, hd1)			
+			colnames(result[[1]])[-(1:dim(newdata)[2])] <- c(paste0('S_p[t]'), 
+			paste0('S_p[t]^low_',1-alpha), 
+			paste0('S_p[t]^up_',1-alpha), 
+			paste0('H_p[t]'), 
+			paste0('H_p[t]^low_',1-alpha), 
+			paste0('H_p[t]^up_',1-alpha), 
+			paste0('h_p[t]'), 
+			paste0('h_p[t]^low_',1-alpha), 
+			paste0('h_p[t]^up_',1-alpha), 
+			'P[cured|T > t]', paste0('P[cured|T > t]^low_',1-alpha), paste0('P[cured|T > t]^up_',1-alpha))			
+		}else{
+			result[[1]] <- cbind(newdata, S_p, H_p, h_p, p_cured_given_tau)			
+			colnames(result[[1]])[-(1:dim(newdata)[2])] <- c(paste0('S_p[t]'), 'H_p[t]', 'h_p[t]', 'P[cured|T > t]')
+			result[[3]] <- data.frame(nnn,  round(S_p,nDigits), round(H_p,nDigits), 
+				round(h_p,nDigits), 
+				round(p_cured_given_tau,nDigits))			
+			names(result[[3]]) <- c(names(newdata), 'S_p[t]',  'H_p[t]', 'h_p[t]', 
+				'P[cured|T > t]')
+		}
+		result[[4]] <- alpha
+		names(result) <- c('summary', 'mcmc', 'printed_summary', 'alpha')
+		if(verbose){
+		print(result$printed_summary)
+		}
+		class(result) <- c('predict_bayesCureModel', 'list')		
+		return(result)
+
+
+	}
+###############################################################################################################3
+##################################################################################################################
+####################################################################################################################	
+	
 	if(is.data.frame(newdata) == FALSE){stop("newdata should be a data frame.", '\n')}
 
 	xs <- sum(colnames(newdata) == all.vars(object$input_data_and_model_prior$formula)[-(1:2)])
@@ -2332,7 +2571,7 @@ predict.bayesCureModel <- function(object, newdata, tau_values = NULL, burn = NU
 	res[[12]] <- h_p_values
 	res[[13]] <- h_p
 	names(res) <- c('mcmc', 'map', 'tau_values', 'covariate_levels', 'index_of_main_mode', 'Xnames', 'mcmc_Sp', 'map_Sp', 'original_covariate_levels', 'mcmc_Hp', 'map_Hp', 'mcmc_hp', 'map_hp')
-	result <- vector('list', length = 3)
+	result <- vector('list', length = 4)
 	result[[2]] <- res
 	
 	rownames(S_p) <- rownames(H_p) <- rownames(h_p) <- rownames(p_cured_given_tau) <- tau_values
@@ -2386,10 +2625,12 @@ predict.bayesCureModel <- function(object, newdata, tau_values = NULL, burn = NU
 				'P[cured|T > t]')
 		}
 	}
-	names(result) <- c('summary', 'mcmc', 'printed_summary')
+	result[[4]] <- alpha
+	names(result) <- c('summary', 'mcmc', 'printed_summary', 'alpha')
 	if(verbose){
 	print(result$printed_summary)
 	}
+	class(result) <- c('predict_bayesCureModel', 'list')
 	return(result)
 }
 
@@ -2905,7 +3146,7 @@ summary.bayesCureModel <- function(object, burn = NULL, gamma_mix = TRUE, K_gamm
 #############################################################################
 	
 #	hdis <- NULL
-	results <- vector('list', length = 6)
+	results <- vector('list', length = 8)
 #	results[[1]] <- logP
 #	results[[2]] <- BIC
 #	results[[3]] <- dic2	
@@ -2917,6 +3158,7 @@ summary.bayesCureModel <- function(object, burn = NULL, gamma_mix = TRUE, K_gamm
 	results[[3]] <- latent_cured_status
 	results[[4]] <- cured_at_given_FDR
 	results[[6]] <- main_mode_index
+	myDF <- NULL
 	if(is.null(covariate_levels)){
 
 	lllt <- paste0("HPD_",100*(1-alpha),'%')
@@ -2935,6 +3177,7 @@ summary.bayesCureModel <- function(object, burn = NULL, gamma_mix = TRUE, K_gamm
 	rownames(myDF)[(n_parameters - nCov + 1):n_parameters] <- paste0(names(object$map_estimate)[(n_parameters - nCov + 1):n_parameters], ' [',txt,']')
 	colnames(myDF)[2] <- lllt
 	myDF <- cbind(myDF, round(summary(as.mcmc(retained_mcmc), quantiles = quantiles)$quantiles, 2))	
+	results[[7]] <- myDF
 	if(verbose){
 	cat('                           MCMC summary','\n')	
 	print(myDF)
@@ -2961,12 +3204,165 @@ cat(paste0('Among ', length(latent_cured_status) ,' censored observations, ', su
 		names(p_cured_output) <- c('mcmc', 'map', 'tau_values', 'covariate_levels', 'index_of_main_mode', 'Xnames', 'mcmc_Sp', 'map_Sp', 'original_covariate_levels')
 		results[[5]] <- p_cured_output
 	}
-	names(results) <- c('map_estimate', 'highest_density_indervals', 'latent_cured_status', 'cured_at_given_FDR', 'p_cured_output', 'index_of_main_mode')
+	results[[8]] <- fdr
+	names(results) <- c('map_estimate', 'highest_density_indervals', 'latent_cured_status', 'cured_at_given_FDR', 'p_cured_output', 'index_of_main_mode', 'overview', 'fdr')
+	class(results) <- c('summary_bayesCureModel', 'list')
 	return(results)
 
 }
 
+#' export
+print.predict_bayesCureModel <- function(x, ...){
+	print(x$printed_summary)
+}
 
+
+
+#' export
+print.summary_bayesCureModel <- function(x, ...){
+	print(x$overview)
+	latent_cured_status <- x$latent_cured_status
+	cured_at_given_FDR <- x$cured_at_given_FDR
+	fdr = x$fdr
+	cat('\n')
+	cat(paste0('Among ', length(latent_cured_status) ,' censored observations, ', sum(cured_at_given_FDR == 'cured'), ' items were identified as cured (FDR = ', fdr, ').'),'\n')
+
+}
+
+#' @export
+
+plot.predict_bayesCureModel <- function(x, what = 'survival', draw_legend = TRUE, ...){
+	predict_output <- x
+	alpha <- x$alpha
+	if(what[1] == 'cured_prob'){
+		p_cured_output <- predict_output$mcmc
+		if(min(diff(p_cured_output$tau_values)) < 0){stop("tau-values shoud be in increasing order.")}
+		plot(
+			p_cured_output$tau_values, 
+			p_cured_output$map[,1], 
+			xlab = "t", 
+			ylab = bquote(hat("P")[theta]*"(cured|T">="t)"), 
+			type = 'n', 
+			...
+		)
+		xti <- par('xaxp')
+		rect(par("usr")[1],par("usr")[3],par("usr")[2],par("usr")[4],col = "gray90")
+		for(j in (0:10)/10){
+		abline (h = j, lwd = 2, col = 'white')
+		}
+		xxseq <- seq(xti[1], xti[2], by = xti[3])
+		for(j in xxseq){
+			abline (v = j, lwd = 2, col = 'white')
+		}
+		nLevels <- dim(p_cured_output$covariate_levels)[1]
+		for(j in 1:nLevels){
+			points(
+				p_cured_output$tau_values, 
+				p_cured_output$map[,j],
+				type = 'l', 
+				col = j + 1,
+				...
+			)
+			
+			points(p_cured_output$tau_values, p_cured_output$map[,j], type = 'l', lwd = 2, col = j+1)
+			if(is.null(alpha) == FALSE){
+			p_cured_given_tau_low <- p_cured_given_tau_up <- numeric(length(p_cured_output$tau_values))
+			for(k in 1:length(p_cured_output$tau_values)){
+				p_cured_given_tau_low[k] <- hdi(p_cured_output$mcmc[k,p_cured_output$index_of_main_mode,j], credMass = 1 - alpha)[1]
+				p_cured_given_tau_up[k] <- hdi(p_cured_output$mcmc[k,p_cured_output$index_of_main_mode,j], credMass = 1 - alpha)[2]        
+			}
+			Ti <- length(p_cured_output$tau_values)
+			rgb.val <- col2rgb(j+1)/255
+			polygon(x = c(p_cured_output$tau_values, p_cured_output$tau_values[Ti:1]), 
+				y = c(p_cured_given_tau_low, p_cured_given_tau_up[Ti:1]), 
+				col= rgb(rgb.val[1], rgb.val[2], rgb.val[3],0.1), 
+#				col = j+1,
+#				density = 10,
+#				angle = 90*(j+1),
+				border = NA
+				)
+			}
+		}
+		if(draw_legend){
+		which_num <- which(sapply(p_cured_output$original_covariate_levels, is.numeric) == TRUE)
+		if(length(which_num) > 0){
+			for (i in which_num){
+				p_cured_output$original_covariate_levels[,i] <- round(p_cured_output$original_covariate_levels[,i], 2)
+			}
+		}
+		lText <- paste0(apply(p_cured_output$original_covariate_levels, 1, function(y)paste0(y, collapse=', ')))
+		legend('bottomright', col = 2:(nLevels+1), lty = 1, 
+			title = paste0('covariate levels\n',paste0(names(p_cured_output$original_covariate_levels), 
+				collapse=', ')), lText)
+		}
+
+	
+	}else{
+	if(what[1] == 'survival'){
+		p_cured_output <- predict_output$mcmc
+		if(min(diff(p_cured_output$tau_values))<0){stop("tau-values shoud be in increasing order.")}
+		plot(
+			p_cured_output$tau_values, 
+			p_cured_output$map_Sp[,1], 
+			xlab = "t", 
+			ylab = bquote(hat("S")["P"]*"(t)"), 
+			type = 'n', 
+			...
+		)
+		xti <- par('xaxp')
+		rect(par("usr")[1],par("usr")[3],par("usr")[2],par("usr")[4],col = "gray90")
+		for(j in (0:10)/10){
+		abline (h = j, lwd = 2, col = 'white')
+		}
+		xxseq <- seq(xti[1], xti[2], by = xti[3])
+		for(j in xxseq){
+			abline (v = j, lwd = 2, col = 'white')
+		}
+		nLevels <- dim(p_cured_output$covariate_levels)[1]
+		for(j in 1:nLevels){
+			points(
+				p_cured_output$tau_values, 
+				p_cured_output$map_Sp[,j],
+				type = 'l', 
+				col = j + 1,
+				...
+			)
+			
+			points(p_cured_output$tau_values, p_cured_output$map_Sp[,j], type = 'l', lwd = 2, col = j+1)
+			if(is.null(alpha) == FALSE){
+			p_cured_given_tau_low <- p_cured_given_tau_up <- numeric(length(p_cured_output$tau_values))
+			for(k in 1:length(p_cured_output$tau_values)){
+				p_cured_given_tau_low[k] <- hdi(p_cured_output$mcmc_Sp[k,p_cured_output$index_of_main_mode,j], credMass = 1 - alpha)[1]
+				p_cured_given_tau_up[k] <- hdi(p_cured_output$mcmc_Sp[k,p_cured_output$index_of_main_mode,j], credMass = 1 - alpha)[2]        
+			}
+			Ti <- length(p_cured_output$tau_values)
+			rgb.val <- col2rgb(j+1)/255
+			polygon(x = c(p_cured_output$tau_values, p_cured_output$tau_values[Ti:1]), 
+				y = c(p_cured_given_tau_low, p_cured_given_tau_up[Ti:1]), 
+				col= rgb(rgb.val[1], rgb.val[2], rgb.val[3],0.1), 
+#				col = j+1,
+#				density = 10,
+#				angle = 90*(j+1),
+				border = NA
+				)
+			}
+		}
+		if(draw_legend){
+		which_num <- which(sapply(p_cured_output$original_covariate_levels, is.numeric) == TRUE)
+		if(length(which_num) > 0){
+			for (i in which_num){
+				p_cured_output$original_covariate_levels[,i] <- round(p_cured_output$original_covariate_levels[,i], 2)
+			}
+		}
+		lText <- paste0(apply(p_cured_output$original_covariate_levels, 1, function(y)paste0(y, collapse=', ')))
+		legend('bottomright', col = 2:(nLevels+1), lty = 1, 
+			title = paste0('covariate levels\n',paste0(names(p_cured_output$original_covariate_levels), 
+				collapse=', ')), lText)
+		}
+	}
+}
+
+}
 
 #' @export
 

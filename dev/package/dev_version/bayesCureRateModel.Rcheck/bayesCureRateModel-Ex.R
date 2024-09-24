@@ -205,6 +205,45 @@ base::assign(".ptime", proc.time(), pos = "CheckExEnv")
 base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
 base::cat("cure_rate_mcmc", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
 cleanEx()
+nameEx("logLik.bayesCureModel")
+### * logLik.bayesCureModel
+
+flush(stderr()); flush(stdout())
+
+base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+### Name: logLik.bayesCureModel
+### Title: Extract the log-likelihood.
+### Aliases: logLik.bayesCureModel
+
+### ** Examples
+
+# simulate toy data just for cran-check purposes        
+	set.seed(10)
+        n = 4
+        # censoring indicators
+        stat = rbinom(n, size = 1, prob = 0.5)
+        # covariates
+        x <- matrix(rnorm(2*n), n, 2)
+        # observed response variable 
+        y <- rexp(n)
+#	define a data frame with the response and the covariates        
+        my_data_frame <- data.frame(y, stat, x1 = x[,1], x2 = x[,2])
+# run a weibull model with default prior setup
+# considering 2 heated chains 
+	fit1 <- cure_rate_MC3(survival::Surv(y, stat) ~ x1 + x2, 
+		data = my_data_frame, 
+		promotion_time = list(distribution = 'exponential'),
+		nChains = 2, 
+		nCores = 1, 
+		mcmc_cycles = 3, sweep=2)
+	ll <- logLik(fit1)
+
+
+
+
+base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+base::cat("logLik.bayesCureModel", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+cleanEx()
 nameEx("log_dagum")
 ### * log_dagum
 
@@ -411,19 +450,6 @@ base::assign(".ptime", proc.time(), pos = "CheckExEnv")
 	mySummary <- summary(fit1, burn = 0)
 	# plot the marginal posterior distribution of the first parameter in returned mcmc output
 	plot(fit1, what = 1, burn = 0)
-# using 'cured_prob'
-## No test: 
-	#compute predictions for two individuals with 
-	#	x1 = 0.2 and x2 = -1
-	#	and 
-	#	x1 = -1 and x2 = 0
-	covariate_levels1 <- data.frame(x1 = c(0.2,-1), x2 = c(-1,0))
-	predictions <- predict(fit1, newdata = covariate_levels1, burn = 0)
-	# plot cured probabilities based on the previous output
-	plot(fit1, what='cured_prob', predict_output = predictions, 
-	  ylim = c(0,1))
-	
-## End(No test)
 
 
 
@@ -431,6 +457,52 @@ base::assign(".ptime", proc.time(), pos = "CheckExEnv")
 
 base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
 base::cat("plot.bayesCureModel", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+cleanEx()
+nameEx("plot.predict_bayesCureModel")
+### * plot.predict_bayesCureModel
+
+flush(stderr()); flush(stdout())
+
+base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+### Name: plot.predict_bayesCureModel
+### Title: Plot method
+### Aliases: plot.predict_bayesCureModel
+
+### ** Examples
+
+# simulate toy data just for cran-check purposes        
+	set.seed(10)
+        n = 4
+        # censoring indicators
+        stat = rbinom(n, size = 1, prob = 0.5)
+        # covariates
+        x <- matrix(rnorm(2*n), n, 2)
+        # observed response variable 
+        y <- rexp(n)
+#	define a data frame with the response and the covariates        
+        my_data_frame <- data.frame(y, stat, x1 = x[,1], x2 = x[,2])
+# run a weibull model with default prior setup
+# considering 2 heated chains 
+	fit1 <- cure_rate_MC3(survival::Surv(y, stat) ~ x1 + x2, data = my_data_frame, 
+		promotion_time = list(distribution = 'exponential'),
+		nChains = 2, 
+		nCores = 1, 
+		mcmc_cycles = 3, sweep=2)
+	#compute predictions for two individuals with 
+	#	x1 = 0.2 and x2 = -1
+	#	and 
+	#	x1 = -1 and x2 = 0
+	covariate_levels1 <- data.frame(x1 = c(0.2,-1), x2 = c(-1,0))
+	predictions <- predict(fit1, newdata = covariate_levels1, burn = 0)
+	# plot cured probabilities based on the previous output
+	plot(predictions, what='cured_prob')
+
+
+
+
+
+base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+base::cat("plot.predict_bayesCureModel", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
 cleanEx()
 nameEx("predict.bayesCureModel")
 ### * predict.bayesCureModel

@@ -7,8 +7,8 @@ Predict method.
 Returns MAP estimates of the survival function and the conditional cured probability for a given set of covariates. 
 }
 \usage{
-\method{predict}{bayesCureModel}(object, newdata, tau_values = NULL, burn = NULL, 
-	K_max = 3, alpha = 0.1, nDigits = 3, verbose = TRUE, ...)
+\method{predict}{bayesCureModel}(object, newdata = NULL, tau_values = NULL, 
+	burn = NULL, K_max = 1, alpha = 0.1, nDigits = 3, verbose = FALSE, ...)
 }
 \arguments{
   \item{object}{

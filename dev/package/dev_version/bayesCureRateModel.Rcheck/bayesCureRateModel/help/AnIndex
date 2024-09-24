@@ -4,6 +4,7 @@ complete_log_likelihood_general	complete_log_likelihood_general
 compute_fdr_tpr	compute_fdr_tpr
 cure_rate_MC3	cure_rate_MC3
 cure_rate_mcmc	cure_rate_mcmc
+logLik.bayesCureModel	logLik.bayesCureModel
 log_dagum	log_dagum
 log_gamma	log_gamma
 log_gamma_mixture	log_gamma_mixture
@@ -14,8 +15,11 @@ log_user_mixture	log_user_mixture
 log_weibull	log_weibull
 marriage_dataset	marriage_dataset
 plot.bayesCureModel	plot.bayesCureModel
+plot.predict_bayesCureModel	plot.predict_bayesCureModel
 predict.bayesCureModel	predict.bayesCureModel
 print.bayesCureModel	print.bayesCureModel
+print.predict_bayesCureModel	print.predict_bayesCureModel
+print.summary_bayesCureModel	print.summary_bayesCureModel
 residuals.bayesCureModel	residuals.bayesCureModel
 sim_mix_data	sim_mix_data
 summary.bayesCureModel	summary.bayesCureModel

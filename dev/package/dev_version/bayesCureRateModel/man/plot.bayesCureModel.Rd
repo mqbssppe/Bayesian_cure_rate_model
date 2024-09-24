@@ -78,19 +78,6 @@ Panagiotis Papastamoulis
 	mySummary <- summary(fit1, burn = 0)
 	# plot the marginal posterior distribution of the first parameter in returned mcmc output
 	plot(fit1, what = 1, burn = 0)
-# using 'cured_prob'
-\donttest{
-	#compute predictions for two individuals with 
-	#	x1 = 0.2 and x2 = -1
-	#	and 
-	#	x1 = -1 and x2 = 0
-	covariate_levels1 <- data.frame(x1 = c(0.2,-1), x2 = c(-1,0))
-	predictions <- predict(fit1, newdata = covariate_levels1, burn = 0)
-	# plot cured probabilities based on the previous output
-	plot(fit1, what='cured_prob', predict_output = predictions, 
-	  ylim = c(0,1))
-	
-}
 
 
 }
