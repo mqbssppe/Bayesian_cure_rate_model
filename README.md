@@ -18,13 +18,16 @@ The file [Recidivism_Iowa_5000.txt](https://github.com/mqbssppe/Bayesian_cure_ra
 - [foreach](https://CRAN.R-project.org/package=foreach)
 - [pracma](https://CRAN.R-project.org/package=pracma)
 
-## Updates	
+## Note 
+The previous files are based on a preliminary version of our code. For a more user-friendly implementation and various extensions of the method, see the R package below. 
 
-The most recent release (version 1.2)  of the `bayesCureRateModel` package is now available on [CRAN](https://CRAN.R-project.org/package=bayesCureRateModel ) 
+## R package `bayesCureRateModel`
+The R package `bayesCureRateModel` package is now available on [CRAN](https://CRAN.R-project.org/package=bayesCureRateModel). See also the [arXiv pre-print](https://arxiv.org/abs/2409.10221).
 
 Developer versions will be available [here](https://github.com/mqbssppe/Bayesian_cure_rate_model/tree/main/dev/package/dev_version)
 
 * [version 1.1](https://github.com/mqbssppe/Bayesian_cure_rate_model/tree/main/dev/package/version_1.1): fixed a bug on Windows 
 * [version 1.2](https://github.com/mqbssppe/Bayesian_cure_rate_model/tree/main/dev/package/version_1.2): major updates after editorial comments 
+* [version 1.3](https://github.com/mqbssppe/Bayesian_cure_rate_model/tree/main/dev/package/version_1.3): further updates based on editorial comments 
 
 
