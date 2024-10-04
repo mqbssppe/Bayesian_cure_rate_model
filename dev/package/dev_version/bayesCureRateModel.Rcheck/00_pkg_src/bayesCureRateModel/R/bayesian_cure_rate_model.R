@@ -2053,11 +2053,12 @@ cure_rate_MC3 <- function( formula, data,
 logLik.bayesCureModel <- function(object, ...){
 	ll <- object$logLik
 	attributes(ll) <- list(df = object$n_parameters, nobs = length(object$input_data_and_model_prior$y))
+	class(ll) <- "logLik"
 	return(ll)
 }
 
 #' @export
-predict.bayesCureModel <- function(object, newdata = NULL, tau_values = NULL, burn = NULL, K_max = 1, alpha = 0.1, nDigits = 3, verbose = TRUE, ...){
+predict.bayesCureModel <- function(object, newdata = NULL, tau_values = NULL, burn = NULL, K_max = 1, alpha = 0.1, nDigits = 3, verbose = FALSE, ...){
 	if(is.null(burn)){
 		burn = floor(dim(object$mcmc_sample)[1]/3)
 #		cat(paste0('By default, I will discard the first one third of the mcmc sample as burn-in period.\n Alternatively, you may set the "burn" parameter to another value.'),'\n')
@@ -2388,7 +2389,11 @@ predict.bayesCureModel <- function(object, newdata = NULL, tau_values = NULL, bu
 			names(result[[3]]) <- c(names(newdata), 'S_p[t]',  'H_p[t]', 'h_p[t]', 
 				'P[cured|T > t]')
 		}
-		result[[4]] <- alpha
+		if(is.null(alpha)){
+			result[[4]] <- NA
+		}else{
+			result[[4]] <- alpha
+		}
 		names(result) <- c('summary', 'mcmc', 'printed_summary', 'alpha')
 		if(verbose){
 		print(result$printed_summary)
@@ -2835,7 +2840,7 @@ residuals.bayesCureModel <- function(object, type = "cox-snell", ...){
 
 
 #' @export
-summary.bayesCureModel <- function(object, burn = NULL, gamma_mix = TRUE, K_gamma = 3, K_max = 3, fdr = 0.1, covariate_levels = NULL, yRange = NULL, alpha = 0.1, quantiles = c(0.05, 0.5, 0.95), verbose = TRUE, ...){
+summary.bayesCureModel <- function(object, burn = NULL, gamma_mix = TRUE, K_gamma = 3, K_max = 3, fdr = 0.1, covariate_levels = NULL, yRange = NULL, alpha = 0.1, quantiles = c(0.05, 0.5, 0.95), verbose = FALSE, ...){
 
 	if(is.null(burn)){
 		burn = floor(dim(object$mcmc_sample)[1]/3)
@@ -3176,7 +3181,7 @@ summary.bayesCureModel <- function(object, burn = NULL, gamma_mix = TRUE, K_gamm
         txt <- colnames(object$input_data_and_model_prior$X)
 	rownames(myDF)[(n_parameters - nCov + 1):n_parameters] <- paste0(names(object$map_estimate)[(n_parameters - nCov + 1):n_parameters], ' [',txt,']')
 	colnames(myDF)[2] <- lllt
-	myDF <- cbind(myDF, round(summary(as.mcmc(retained_mcmc), quantiles = quantiles)$quantiles, 2))	
+	myDF <- cbind(myDF, summary(as.mcmc(retained_mcmc), quantiles = quantiles)$quantiles)	
 	results[[7]] <- myDF
 	if(verbose){
 	cat('                           MCMC summary','\n')	
@@ -3216,11 +3221,67 @@ print.predict_bayesCureModel <- function(x, ...){
 	print(x$printed_summary)
 }
 
+#' export
+summary.predict_bayesCureModel <- function(object, ...){
+	if(length(dim(object$mcmc$mcmc)) == 3){
+		nTau <- dim(object$mcmc$mcmc)[1]
+		r1 <- r2 <- r3 <-  r4 <- vector('list', length = nTau)
+		names(r1) <- names(r2) <- names(r3) <- names(r4) <- paste0('t = ', object$mcmc$tau_values)
+		for(j in 1:nTau){
+#		summary(as.mcmc(object$mcmc$mcmc[1,-1,]), ...)
+#		cat('*  MCMC summary for survival function S_p[t], for t = ', object$mcmc$tau_values[j],'\n')
+			r1[[j]] <- cbind(object$mcmc$original_covariate_levels, 
+				summary(as.mcmc(object$mcmc$mcmc_Sp[j,-1,]),...)$quantiles)
+#		cat('*  MCMC summary for P[cured|T > t], for t = ', object$mcmc$tau_values[j],'\n')			
+			r2[[j]] <- cbind(object$mcmc$original_covariate_levels, 
+				summary(as.mcmc(object$mcmc$mcmc[j,-1,]),...)$quantiles)
+			r3[[j]] <- cbind(object$mcmc$original_covariate_levels, 
+				summary(as.mcmc(object$mcmc$mcmc_Hp[j,-1,]),...)$quantiles)
+			r4[[j]] <- cbind(object$mcmc$original_covariate_levels, 
+				summary(as.mcmc(object$mcmc$mcmc_hp[j,-1,]),...)$quantiles)
+
+#		summary(as.mcmc(object$mcmc$mcmc[1,-1,]), ...)
+#		summary(as.mcmc(object$mcmc$mcmc[1,-1,]), ...)
+		}
+	}
+	if(length(dim(object$mcmc$mcmc)) == 2){
+		 r1 <- summary(as.mcmc(object$mcmc$mcmc_Sp[-1,]), ...)$quantiles
+		 r2 <- summary(as.mcmc(object$mcmc$mcmc[-1,]), ...)$quantiles
+		 r3 <- summary(as.mcmc(object$mcmc$mcmc_Hp[-1,]), ...)$quantiles
+		 r4 <- summary(as.mcmc(object$mcmc$mcmc_hp[-1,]), ...)$quantiles
+	}
+	result <- vector('list', length = 4)
+	result[[1]] <- r1
+	result[[2]] <- r2
+	result[[3]] <- r3
+	result[[4]] <- r4
+
+	names(result) <- c('survival', 'cured_probability', 'cumulative_hazard', 'hazard_rate')
+	return(result)
+}
 
 
 #' export
-print.summary_bayesCureModel <- function(x, ...){
-	print(x$overview)
+print.summary_bayesCureModel <- function(x, digits = 2,...){
+
+	myDF <- x$overview
+	n_parameters <- dim(myDF)[1]
+	hdis <- x$highest_density_indervals
+	for(i in 1:n_parameters){
+		myDF[i,1] <- round(x$map_estimate[i], digits)
+		nIntervals <- dim(hdis[[i]])[1]
+		myInt <- paste0('(', paste0(round(hdis[[i]][1,], digits), collapse=', '), ")")
+		if(nIntervals > 1){
+			for(j in 2:nIntervals){
+				myInt <- paste0(myInt, "U(" ,paste0(round(hdis[[i]][j,], digits), collapse=', '), ")")
+			}
+		}
+		myDF[i,2] <- myInt
+	}
+	myDF[,-(1:2)] <- round(myDF[,-(1:2)], digits)
+
+
+	print(myDF)
 	latent_cured_status <- x$latent_cured_status
 	cured_at_given_FDR <- x$cured_at_given_FDR
 	fdr = x$fdr
@@ -3236,6 +3297,13 @@ plot.predict_bayesCureModel <- function(x, what = 'survival', draw_legend = TRUE
 	alpha <- x$alpha
 	if(what[1] == 'cured_prob'){
 		p_cured_output <- predict_output$mcmc
+		if(is.null(dim(p_cured_output$map))){
+			myPerm <- order(p_cured_output$tau_values)
+			plot(p_cured_output$tau_values[myPerm], 
+                        	p_cured_output$map[myPerm], 
+                        xlab = "t", ylab = bquote(hat("P")[theta]*"(cured|T">="t)"), ...
+                )
+		}else{		
 		if(min(diff(p_cured_output$tau_values)) < 0){stop("tau-values shoud be in increasing order.")}
 		plot(
 			p_cured_output$tau_values, 
@@ -3295,12 +3363,21 @@ plot.predict_bayesCureModel <- function(x, what = 'survival', draw_legend = TRUE
 			title = paste0('covariate levels\n',paste0(names(p_cured_output$original_covariate_levels), 
 				collapse=', ')), lText)
 		}
-
+		}
 	
 	}else{
 	if(what[1] == 'survival'){
 		p_cured_output <- predict_output$mcmc
-		if(min(diff(p_cured_output$tau_values))<0){stop("tau-values shoud be in increasing order.")}
+		if(is.null(dim(p_cured_output$map_Sp))){
+			myPerm <- order(p_cured_output$tau_values)
+			plot(p_cured_output$tau_values[myPerm], 
+                        	p_cured_output$map_Sp[myPerm], 
+                        xlab = "t", ylab = bquote(hat("S")["P"]*"(t)"), ...
+                )
+		}else{
+		if(min(diff(p_cured_output$tau_values))<0){
+			stop("tau-values shoud be in increasing order.")
+		}
 		plot(
 			p_cured_output$tau_values, 
 			p_cured_output$map_Sp[,1], 
@@ -3358,6 +3435,7 @@ plot.predict_bayesCureModel <- function(x, what = 'survival', draw_legend = TRUE
 		legend('bottomright', col = 2:(nLevels+1), lty = 1, 
 			title = paste0('covariate levels\n',paste0(names(p_cured_output$original_covariate_levels), 
 				collapse=', ')), lText)
+		}
 		}
 	}
 }

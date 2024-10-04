@@ -104,15 +104,5 @@ Papastamoulis and Milienos (2024). Bayesian inference and cure rate modeling for
 #        should take _larger_ values. E.g. a typical implementation consists of:
 #        mcmc_cycles = 15000, nChains = 12
 	
-\donttest{
-# run a Gamma mixture model with K = 2 components and default prior setup
-	fit2 <- cure_rate_MC3(survival::Surv(y, stat) ~ x1 + x2, data = my_data_frame, 
-		promotion_time = list(
-			distribution = 'gamma_mixture',
-		        K = 2),
-		nChains = 8, nCores = 2, 
-		mcmc_cycles = 10)
-	summary2 <- summary(fit2)
-}
 
 }		
