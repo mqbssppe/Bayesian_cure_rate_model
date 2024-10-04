@@ -1,0 +1,885 @@
+
+R version 4.3.3 (2024-02-29) -- "Angel Food Cake"
+Copyright (C) 2024 The R Foundation for Statistical Computing
+Platform: x86_64-pc-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> pkgname <- "bayesCureRateModel"
+> source(file.path(R.home("share"), "R", "examples-header.R"))
+> options(warn = 1)
+> base::assign(".ExTimings", "bayesCureRateModel-Ex.timings", pos = 'CheckExEnv')
+> base::cat("name\tuser\tsystem\telapsed\n", file=base::get(".ExTimings", pos = 'CheckExEnv'))
+> base::assign(".format_ptime",
++ function(x) {
++   if(!is.na(x[4L])) x[1L] <- x[1L] + x[4L]
++   if(!is.na(x[5L])) x[2L] <- x[2L] + x[5L]
++   options(OutDec = '.')
++   format(x[1L:3L], digits = 7L)
++ },
++ pos = 'CheckExEnv')
+> 
+> ### * </HEADER>
+> library('bayesCureRateModel')
+> 
+> base::assign(".oldSearch", base::search(), pos = 'CheckExEnv')
+> base::assign(".old_wd", base::getwd(), pos = 'CheckExEnv')
+> cleanEx()
+> nameEx("bayesCureRateModel-package")
+> ### * bayesCureRateModel-package
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: bayesCureRateModel-package
+> ### Title: Bayesian Cure Rate Modeling for Time-to-Event Data
+> ### Aliases: bayesCureRateModel-package bayesCureRateModel
+> ### Keywords: package
+> 
+> ### ** Examples
+> 
+> # TOY EXAMPLE (very small numbers... only for CRAN check purposes)
+> # simulate toy data 
+> 	set.seed(10)
+>         n = 4
+>         # censoring indicators
+>         stat = rbinom(n, size = 1, prob = 0.5)
+>         # covariates
+>         x <- matrix(rnorm(2*n), n, 2)
+>         # observed response variable 
+>         y <- rexp(n)
+> #	define a data frame with the response and the covariates        
+>         my_data_frame <- data.frame(y, stat, x1 = x[,1], x2 = x[,2])
+> # run a weibull model with default prior setup
+> # considering 2 heated chains 
+> 	fit1 <- cure_rate_MC3(survival::Surv(y, stat) ~ x1 + x2, 
++ 		data = my_data_frame, 
++ 		promotion_time = list(distribution = 'weibull'),
++ 		nChains = 2, 
++ 		nCores = 1, 
++ 		mcmc_cycles = 3, sweep=2)
+
+> #	print method
+> 	fit1	
+
+* Run information: 
+      Fitted model: `weibull'
+      BIC: 138.689
+      AIC: 142.985
+      MCMC cycles: 3
+      Number of parallel heated chains: 2
+      Swap rates of adjacent chains: 
+  Min. Median   Max. 
+     0      0      0 
+
+* Maximum A Posteriori (MAP) estimate of parameters 
+                      MAP estimate
+g_mcmc                   1.9631302
+lambda_mcmc              0.4089930
+a1_mcmc                  2.4479756
+a2_mcmc                  0.4966401
+b0_mcmc [(Intercept)]    1.4302651
+b1_mcmc [x1]             0.1713221
+b2_mcmc [x2]            -1.9034294
+
+> # 	summary method	
+> 	summary1 <- summary(fit1)
+By default, I will discard the first one third of the mcmc sample as burn-in period.
+ Alternatively, you may set the "burn" parameter to another value. 
+                           MCMC summary 
+                      MAP_estimate        HPD_90%    5%   50%   95%
+g_mcmc                        1.96   (1.92, 1.98)  1.93  1.96  1.96
+lambda_mcmc                   0.41   (0.37, 0.42)  0.39  0.41  0.41
+a1_mcmc                       2.45   (2.22, 2.51)  2.30  2.45  2.45
+a2_mcmc                       0.50   (0.46, 0.51)  0.47  0.50  0.50
+b0_mcmc [(Intercept)]         1.43   (1.42, 1.47)  1.43  1.43  1.45
+b1_mcmc [x1]                  0.17   (0.17, 0.17)  0.17  0.17  0.17
+b2_mcmc [x2]                 -1.90 (-1.91, -1.89) -1.90 -1.90 -1.90
+
+Among 2 censored observations, 1 items were identified as cured (FDR = 0.1).
+> 	
+> # WARNING: the following parameters
+> #  mcmc_cycles, nChains
+> #        should take _larger_ values. E.g. a typical implementation consists of:
+> #        mcmc_cycles = 15000, nChains = 12
+> 	
+> ## No test: 
+> # run a Gamma mixture model with K = 2 components and default prior setup
+> 	fit2 <- cure_rate_MC3(survival::Surv(y, stat) ~ x1 + x2, data = my_data_frame, 
++ 		promotion_time = list(
++ 			distribution = 'gamma_mixture',
++ 		        K = 2),
++ 		nChains = 8, nCores = 2, 
++ 		mcmc_cycles = 10)
+
+> 	summary2 <- summary(fit2)
+By default, I will discard the first one third of the mcmc sample as burn-in period.
+ Alternatively, you may set the "burn" parameter to another value. 
+                           MCMC summary 
+                      MAP_estimate                   HPD_90%    5%   50%   95%
+g_mcmc                        0.57              (0.57, 0.88)  0.57  0.73  0.82
+lambda_mcmc                   5.20 (4.31, 4.98)U(5.11, 5.28)  4.45  4.67  5.20
+a1_mcmc                       1.25               (0.3, 1.45)  0.52  0.93  1.25
+a2_mcmc                       0.45               (0.4, 0.66)  0.45  0.51  0.62
+a3_mcmc                       4.64               (3.6, 5.06)  3.82  4.32  4.85
+a4_mcmc                       1.00              (0.76, 1.33)  0.84  1.01  1.25
+w1                            0.73              (0.71, 0.83)  0.73  0.77  0.80
+b0_mcmc [(Intercept)]        -0.31            (-0.38, -0.24) -0.36 -0.31 -0.27
+b1_mcmc [x1]                 -1.39            (-1.65, -1.35) -1.59 -1.47 -1.39
+b2_mcmc [x2]                 -3.31            (-3.45, -3.29) -3.43 -3.35 -3.31
+
+Among 2 censored observations, 0 items were identified as cured (FDR = 0.1).
+> ## End(No test)
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("bayesCureRateModel-package", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("complete_log_likelihood_general")
+> ### * complete_log_likelihood_general
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: complete_log_likelihood_general
+> ### Title: Logarithm of the complete log-likelihood for the general cure
+> ###   rate model.
+> ### Aliases: complete_log_likelihood_general
+> 
+> ### ** Examples
+> 
+> # simulate toy data 
+> 	set.seed(1)
+> 	n = 4
+> 	stat = rbinom(n, size = 1, prob = 0.5)
+> 	x <- cbind(1, matrix(rnorm(n), n, 1))
+> 	y <- rexp(n)
+> 	lw <- log_weibull(y, a1 = 1, a2 = 1, c_under = 1e-9)
+> # compute complete log-likelihood
+> complete_log_likelihood_general(y = y, X = x, 
++ 	Censoring_status = stat, 
++ 	g = 1, lambda = 1, 
++ 	log_f = lw$log_f, log_F = lw$log_F, 
++ 	b = c(-0.5,0.5), 
++ 	I_sim = stat, alpha = 1)
+$cll
+[1] -5.03808
+
+$logS
+           [,1]
+[1,] -0.1348432
+[2,] -0.9415095
+[3,] -0.3278886
+[4,] -0.2525897
+
+$logP0
+           [,1]
+[1,] -0.3802176
+[2,] -1.1663142
+[3,] -0.6577214
+[4,] -0.3829768
+
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("complete_log_likelihood_general", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("compute_fdr_tpr")
+> ### * compute_fdr_tpr
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: compute_fdr_tpr
+> ### Title: Compute the achieved FDR and TPR
+> ### Aliases: compute_fdr_tpr
+> 
+> ### ** Examples
+> 
+> set.seed(1)
+> v1 <- sample(0:1, size = 100, replace=TRUE, prob=c(0.8,0.2) )
+> v2 <- runif(100)
+> compute_fdr_tpr(true_latent_status = v1, posterior_probs = v2)
+     achieved_fdr        tpr nominal_fdr
+[1,]    0.0000000 0.00000000        0.01
+[2,]    0.0000000 0.04819277        0.05
+[3,]    0.1666667 0.12048193        0.10
+[4,]    0.1818182 0.21686747        0.15
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("compute_fdr_tpr", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("cure_rate_MC3")
+> ### * cure_rate_MC3
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: cure_rate_MC3
+> ### Title: Main function of the package
+> ### Aliases: cure_rate_MC3
+> 
+> ### ** Examples
+> 
+> # simulate toy data just for cran-check purposes        
+> 	set.seed(10)
+>         n = 4
+>         # censoring indicators
+>         stat = rbinom(n, size = 1, prob = 0.5)
+>         # covariates
+>         x <- matrix(rnorm(2*n), n, 2)
+>         # observed response variable 
+>         y <- rexp(n)
+> #	define a data frame with the response and the covariates        
+>         my_data_frame <- data.frame(y, stat, x1 = x[,1], x2 = x[,2])
+> 	fit1 <- cure_rate_MC3(survival::Surv(y, stat) ~ x1 + x2, 
++ 		data = my_data_frame,
++ 		promotion_time = list(distribution = 'weibull'),
++ 		nChains = 2, nCores = 1, 
++ 		mcmc_cycles = 3, sweep = 2)
+
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("cure_rate_MC3", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("cure_rate_mcmc")
+> ### * cure_rate_mcmc
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: cure_rate_mcmc
+> ### Title: The basic MCMC scheme.
+> ### Aliases: cure_rate_mcmc
+> 
+> ### ** Examples
+> 
+> # simulate toy data just for cran-check purposes        
+>         set.seed(1)
+>         n = 10
+>         stat = rbinom(n, size = 1, prob = 0.5)
+>         x <- cbind(1, matrix(rnorm(2*n), n, 2))
+>         y <- rexp(n)
+> # run a weibull model (including const. term) 
+> #	for m = 10 mcmc iterations 
+>         fit1 <- cure_rate_mcmc(y = y, X = x, Censoring_status = stat, 
++               	plot = FALSE,
++                 promotion_time = list(distribution = 'weibull', 
++                         prior_parameters = matrix(rep(c(2.1, 1.1), 2), 
++                                                 byrow = TRUE, 2, 2),
++                         prop_scale = c(0.1, 0.1)
++                 ),
++                 m = 10)
+> #	the generated mcmc sampled values         
+> 	fit1$mcmc_sample
+Markov Chain Monte Carlo (MCMC) output:
+Start = 1 
+End = 10 
+Thinning interval = 1 
+        g_mcmc lambda_mcmc   a1_mcmc   a2_mcmc  b0_mcmc    b1_mcmc  b2_mcmc
+ [1,] 2.303824   0.3219809 0.3904313 0.2310867 1.984321 -0.8590262 2.476608
+ [2,] 2.286872   0.3252929 0.3904313 0.2458244 1.961350 -0.8464924 2.473637
+ [3,] 2.288132   0.3276657 0.4049834 0.2496207 1.961771 -0.8408309 2.459359
+ [4,] 2.294602   0.3276766 0.3817989 0.2829729 1.961771 -0.8408309 2.459359
+ [5,] 2.296661   0.3294410 0.3788018 0.2899781 1.966916 -0.8374465 2.467230
+ [6,] 2.241553   0.3372597 0.3561721 0.2913320 1.966916 -0.8374465 2.467230
+ [7,] 2.212945   0.3375166 0.3010859 0.2801101 1.966916 -0.8374465 2.467230
+ [8,] 2.176801   0.3365036 0.2988792 0.2790579 1.966916 -0.8374465 2.467230
+ [9,] 2.133788   0.3334789 0.2800113 0.3005298 1.992800 -0.8740759 2.457032
+[10,] 2.134571   0.3334789 0.2800113 0.3005298 1.972354 -0.9068000 2.433378
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("cure_rate_mcmc", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("log_dagum")
+> ### * log_dagum
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: log_dagum
+> ### Title: PDF and CDF of the Dagum distribution
+> ### Aliases: log_dagum
+> 
+> ### ** Examples
+> 
+> log_dagum(y = 1:10, a1 = 1, a2 = 1, a3 = 1, c_under = 1e-9)
+$log_f
+ [1] -1.386294 -2.197225 -2.772589 -3.218876 -3.583519 -3.891820 -4.158883
+ [8] -4.394449 -4.605170 -4.795791
+
+$log_F
+ [1] -0.69314718 -0.40546511 -0.28768207 -0.22314355 -0.18232156 -0.15415068
+ [7] -0.13353139 -0.11778304 -0.10536052 -0.09531018
+
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("log_dagum", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("log_gamma")
+> ### * log_gamma
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: log_gamma
+> ### Title: PDF and CDF of the Gamma distribution
+> ### Aliases: log_gamma
+> 
+> ### ** Examples
+> 
+> log_gamma(y = 1:10, a1 = 1, a2 = 1, c_under = 1e-9)
+$log_f
+ [1]  -1  -2  -3  -4  -5  -6  -7  -8  -9 -10
+
+$log_F
+ [1] -4.586751e-01 -1.454135e-01 -5.106918e-02 -1.848545e-02 -6.760749e-03
+ [6] -2.481829e-03 -9.122980e-04 -3.355189e-04 -1.234174e-04 -4.540096e-05
+
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("log_gamma", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("log_gamma_mixture")
+> ### * log_gamma_mixture
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: log_gamma_mixture
+> ### Title: PDF and CDF of a Gamma mixture distribution
+> ### Aliases: log_gamma_mixture
+> 
+> ### ** Examples
+> 
+> y <- runif(10)
+> a1 <- c(1,2)
+> a2 <- c(1,1)
+> p <- c(0.9,0.1)
+> log_gamma_mixture(y, a1, a2, p)
+$log_f
+ [1] -0.3417950 -0.4369693 -0.6165071 -0.9174294 -0.2848807 -0.9086027
+ [7] -0.9502231 -0.6953067 -0.6669079 -0.1603051
+
+$log_F
+ [1] -1.5472870 -1.2549790 -0.9068804 -0.5795853 -1.7948007 -0.5866445
+ [7] -0.5543167 -0.7997648 -0.8360934 -2.9167772
+
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("log_gamma_mixture", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("log_gompertz")
+> ### * log_gompertz
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: log_gompertz
+> ### Title: PDF and CDF of the Gompertz distribution
+> ### Aliases: log_gompertz
+> 
+> ### ** Examples
+> 
+> log_gompertz(y = 1:10, a1 = 1, a2 = 1, c_under = 1e-9)
+$log_f
+ [1] -7.182818e-01 -4.389056e+00 -1.608554e+01 -4.959815e+01 -1.424132e+02
+ [6] -3.964288e+02 -1.088633e+03 -2.971958e+03 -8.093084e+03 -2.201547e+04
+
+$log_F
+ [1]  -1.976879e-01  -1.681254e-03  -5.143475e-09  -5.279821e-24  -9.534072e-65
+ [6] -1.688090e-175   0.000000e+00   0.000000e+00   0.000000e+00   0.000000e+00
+
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("log_gompertz", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("log_logLogistic")
+> ### * log_logLogistic
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: log_logLogistic
+> ### Title: PDF and CDF of the log-Logistic distribution.
+> ### Aliases: log_logLogistic
+> 
+> ### ** Examples
+> 
+> log_logLogistic(y = 1:10, a1 = 1, a2 = 1, c_under = 1e-9)
+$log_f
+ [1] -1.386294 -2.197225 -2.772589 -3.218876 -3.583519 -3.891820 -4.158883
+ [8] -4.394449 -4.605170 -4.795791
+
+$log_F
+ [1] -0.69314718 -0.40546511 -0.28768207 -0.22314355 -0.18232156 -0.15415068
+ [7] -0.13353139 -0.11778304 -0.10536052 -0.09531018
+
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("log_logLogistic", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("log_lomax")
+> ### * log_lomax
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: log_lomax
+> ### Title: PDF and CDF of the Lomax distribution
+> ### Aliases: log_lomax
+> 
+> ### ** Examples
+> 
+> log_lomax(y = 1:10, a1 = 1, a2 = 1, c_under = 1e-9)
+$log_f
+ [1] -1.386294 -2.197225 -2.772589 -3.218876 -3.583519 -3.891820 -4.158883
+ [8] -4.394449 -4.605170 -4.795791
+
+$log_F
+ [1] -0.69314718 -0.40546511 -0.28768207 -0.22314355 -0.18232156 -0.15415068
+ [7] -0.13353139 -0.11778304 -0.10536052 -0.09531018
+
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("log_lomax", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("log_user_mixture")
+> ### * log_user_mixture
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: log_user_mixture
+> ### Title: Define a finite mixture of a given family of distributions.
+> ### Aliases: log_user_mixture
+> 
+> ### ** Examples
+> 
+> # We will define a mixture of 2 exponentials distributions.
+> # First we pass the exponential distribution at user_f
+> user_f <- function(y, a){
++ 	log_f <- dexp(y, rate = a, log = TRUE)
++ 	log_F <- pexp(y, rate = a, log.p = TRUE)
++ 	result <- vector('list', length = 2)
++ 	names(result) <- c('log_f', 'log_F')
++ 	result[["log_f"]] = log_f
++ 	result[["log_F"]] = log_F
++ 	return(result)
++ }
+> #	simulate some date
+> y <- runif(10)
+> # Now compute the log of pdf and cdf for a mixture of K=2 exponentials
+> p <- c(0.9,0.1)
+> a <- matrix(c(0.1, 1.5), nrow = 1, ncol = 2)
+> log_user_mixture(user_f = user_f, y = y, a = a, p = p)
+$log_f
+ [1] -1.669375 -1.757072 -1.907108 -2.115305 -1.614220 -2.109924 -2.134931
+ [8] -1.966721 -1.945667 -1.486475
+
+$log_F
+ [1] -2.874705 -2.581624 -2.227838 -1.880394 -3.121876 -1.888208 -1.852244
+ [8] -2.116635 -2.154541 -4.240871
+
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("log_user_mixture", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("log_weibull")
+> ### * log_weibull
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: log_weibull
+> ### Title: PDF and CDF of the Weibull distribution
+> ### Aliases: log_weibull
+> 
+> ### ** Examples
+> 
+> log_weibull(y = 1:10, a1 = 1, a2 = 1, c_under = 1e-9)
+$log_f
+      [,1]
+ [1,]   -1
+ [2,]   -2
+ [3,]   -3
+ [4,]   -4
+ [5,]   -5
+ [6,]   -6
+ [7,]   -7
+ [8,]   -8
+ [9,]   -9
+[10,]  -10
+
+$log_F
+               [,1]
+ [1,] -4.586751e-01
+ [2,] -1.454135e-01
+ [3,] -5.106918e-02
+ [4,] -1.848545e-02
+ [5,] -6.760749e-03
+ [6,] -2.481829e-03
+ [7,] -9.122980e-04
+ [8,] -3.355189e-04
+ [9,] -1.234174e-04
+[10,] -4.540096e-05
+
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("log_weibull", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("plot.bayesCureModel")
+> ### * plot.bayesCureModel
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: plot.bayesCureModel
+> ### Title: Plot method
+> ### Aliases: plot.bayesCureModel
+> 
+> ### ** Examples
+> 
+> # simulate toy data just for cran-check purposes        
+> 	set.seed(10)
+>         n = 4
+>         # censoring indicators
+>         stat = rbinom(n, size = 1, prob = 0.5)
+>         # covariates
+>         x <- matrix(rnorm(2*n), n, 2)
+>         # observed response variable 
+>         y <- rexp(n)
+> #	define a data frame with the response and the covariates        
+>         my_data_frame <- data.frame(y, stat, x1 = x[,1], x2 = x[,2])
+> # run a weibull model with default prior setup
+> # considering 2 heated chains 
+> 	fit1 <- cure_rate_MC3(survival::Surv(y, stat) ~ x1 + x2, data = my_data_frame, 
++ 		promotion_time = list(distribution = 'exponential'),
++ 		nChains = 2, 
++ 		nCores = 1, 
++ 		mcmc_cycles = 3, sweep=2)
+
+> 	mySummary <- summary(fit1, burn = 0)
+                           MCMC summary 
+                      MAP_estimate                     HPD_90%    5%   50%  95%
+g_mcmc                        1.39   (1.25, 1.58)U(1.61, 2.08)  1.39  1.62 1.88
+lambda_mcmc                   0.54    (0.3, 0.47)U(0.48, 0.59)  0.37  0.46 0.54
+a1_mcmc                       0.62                (0.05, 3.54)  0.62  1.51 2.75
+b0_mcmc [(Intercept)]        -0.28  (-0.81, 0.39)U(0.56, 2.28) -0.28  0.60 1.50
+b1_mcmc [x1]                 -1.56 (-2.1, -0.91)U(-0.73, 0.94) -1.56 -0.70 0.18
+b2_mcmc [x2]                  0.18 (-2.82, -0.81)U(-0.6, 0.83) -1.91 -0.86 0.18
+
+Among 2 censored observations, 1 items were identified as cured (FDR = 0.1).
+> 	# plot the marginal posterior distribution of the first parameter in returned mcmc output
+> 	plot(fit1, what = 1, burn = 0)
+> # using 'cured_prob'
+> ## No test: 
+> 	#compute predictions for two individuals with 
+> 	#	x1 = 0.2 and x2 = -1
+> 	#	and 
+> 	#	x1 = -1 and x2 = 0
+> 	covariate_levels1 <- data.frame(x1 = c(0.2,-1), x2 = c(-1,0))
+> 	predictions <- predict(fit1, newdata = covariate_levels1, burn = 0)
+$`t = 0.413293827790767`
+    x1 x2 S_p[t]  S_p[t]_90% H_p[t]        H_p[t]_90% h_p[t]     h_p[t]_90%
+1  0.2 -1  0.799  (0, 0.799) -0.224 (-13.406, -0.224)  0.220  (0.22, 0.287)
+2 -1.0  0  0.140 (0.1, 0.14) -1.967  (-2.298, -1.967)  0.768 (0.283, 0.768)
+  P[cured|T > t] P[cured|T > t]_90%
+1          0.815      (0.815, 0.91)
+2          0.578     (0.578, 0.911)
+
+$`t = 0.417264617296187`
+    x1 x2 S_p[t]  S_p[t]_90% H_p[t]        H_p[t]_90% h_p[t]     h_p[t]_90%
+1  0.2 -1  0.799  (0, 0.799) -0.225 (-13.408, -0.225)  0.219 (0.219, 0.283)
+2 -1.0  0  0.140 (0.1, 0.14) -1.970   (-2.299, -1.97)  0.760  (0.279, 0.76)
+  P[cured|T > t] P[cured|T > t]_90%
+1          0.816     (0.816, 0.911)
+2          0.580      (0.58, 0.912)
+
+$`t = 0.421235406801608`
+    x1 x2 S_p[t]   S_p[t]_90% H_p[t]        H_p[t]_90% h_p[t]     h_p[t]_90%
+1  0.2 -1  0.798   (0, 0.798) -0.226 (-13.409, -0.226)  0.217 (0.217, 0.279)
+2 -1.0  0  0.139 (0.1, 0.139) -1.973    (-2.3, -1.973)  0.752 (0.275, 0.752)
+  P[cured|T > t] P[cured|T > t]_90%
+1          0.817     (0.817, 0.912)
+2          0.581     (0.581, 0.913)
+
+$`t = 0.425206196307028`
+    x1 x2 S_p[t]   S_p[t]_90% H_p[t]       H_p[t]_90% h_p[t]     h_p[t]_90%
+1  0.2 -1  0.797   (0, 0.797) -0.227 (-13.41, -0.227)  0.216 (0.216, 0.275)
+2 -1.0  0  0.139 (0.1, 0.139) -1.976 (-2.301, -1.976)  0.745 (0.271, 0.745)
+  P[cured|T > t] P[cured|T > t]_90%
+1          0.817     (0.817, 0.913)
+2          0.583     (0.583, 0.914)
+
+$`t = 0.564308223470765`
+    x1 x2 S_p[t]     S_p[t]_90% H_p[t]       H_p[t]_90% h_p[t]    h_p[t]_90%
+1  0.2 -1  0.776     (0, 0.776) -0.253 (-13.44, -0.253)   0.17  (0.17, 0.17)
+2 -1.0  0  0.127 (0.097, 0.127) -2.064 (-2.331, -2.064)   0.54 (0.167, 0.54)
+  P[cured|T > t] P[cured|T > t]_90%
+1          0.840      (0.84, 0.941)
+2          0.637     (0.637, 0.942)
+
+$`t = 0.770975869463661`
+    x1 x2 S_p[t]     S_p[t]_90% H_p[t]        H_p[t]_90% h_p[t]     h_p[t]_90%
+1  0.2 -1  0.753     (0, 0.753) -0.284 (-13.466, -0.284)  0.128 (0.091, 0.128)
+2 -1.0  0  0.116 (0.095, 0.116) -2.156  (-2.357, -2.156)  0.372  (0.09, 0.372)
+  P[cured|T > t] P[cured|T > t]_90%
+1          0.865     (0.865, 0.966)
+2          0.699     (0.699, 0.966)
+
+$`t = 0.977643515456556`
+    x1 x2 S_p[t]     S_p[t]_90% H_p[t]       H_p[t]_90% h_p[t]     h_p[t]_90%
+1  0.2 -1  0.736     (0, 0.736) -0.307 (-13.48, -0.307)  0.100   (0.052, 0.1)
+2 -1.0  0  0.108 (0.093, 0.108) -2.222 (-2.371, -2.222)  0.275 (0.051, 0.275)
+  P[cured|T > t] P[cured|T > t]_90%
+1          0.886      (0.886, 0.98)
+2          0.746      (0.746, 0.98)
+
+$`t = 1.13553445837916`
+    x1 x2 S_p[t]     S_p[t]_90% H_p[t]        H_p[t]_90% h_p[t]     h_p[t]_90%
+1  0.2 -1  0.725     (0, 0.725) -0.322 (-13.487, -0.322)  0.085 (0.034, 0.085)
+2 -1.0  0  0.104 (0.093, 0.104) -2.261  (-2.377, -2.261)  0.224 (0.034, 0.224)
+  P[cured|T > t] P[cured|T > t]_90%
+1          0.899     (0.899, 0.986)
+2          0.776     (0.776, 0.986)
+
+$`t = 1.19587199516119`
+    x1 x2 S_p[t]     S_p[t]_90% H_p[t]        H_p[t]_90% h_p[t]     h_p[t]_90%
+1  0.2 -1  0.721     (0, 0.721) -0.327 (-13.489, -0.327)  0.080  (0.029, 0.08)
+2 -1.0  0  0.103 (0.093, 0.103) -2.274  (-2.379, -2.274)  0.209 (0.029, 0.209)
+  P[cured|T > t] P[cured|T > t]_90%
+1          0.903     (0.903, 0.988)
+2          0.786     (0.786, 0.988)
+
+$`t = 1.25620953194321`
+    x1 x2 S_p[t]     S_p[t]_90% H_p[t]       H_p[t]_90% h_p[t]     h_p[t]_90%
+1  0.2 -1  0.718     (0, 0.718) -0.331 (-13.49, -0.331)  0.075 (0.025, 0.075)
+2 -1.0  0  0.102 (0.092, 0.102) -2.287 (-2.381, -2.287)  0.195 (0.025, 0.195)
+  P[cured|T > t] P[cured|T > t]_90%
+1          0.908      (0.908, 0.99)
+2          0.796      (0.796, 0.99)
+
+$`t = 1.31654706872524`
+    x1 x2 S_p[t]   S_p[t]_90% H_p[t]        H_p[t]_90% h_p[t]     h_p[t]_90%
+1  0.2 -1  0.715   (0, 0.715) -0.336 (-13.492, -0.336)  0.071 (0.022, 0.071)
+2 -1.0  0  0.100 (0.092, 0.1) -2.298  (-2.382, -2.298)  0.182 (0.021, 0.182)
+  P[cured|T > t] P[cured|T > t]_90%
+1          0.912     (0.912, 0.991)
+2          0.805     (0.805, 0.991)
+
+> 	# plot cured probabilities based on the previous output
+> 	plot(fit1, what='cured_prob', predict_output = predictions, 
++ 	  ylim = c(0,1))
+> 	
+> ## End(No test)
+> 
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("plot.bayesCureModel", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("predict.bayesCureModel")
+> ### * predict.bayesCureModel
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: predict.bayesCureModel
+> ### Title: Predict method.
+> ### Aliases: predict.bayesCureModel
+> 
+> ### ** Examples
+> 
+> # simulate toy data just for cran-check purposes        
+> 	set.seed(10)
+>         n = 4
+>         # censoring indicators
+>         stat = rbinom(n, size = 1, prob = 0.5)
+>         # covariates
+>         x <- matrix(rnorm(2*n), n, 2)
+>         # observed response variable 
+>         y <- rexp(n)
+> #	define a data frame with the response and the covariates        
+>         my_data_frame <- data.frame(y, stat, x1 = x[,1], x2 = x[,2])
+> # run a weibull model with default prior setup
+> # considering 2 heated chains 
+> 	fit1 <- cure_rate_MC3(survival::Surv(y, stat) ~ x1 + x2, data = my_data_frame, 
++ 		promotion_time = list(distribution = 'exponential'),
++ 		nChains = 2, 
++ 		nCores = 1, 
++ 		mcmc_cycles = 3, sweep=2)
+
+> 	newdata <- data.frame(x1 = c(0.2,-1), x2 = c(-1,0))
+> 	# return predicted values at tau = c(0.5, 1)
+> 	my_prediction <- predict(fit1, newdata = newdata, 
++ 		burn = 0, tau_values = c(0.5, 1))
+$`t = 0.5`
+    x1 x2 S_p[t]     S_p[t]_90% H_p[t]        H_p[t]_90% h_p[t]     h_p[t]_90%
+1  0.2 -1  0.785     (0, 0.785) -0.242 (-13.428, -0.242)  0.189  (0.189, 0.21)
+2 -1.0  0  0.132 (0.098, 0.132) -2.026  (-2.319, -2.026)  0.621 (0.207, 0.621)
+  P[cured|T > t] P[cured|T > t]_90%
+1          0.830       (0.83, 0.93)
+2          0.614     (0.614, 0.931)
+
+$`t = 1`
+    x1 x2 S_p[t]     S_p[t]_90% H_p[t]        H_p[t]_90% h_p[t]     h_p[t]_90%
+1  0.2 -1  0.734     (0, 0.734) -0.309 (-13.481, -0.309)  0.098 (0.049, 0.098)
+2 -1.0  0  0.108 (0.093, 0.108) -2.228  (-2.372, -2.228)  0.267 (0.048, 0.267)
+  P[cured|T > t] P[cured|T > t]_90%
+1          0.888     (0.888, 0.981)
+2          0.751     (0.751, 0.981)
+
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("predict.bayesCureModel", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("residuals.bayesCureModel")
+> ### * residuals.bayesCureModel
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: residuals.bayesCureModel
+> ### Title: Computation of residuals.
+> ### Aliases: residuals.bayesCureModel
+> 
+> ### ** Examples
+> 
+> # simulate toy data just for cran-check purposes        
+> 	set.seed(10)
+>         n = 4
+>         # censoring indicators
+>         stat = rbinom(n, size = 1, prob = 0.5)
+>         # covariates
+>         x <- matrix(rnorm(2*n), n, 2)
+>         # observed response variable 
+>         y <- rexp(n)
+> #	define a data frame with the response and the covariates        
+>         my_data_frame <- data.frame(y, stat, x1 = x[,1], x2 = x[,2])
+> # run a weibull model with default prior setup
+> # considering 2 heated chains 
+> 	fit1 <- cure_rate_MC3(survival::Surv(y, stat) ~ x1 + x2, 
++ 		data = my_data_frame, 
++ 		promotion_time = list(distribution = 'exponential'),
++ 		nChains = 2, 
++ 		nCores = 1, 
++ 		mcmc_cycles = 3, sweep=2)
+
+> 	my_residuals <- residuals(fit1)
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("residuals.bayesCureModel", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("summary.bayesCureModel")
+> ### * summary.bayesCureModel
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: summary.bayesCureModel
+> ### Title: Summary method.
+> ### Aliases: summary.bayesCureModel
+> 
+> ### ** Examples
+> 
+> # simulate toy data just for cran-check purposes        
+> 	set.seed(10)
+>         n = 4
+>         # censoring indicators
+>         stat = rbinom(n, size = 1, prob = 0.5)
+>         # covariates
+>         x <- matrix(rnorm(2*n), n, 2)
+>         # observed response variable 
+>         y <- rexp(n)
+> #	define a data frame with the response and the covariates        
+>         my_data_frame <- data.frame(y, stat, x1 = x[,1], x2 = x[,2])
+> # run a weibull model with default prior setup
+> # considering 2 heated chains 
+> 	fit1 <- cure_rate_MC3(survival::Surv(y, stat) ~ x1 + x2, 
++ 		data = my_data_frame, 
++ 		promotion_time = list(distribution = 'exponential'),
++ 		nChains = 2, 
++ 		nCores = 1, 
++ 		mcmc_cycles = 3, sweep=2)
+
+> 	mySummary <- summary(fit1, burn = 0)
+                           MCMC summary 
+                      MAP_estimate                     HPD_90%    5%   50%  95%
+g_mcmc                        1.39   (1.25, 1.58)U(1.61, 2.08)  1.39  1.62 1.88
+lambda_mcmc                   0.54    (0.3, 0.47)U(0.48, 0.59)  0.37  0.46 0.54
+a1_mcmc                       0.62                (0.05, 3.54)  0.62  1.51 2.75
+b0_mcmc [(Intercept)]        -0.28  (-0.81, 0.39)U(0.56, 2.28) -0.28  0.60 1.50
+b1_mcmc [x1]                 -1.56 (-2.1, -0.91)U(-0.73, 0.94) -1.56 -0.70 0.18
+b2_mcmc [x2]                  0.18 (-2.82, -0.81)U(-0.6, 0.83) -1.91 -0.86 0.18
+
+Among 2 censored observations, 1 items were identified as cured (FDR = 0.1).
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("summary.bayesCureModel", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> ### * <FOOTER>
+> ###
+> cleanEx()
+> options(digits = 7L)
+> base::cat("Time elapsed: ", proc.time() - base::get("ptime", pos = 'CheckExEnv'),"\n")
+Time elapsed:  3.58 0.225 4.553 1.052 0.415 
+> grDevices::dev.off()
+null device 
+          1 
+> ###
+> ### Local variables: ***
+> ### mode: outline-minor ***
+> ### outline-regexp: "\\(> \\)?### [*]+" ***
+> ### End: ***
+> quit('no')

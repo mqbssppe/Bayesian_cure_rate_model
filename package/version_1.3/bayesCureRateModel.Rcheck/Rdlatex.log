@@ -1,0 +1,619 @@
+Hmm ... looks like a package
+Converting parsed Rd's to LaTeX ..
+Creating pdf output from LaTeX ...
+Warning in texi2dvi(file = file, pdf = TRUE, clean = clean, quiet = quiet,  :
+  texi2dvi script/program not available, using emulation
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=pdflatex)
+ restricted \write18 enabled.
+entering extended mode
+(./Rd2.tex
+LaTeX2e <2023-11-01> patch level 1
+L3 programming layer <2024-01-22>
+
+(/usr/share/texlive/texmf-dist/tex/latex/base/book.cls
+Document Class: book 2023/05/17 v1.4n Standard LaTeX document class
+(/usr/share/texlive/texmf-dist/tex/latex/base/bk10.clo))
+(/usr/share/R/share/texmf/tex/latex/Rd.sty
+(/usr/share/texlive/texmf-dist/tex/latex/base/ifthen.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/tools/longtable.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/tools/bm.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/base/alltt.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/tools/verbatim.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/url/url.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/base/textcomp.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsmath.sty
+For additional information on amsmath, use the `?' option.
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amstext.sty
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsgen.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsbsy.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsopn.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/amsfonts.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/amssymb.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/jknapltx/mathrsfs.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/iftex/iftex.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/base/fontenc.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/psnfss/times.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/inconsolata/zi4.sty
+`inconsolata-zi4' v1.12, 2019/05/17 Text macros for Inconsolata (msharpe)
+(/usr/share/texlive/texmf-dist/tex/latex/xkeyval/xkeyval.sty
+(/usr/share/texlive/texmf-dist/tex/generic/xkeyval/xkeyval.tex
+(/usr/share/texlive/texmf-dist/tex/generic/xkeyval/xkvutils.tex
+(/usr/share/texlive/texmf-dist/tex/generic/xkeyval/keyval.tex)))))
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/color.sty
+(/usr/share/texlive/texmf-dist/tex/latex/graphics-cfg/color.cfg)
+(/usr/share/texlive/texmf-dist/tex/latex/graphics-def/pdftex.def)
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/mathcolor.ltx))
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/hyperref.sty
+(/usr/share/texlive/texmf-dist/tex/latex/kvsetkeys/kvsetkeys.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/kvdefinekeys/kvdefinekeys.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/pdfescape/pdfescape.sty
+(/usr/share/texlive/texmf-dist/tex/generic/ltxcmds/ltxcmds.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/pdftexcmds/pdftexcmds.sty
+(/usr/share/texlive/texmf-dist/tex/generic/infwarerr/infwarerr.sty)))
+(/usr/share/texlive/texmf-dist/tex/latex/hycolor/hycolor.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/auxhook/auxhook.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/nameref.sty
+(/usr/share/texlive/texmf-dist/tex/latex/refcount/refcount.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/gettitlestring/gettitlestring.sty
+(/usr/share/texlive/texmf-dist/tex/latex/kvoptions/kvoptions.sty)))
+(/usr/share/texlive/texmf-dist/tex/latex/etoolbox/etoolbox.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/pd1enc.def)
+(/usr/share/texlive/texmf-dist/tex/generic/intcalc/intcalc.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/puenc.def)
+(/usr/share/texlive/texmf-dist/tex/generic/bitset/bitset.sty
+(/usr/share/texlive/texmf-dist/tex/generic/bigintcalc/bigintcalc.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/base/atbegshi-ltx.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/hpdftex.def
+(/usr/share/texlive/texmf-dist/tex/latex/base/atveryend-ltx.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/rerunfilecheck/rerunfilecheck.sty
+(/usr/share/texlive/texmf-dist/tex/generic/uniquecounter/uniquecounter.sty))))
+(/usr/share/texlive/texmf-dist/tex/latex/base/makeidx.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/base/inputenc.sty)
+Writing index file Rd2.idx
+(/usr/share/texlive/texmf-dist/tex/latex/psnfss/t1ptm.fd)
+(/usr/share/texlive/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def)
+No file Rd2.aux.
+(/usr/share/texlive/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
+[Loading MPS to PDF converter (version 2006.09.02).]
+) (/usr/share/texlive/texmf-dist/tex/latex/inconsolata/t1zi4.fd)
+(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsa.fd)
+(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsb.fd)
+(/usr/share/texlive/texmf-dist/tex/latex/jknapltx/ursfs.fd)
+(/usr/share/texlive/texmf-dist/tex/latex/psnfss/t1phv.fd)
+No file Rd2.toc.
+[1{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}{/usr/share/texlive/texmf-
+dist/fonts/enc/dvips/base/8r.enc}{/usr/share/texlive/texmf-dist/fonts/enc/dvips
+/inconsolata/i4-t1-0.enc}]
+(/usr/share/texlive/texmf-dist/tex/latex/psnfss/ts1ptm.fd) [2]
+Overfull \hbox (1.74841pt too wide) detected at line 91
+\OML/cmm/m/it/10 L[]\OT1/cmr/m/n/10 ([]; []\OML/cmm/m/it/10 ; []\OT1/cmr/m/n/10
+ ) = [](1 \OMS/cmsy/m/n/10 ^^@ \OML/cmm/m/it/10 p[]\OT1/cmr/m/n/10 ([][]\OML/cm
+m/m/it/10 ; []\OT1/cmr/m/n/10 ))\OML/cmm/m/it/10 f[]\OT1/cmr/m/n/10 (\OML/cmm/m
+/it/10 y[]\OT1/cmr/m/n/10 ; []\OML/cmm/m/it/10 ; [][]\OT1/cmr/m/n/10 )[]  [] \O
+ML/cmm/m/it/10 p[]\OT1/cmr/m/n/10 ([][]\OML/cmm/m/it/10 ; []\OT1/cmr/m/n/10 )[]
+\OMS/cmsy/m/n/10 f\OT1/cmr/m/n/10 (1 \OMS/cmsy/m/n/10 ^^@ \OML/cmm/m/it/10 p[]\
+OT1/cmr/m/n/10 ([][]\OML/cmm/m/it/10 ; []\OT1/cmr/m/n/10 ))\OML/cmm/m/it/10 S[]
+\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 y[]\OT1/cmr/m/n/10 ; []\OML/cmm/m/it/10 ; [][
+]\OT1/cmr/m/n/10 )\OMS/cmsy/m/n/10 g[]\OML/cmm/m/it/10 :
+[3] (/usr/share/texlive/texmf-dist/tex/latex/inconsolata/ts1zi4.fd) [4{/usr/sha
+re/texlive/texmf-dist/fonts/enc/dvips/inconsolata/i4-ts1.enc}] [5]
+Overfull \hbox (1.74841pt too wide) detected at line 231
+\OML/cmm/m/it/10 L[]\OT1/cmr/m/n/10 ([]; []\OML/cmm/m/it/10 ; []\OT1/cmr/m/n/10
+ ) = [](1 \OMS/cmsy/m/n/10 ^^@ \OML/cmm/m/it/10 p[]\OT1/cmr/m/n/10 ([][]\OML/cm
+m/m/it/10 ; []\OT1/cmr/m/n/10 ))\OML/cmm/m/it/10 f[]\OT1/cmr/m/n/10 (\OML/cmm/m
+/it/10 y[]\OT1/cmr/m/n/10 ; []\OML/cmm/m/it/10 ; [][]\OT1/cmr/m/n/10 )[]  [] \O
+ML/cmm/m/it/10 p[]\OT1/cmr/m/n/10 ([][]\OML/cmm/m/it/10 ; []\OT1/cmr/m/n/10 )[]
+\OMS/cmsy/m/n/10 f\OT1/cmr/m/n/10 (1 \OMS/cmsy/m/n/10 ^^@ \OML/cmm/m/it/10 p[]\
+OT1/cmr/m/n/10 ([][]\OML/cmm/m/it/10 ; []\OT1/cmr/m/n/10 ))\OML/cmm/m/it/10 S[]
+\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 y[]\OT1/cmr/m/n/10 ; []\OML/cmm/m/it/10 ; [][
+]\OT1/cmr/m/n/10 )\OMS/cmsy/m/n/10 g[]\OML/cmm/m/it/10 :
+[6] [7]
+Overfull \hbox (4.57414pt too wide) in paragraph at lines 353--354
+[]\T1/ptm/m/n/10 Positive in-te-ger cor-re-spond-ing to the num-ber of heated c
+hains in the MC$[]$ scheme. 
+[8]
+Overfull \hbox (18.93675pt too wide) in paragraph at lines 415--416
+[]\T1/ptm/m/n/10 The prob-a-bil-ity for at-tempt-ing a se-ries of sin-gle site 
+up-dates in the typ-i-cal Metropolis-
+[9]
+Overfull \hbox (16.56929pt too wide) in paragraph at lines 432--433
+[]\T1/ptm/m/n/10 Optional. Rel-e-vant only in the case of the []\TS1/zi4/m/n/10
+ '\T1/zi4/m/n/10 gamma_mixture\TS1/zi4/m/n/10 '
+[10]
+Overfull \hbox (3.0361pt too wide) in paragraph at lines 484--485
+[]\T1/ptm/m/n/10 Therneau T (2024). A Pack-age for Sur-vival Anal-y-sis in R. R
+ pack-age ver-sion 3.7-0, https://CRAN.R-
+[11] [12]
+Overfull \hbox (2.95644pt too wide) in paragraph at lines 594--595
+[]\T1/ptm/m/n/10 Probability of at-tempt-ing a single-site MH move in the ba-si
+c Metropolis-Hastings
+[13] [14] [15] [16] [17] [18] [19] [20] [21] [22] [23]
+Overfull \hbox (21.22856pt too wide) in paragraph at lines 1251--1253
+[]\T1/ptm/m/n/10 Integer or a char-ac-ter string with pos-si-ble val-ues equal 
+to []\TS1/zi4/m/n/10 '\T1/zi4/m/n/10 cured_prob\TS1/zi4/m/n/10 '[]\T1/ptm/m/n/1
+0 , []\TS1/zi4/m/n/10 '\T1/zi4/m/n/10 survival\TS1/zi4/m/n/10 '
+
+Overfull \hbox (18.0381pt too wide) in paragraph at lines 1261--1262
+[]\T1/ptm/m/n/10 Boolean. If TRUE (de-fault), a leg-end is plot-ted in the case
+ where []\T1/zi4/m/n/10 what = \TS1/zi4/m/n/10 '\T1/zi4/m/n/10 survival\TS1/zi4
+/m/n/10 '
+[24] [25]
+Overfull \hbox (18.0381pt too wide) in paragraph at lines 1327--1328
+[]\T1/ptm/m/n/10 Boolean. If TRUE (de-fault), a leg-end is plot-ted in the case
+ where []\T1/zi4/m/n/10 what = \TS1/zi4/m/n/10 '\T1/zi4/m/n/10 survival\TS1/zi4
+/m/n/10 '
+[26] [27] [28] [29]
+Overfull \hbox (69.74937pt too wide) in paragraph at lines 1546--1547
+[]\T1/ptm/m/n/10 An ob-ject of class []\T1/zi4/m/n/10 predict_bayesCureModel[]\
+T1/ptm/m/n/10 , which is re-turned by the []\T1/zi4/m/n/10 predict.cure_rate_MC
+3
+[30]
+Overfull \hbox (69.74937pt too wide) in paragraph at lines 1582--1583
+[]\T1/ptm/m/n/10 An ob-ject of class []\T1/zi4/m/n/10 summary_bayesCureModel[]\
+T1/ptm/m/n/10 , which is re-turned by the []\T1/zi4/m/n/10 summary.cure_rate_MC
+3
+[31] [32] [33] [34] [35] [36]
+No file Rd2.ind.
+[37] (./Rd2.aux)
+
+Package rerunfilecheck Warning: File `Rd2.out' has changed.
+(rerunfilecheck)                Rerun to get outlines right
+(rerunfilecheck)                or use package `bookmark'.
+
+ )
+(see the transcript file for additional information)
+pdfTeX warning (dest): name{Rfn.dlomax} has been referenced but does not exist,
+ replaced by a fixed one
+
+
+pdfTeX warning (dest): name{Rfn.dllogis} has been referenced but does not exist
+, replaced by a fixed one
+
+
+pdfTeX warning (dest): name{Rfn.dgompertz} has been referenced but does not exi
+st, replaced by a fixed one
+
+
+pdfTeX warning (dest): name{Rfn.dgamma} has been referenced but does not exist,
+ replaced by a fixed one
+
+
+pdfTeX warning (dest): name{Rfn.ddagum} has been referenced but does not exist,
+ replaced by a fixed one
+
+</usr/share/texlive/texmf-dist/fonts/type1/public/inconsolata/Inconsolata-zi4r.
+pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></
+usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/sh
+are/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/te
+xlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi5.pfb></usr/share/texlive/t
+exmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/share/texlive/texmf-di
+st/fonts/type1/public/amsfonts/cm/cmmib10.pfb></usr/share/texlive/texmf-dist/fo
+nts/type1/public/amsfonts/cmextra/cmmib7.pfb></usr/share/texlive/texmf-dist/fon
+ts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/type
+1/public/amsfonts/cm/cmr5.pfb></usr/share/texlive/texmf-dist/fonts/type1/public
+/amsfonts/cm/cmr7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfont
+s/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/c
+msy5.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pf
+b></usr/share/texlive/texmf-dist/fonts/type1/urw/helvetic/uhvr8a.pfb></usr/shar
+e/texlive/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/share/texlive/texmf
+-dist/fonts/type1/urw/times/utmr8a.pfb></usr/share/texlive/texmf-dist/fonts/typ
+e1/urw/times/utmr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/ut
+mri8a.pfb>
+Output written on Rd2.pdf (37 pages, 290485 bytes).
+Transcript written on Rd2.log.
+This is makeindex, version 2.17 [TeX Live 2023] (kpathsea + Thai support).
+Scanning input file Rd2.idx....done (45 entries accepted, 0 rejected).
+Sorting entries....done (252 comparisons).
+Generating output file Rd2.ind....done (73 lines written, 0 warnings).
+Output written in Rd2.ind.
+Transcript written in Rd2.ilg.
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=pdflatex)
+ restricted \write18 enabled.
+entering extended mode
+(./Rd2.tex
+LaTeX2e <2023-11-01> patch level 1
+L3 programming layer <2024-01-22>
+
+(/usr/share/texlive/texmf-dist/tex/latex/base/book.cls
+Document Class: book 2023/05/17 v1.4n Standard LaTeX document class
+(/usr/share/texlive/texmf-dist/tex/latex/base/bk10.clo))
+(/usr/share/R/share/texmf/tex/latex/Rd.sty
+(/usr/share/texlive/texmf-dist/tex/latex/base/ifthen.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/tools/longtable.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/tools/bm.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/base/alltt.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/tools/verbatim.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/url/url.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/base/textcomp.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsmath.sty
+For additional information on amsmath, use the `?' option.
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amstext.sty
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsgen.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsbsy.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsopn.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/amsfonts.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/amssymb.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/jknapltx/mathrsfs.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/iftex/iftex.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/base/fontenc.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/psnfss/times.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/inconsolata/zi4.sty
+`inconsolata-zi4' v1.12, 2019/05/17 Text macros for Inconsolata (msharpe)
+(/usr/share/texlive/texmf-dist/tex/latex/xkeyval/xkeyval.sty
+(/usr/share/texlive/texmf-dist/tex/generic/xkeyval/xkeyval.tex
+(/usr/share/texlive/texmf-dist/tex/generic/xkeyval/xkvutils.tex
+(/usr/share/texlive/texmf-dist/tex/generic/xkeyval/keyval.tex)))))
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/color.sty
+(/usr/share/texlive/texmf-dist/tex/latex/graphics-cfg/color.cfg)
+(/usr/share/texlive/texmf-dist/tex/latex/graphics-def/pdftex.def)
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/mathcolor.ltx))
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/hyperref.sty
+(/usr/share/texlive/texmf-dist/tex/latex/kvsetkeys/kvsetkeys.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/kvdefinekeys/kvdefinekeys.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/pdfescape/pdfescape.sty
+(/usr/share/texlive/texmf-dist/tex/generic/ltxcmds/ltxcmds.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/pdftexcmds/pdftexcmds.sty
+(/usr/share/texlive/texmf-dist/tex/generic/infwarerr/infwarerr.sty)))
+(/usr/share/texlive/texmf-dist/tex/latex/hycolor/hycolor.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/auxhook/auxhook.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/nameref.sty
+(/usr/share/texlive/texmf-dist/tex/latex/refcount/refcount.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/gettitlestring/gettitlestring.sty
+(/usr/share/texlive/texmf-dist/tex/latex/kvoptions/kvoptions.sty)))
+(/usr/share/texlive/texmf-dist/tex/latex/etoolbox/etoolbox.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/pd1enc.def)
+(/usr/share/texlive/texmf-dist/tex/generic/intcalc/intcalc.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/puenc.def)
+(/usr/share/texlive/texmf-dist/tex/generic/bitset/bitset.sty
+(/usr/share/texlive/texmf-dist/tex/generic/bigintcalc/bigintcalc.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/base/atbegshi-ltx.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/hpdftex.def
+(/usr/share/texlive/texmf-dist/tex/latex/base/atveryend-ltx.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/rerunfilecheck/rerunfilecheck.sty
+(/usr/share/texlive/texmf-dist/tex/generic/uniquecounter/uniquecounter.sty))))
+(/usr/share/texlive/texmf-dist/tex/latex/base/makeidx.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/base/inputenc.sty)
+Writing index file Rd2.idx
+(/usr/share/texlive/texmf-dist/tex/latex/psnfss/t1ptm.fd)
+(/usr/share/texlive/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def)
+(./Rd2.aux) (/usr/share/texlive/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
+[Loading MPS to PDF converter (version 2006.09.02).]
+) (./Rd2.out) (./Rd2.out)
+(/usr/share/texlive/texmf-dist/tex/latex/inconsolata/t1zi4.fd)
+(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsa.fd)
+(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsb.fd)
+(/usr/share/texlive/texmf-dist/tex/latex/jknapltx/ursfs.fd)
+(/usr/share/texlive/texmf-dist/tex/latex/psnfss/t1phv.fd) (./Rd2.toc [1{/var/li
+b/texmf/fonts/map/pdftex/updmap/pdftex.map}{/usr/share/texlive/texmf-dist/fonts
+/enc/dvips/base/8r.enc}{/usr/share/texlive/texmf-dist/fonts/enc/dvips/inconsola
+ta/i4-t1-0.enc}]) [2] (/usr/share/texlive/texmf-dist/tex/latex/psnfss/ts1ptm.fd
+) [3]
+Overfull \hbox (1.74841pt too wide) detected at line 91
+\OML/cmm/m/it/10 L[]\OT1/cmr/m/n/10 ([]; []\OML/cmm/m/it/10 ; []\OT1/cmr/m/n/10
+ ) = [](1 \OMS/cmsy/m/n/10 ^^@ \OML/cmm/m/it/10 p[]\OT1/cmr/m/n/10 ([][]\OML/cm
+m/m/it/10 ; []\OT1/cmr/m/n/10 ))\OML/cmm/m/it/10 f[]\OT1/cmr/m/n/10 (\OML/cmm/m
+/it/10 y[]\OT1/cmr/m/n/10 ; []\OML/cmm/m/it/10 ; [][]\OT1/cmr/m/n/10 )[]  [] \O
+ML/cmm/m/it/10 p[]\OT1/cmr/m/n/10 ([][]\OML/cmm/m/it/10 ; []\OT1/cmr/m/n/10 )[]
+\OMS/cmsy/m/n/10 f\OT1/cmr/m/n/10 (1 \OMS/cmsy/m/n/10 ^^@ \OML/cmm/m/it/10 p[]\
+OT1/cmr/m/n/10 ([][]\OML/cmm/m/it/10 ; []\OT1/cmr/m/n/10 ))\OML/cmm/m/it/10 S[]
+\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 y[]\OT1/cmr/m/n/10 ; []\OML/cmm/m/it/10 ; [][
+]\OT1/cmr/m/n/10 )\OMS/cmsy/m/n/10 g[]\OML/cmm/m/it/10 :
+(/usr/share/texlive/texmf-dist/tex/latex/inconsolata/ts1zi4.fd) [4] [5{/usr/sha
+re/texlive/texmf-dist/fonts/enc/dvips/inconsolata/i4-ts1.enc}]
+Overfull \hbox (1.74841pt too wide) detected at line 231
+\OML/cmm/m/it/10 L[]\OT1/cmr/m/n/10 ([]; []\OML/cmm/m/it/10 ; []\OT1/cmr/m/n/10
+ ) = [](1 \OMS/cmsy/m/n/10 ^^@ \OML/cmm/m/it/10 p[]\OT1/cmr/m/n/10 ([][]\OML/cm
+m/m/it/10 ; []\OT1/cmr/m/n/10 ))\OML/cmm/m/it/10 f[]\OT1/cmr/m/n/10 (\OML/cmm/m
+/it/10 y[]\OT1/cmr/m/n/10 ; []\OML/cmm/m/it/10 ; [][]\OT1/cmr/m/n/10 )[]  [] \O
+ML/cmm/m/it/10 p[]\OT1/cmr/m/n/10 ([][]\OML/cmm/m/it/10 ; []\OT1/cmr/m/n/10 )[]
+\OMS/cmsy/m/n/10 f\OT1/cmr/m/n/10 (1 \OMS/cmsy/m/n/10 ^^@ \OML/cmm/m/it/10 p[]\
+OT1/cmr/m/n/10 ([][]\OML/cmm/m/it/10 ; []\OT1/cmr/m/n/10 ))\OML/cmm/m/it/10 S[]
+\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 y[]\OT1/cmr/m/n/10 ; []\OML/cmm/m/it/10 ; [][
+]\OT1/cmr/m/n/10 )\OMS/cmsy/m/n/10 g[]\OML/cmm/m/it/10 :
+[6] [7] [8]
+Overfull \hbox (4.57414pt too wide) in paragraph at lines 353--354
+[]\T1/ptm/m/n/10 Positive in-te-ger cor-re-spond-ing to the num-ber of heated c
+hains in the MC$[]$ scheme. 
+[9]
+Overfull \hbox (18.93675pt too wide) in paragraph at lines 415--416
+[]\T1/ptm/m/n/10 The prob-a-bil-ity for at-tempt-ing a se-ries of sin-gle site 
+up-dates in the typ-i-cal Metropolis-
+
+Overfull \hbox (16.56929pt too wide) in paragraph at lines 432--433
+[]\T1/ptm/m/n/10 Optional. Rel-e-vant only in the case of the []\TS1/zi4/m/n/10
+ '\T1/zi4/m/n/10 gamma_mixture\TS1/zi4/m/n/10 '
+[10] [11]
+Overfull \hbox (3.0361pt too wide) in paragraph at lines 484--485
+[]\T1/ptm/m/n/10 Therneau T (2024). A Pack-age for Sur-vival Anal-y-sis in R. R
+ pack-age ver-sion 3.7-0, https://CRAN.R-
+[12] [13]
+Overfull \hbox (2.95644pt too wide) in paragraph at lines 594--595
+[]\T1/ptm/m/n/10 Probability of at-tempt-ing a single-site MH move in the ba-si
+c Metropolis-Hastings
+[14] [15] [16] [17] [18] [19] [20] [21] [22] [23] [24]
+Overfull \hbox (21.22856pt too wide) in paragraph at lines 1251--1253
+[]\T1/ptm/m/n/10 Integer or a char-ac-ter string with pos-si-ble val-ues equal 
+to []\TS1/zi4/m/n/10 '\T1/zi4/m/n/10 cured_prob\TS1/zi4/m/n/10 '[]\T1/ptm/m/n/1
+0 , []\TS1/zi4/m/n/10 '\T1/zi4/m/n/10 survival\TS1/zi4/m/n/10 '
+
+Overfull \hbox (18.0381pt too wide) in paragraph at lines 1261--1262
+[]\T1/ptm/m/n/10 Boolean. If TRUE (de-fault), a leg-end is plot-ted in the case
+ where []\T1/zi4/m/n/10 what = \TS1/zi4/m/n/10 '\T1/zi4/m/n/10 survival\TS1/zi4
+/m/n/10 '
+[25]
+Overfull \hbox (18.0381pt too wide) in paragraph at lines 1327--1328
+[]\T1/ptm/m/n/10 Boolean. If TRUE (de-fault), a leg-end is plot-ted in the case
+ where []\T1/zi4/m/n/10 what = \TS1/zi4/m/n/10 '\T1/zi4/m/n/10 survival\TS1/zi4
+/m/n/10 '
+[26] [27] [28] [29] [30]
+Overfull \hbox (69.74937pt too wide) in paragraph at lines 1546--1547
+[]\T1/ptm/m/n/10 An ob-ject of class []\T1/zi4/m/n/10 predict_bayesCureModel[]\
+T1/ptm/m/n/10 , which is re-turned by the []\T1/zi4/m/n/10 predict.cure_rate_MC
+3
+
+Overfull \hbox (69.74937pt too wide) in paragraph at lines 1582--1583
+[]\T1/ptm/m/n/10 An ob-ject of class []\T1/zi4/m/n/10 summary_bayesCureModel[]\
+T1/ptm/m/n/10 , which is re-turned by the []\T1/zi4/m/n/10 summary.cure_rate_MC
+3
+[31] [32] [33] [34] [35] [36] [37] (./Rd2.ind [38]
+
+LaTeX Font Warning: Font shape `T1/zi4/m/it' undefined
+(Font)              using `T1/zi4/m/n' instead on input line 11.
+
+[39]) (./Rd2.aux)
+
+LaTeX Font Warning: Some font shapes were not available, defaults substituted.
+
+
+Package rerunfilecheck Warning: File `Rd2.out' has changed.
+(rerunfilecheck)                Rerun to get outlines right
+(rerunfilecheck)                or use package `bookmark'.
+
+ )
+(see the transcript file for additional information)
+pdfTeX warning (dest): name{Rfn.dlomax} has been referenced but does not exist,
+ replaced by a fixed one
+
+
+pdfTeX warning (dest): name{Rfn.dllogis} has been referenced but does not exist
+, replaced by a fixed one
+
+
+pdfTeX warning (dest): name{Rfn.dgompertz} has been referenced but does not exi
+st, replaced by a fixed one
+
+
+pdfTeX warning (dest): name{Rfn.dgamma} has been referenced but does not exist,
+ replaced by a fixed one
+
+
+pdfTeX warning (dest): name{Rfn.ddagum} has been referenced but does not exist,
+ replaced by a fixed one
+
+</usr/share/texlive/texmf-dist/fonts/type1/public/inconsolata/Inconsolata-zi4r.
+pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></
+usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/sh
+are/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/te
+xlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi5.pfb></usr/share/texlive/t
+exmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/share/texlive/texmf-di
+st/fonts/type1/public/amsfonts/cm/cmmib10.pfb></usr/share/texlive/texmf-dist/fo
+nts/type1/public/amsfonts/cmextra/cmmib7.pfb></usr/share/texlive/texmf-dist/fon
+ts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/type
+1/public/amsfonts/cm/cmr5.pfb></usr/share/texlive/texmf-dist/fonts/type1/public
+/amsfonts/cm/cmr7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfont
+s/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/c
+msy5.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pf
+b></usr/share/texlive/texmf-dist/fonts/type1/urw/helvetic/uhvr8a.pfb></usr/shar
+e/texlive/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/share/texlive/texmf
+-dist/fonts/type1/urw/times/utmr8a.pfb></usr/share/texlive/texmf-dist/fonts/typ
+e1/urw/times/utmr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/ut
+mri8a.pfb>
+Output written on Rd2.pdf (39 pages, 298030 bytes).
+Transcript written on Rd2.log.
+This is makeindex, version 2.17 [TeX Live 2023] (kpathsea + Thai support).
+Scanning input file Rd2.idx....done (45 entries accepted, 0 rejected).
+Sorting entries....done (252 comparisons).
+Generating output file Rd2.ind....done (72 lines written, 0 warnings).
+Output written in Rd2.ind.
+Transcript written in Rd2.ilg.
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=pdflatex)
+ restricted \write18 enabled.
+entering extended mode
+(./Rd2.tex
+LaTeX2e <2023-11-01> patch level 1
+L3 programming layer <2024-01-22>
+
+(/usr/share/texlive/texmf-dist/tex/latex/base/book.cls
+Document Class: book 2023/05/17 v1.4n Standard LaTeX document class
+(/usr/share/texlive/texmf-dist/tex/latex/base/bk10.clo))
+(/usr/share/R/share/texmf/tex/latex/Rd.sty
+(/usr/share/texlive/texmf-dist/tex/latex/base/ifthen.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/tools/longtable.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/tools/bm.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/base/alltt.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/tools/verbatim.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/url/url.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/base/textcomp.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsmath.sty
+For additional information on amsmath, use the `?' option.
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amstext.sty
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsgen.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsbsy.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsopn.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/amsfonts.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/amssymb.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/jknapltx/mathrsfs.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/iftex/iftex.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/base/fontenc.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/psnfss/times.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/inconsolata/zi4.sty
+`inconsolata-zi4' v1.12, 2019/05/17 Text macros for Inconsolata (msharpe)
+(/usr/share/texlive/texmf-dist/tex/latex/xkeyval/xkeyval.sty
+(/usr/share/texlive/texmf-dist/tex/generic/xkeyval/xkeyval.tex
+(/usr/share/texlive/texmf-dist/tex/generic/xkeyval/xkvutils.tex
+(/usr/share/texlive/texmf-dist/tex/generic/xkeyval/keyval.tex)))))
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/color.sty
+(/usr/share/texlive/texmf-dist/tex/latex/graphics-cfg/color.cfg)
+(/usr/share/texlive/texmf-dist/tex/latex/graphics-def/pdftex.def)
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/mathcolor.ltx))
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/hyperref.sty
+(/usr/share/texlive/texmf-dist/tex/latex/kvsetkeys/kvsetkeys.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/kvdefinekeys/kvdefinekeys.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/pdfescape/pdfescape.sty
+(/usr/share/texlive/texmf-dist/tex/generic/ltxcmds/ltxcmds.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/pdftexcmds/pdftexcmds.sty
+(/usr/share/texlive/texmf-dist/tex/generic/infwarerr/infwarerr.sty)))
+(/usr/share/texlive/texmf-dist/tex/latex/hycolor/hycolor.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/auxhook/auxhook.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/nameref.sty
+(/usr/share/texlive/texmf-dist/tex/latex/refcount/refcount.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/gettitlestring/gettitlestring.sty
+(/usr/share/texlive/texmf-dist/tex/latex/kvoptions/kvoptions.sty)))
+(/usr/share/texlive/texmf-dist/tex/latex/etoolbox/etoolbox.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/pd1enc.def)
+(/usr/share/texlive/texmf-dist/tex/generic/intcalc/intcalc.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/puenc.def)
+(/usr/share/texlive/texmf-dist/tex/generic/bitset/bitset.sty
+(/usr/share/texlive/texmf-dist/tex/generic/bigintcalc/bigintcalc.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/base/atbegshi-ltx.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/hpdftex.def
+(/usr/share/texlive/texmf-dist/tex/latex/base/atveryend-ltx.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/rerunfilecheck/rerunfilecheck.sty
+(/usr/share/texlive/texmf-dist/tex/generic/uniquecounter/uniquecounter.sty))))
+(/usr/share/texlive/texmf-dist/tex/latex/base/makeidx.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/base/inputenc.sty)
+Writing index file Rd2.idx
+(/usr/share/texlive/texmf-dist/tex/latex/psnfss/t1ptm.fd)
+(/usr/share/texlive/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def)
+(./Rd2.aux) (/usr/share/texlive/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
+[Loading MPS to PDF converter (version 2006.09.02).]
+) (./Rd2.out) (./Rd2.out)
+(/usr/share/texlive/texmf-dist/tex/latex/inconsolata/t1zi4.fd)
+(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsa.fd)
+(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsb.fd)
+(/usr/share/texlive/texmf-dist/tex/latex/jknapltx/ursfs.fd)
+(/usr/share/texlive/texmf-dist/tex/latex/psnfss/t1phv.fd) (./Rd2.toc [1{/var/li
+b/texmf/fonts/map/pdftex/updmap/pdftex.map}{/usr/share/texlive/texmf-dist/fonts
+/enc/dvips/base/8r.enc}{/usr/share/texlive/texmf-dist/fonts/enc/dvips/inconsola
+ta/i4-t1-0.enc}]) [2] (/usr/share/texlive/texmf-dist/tex/latex/psnfss/ts1ptm.fd
+) [3]
+Overfull \hbox (1.74841pt too wide) detected at line 91
+\OML/cmm/m/it/10 L[]\OT1/cmr/m/n/10 ([]; []\OML/cmm/m/it/10 ; []\OT1/cmr/m/n/10
+ ) = [](1 \OMS/cmsy/m/n/10 ^^@ \OML/cmm/m/it/10 p[]\OT1/cmr/m/n/10 ([][]\OML/cm
+m/m/it/10 ; []\OT1/cmr/m/n/10 ))\OML/cmm/m/it/10 f[]\OT1/cmr/m/n/10 (\OML/cmm/m
+/it/10 y[]\OT1/cmr/m/n/10 ; []\OML/cmm/m/it/10 ; [][]\OT1/cmr/m/n/10 )[]  [] \O
+ML/cmm/m/it/10 p[]\OT1/cmr/m/n/10 ([][]\OML/cmm/m/it/10 ; []\OT1/cmr/m/n/10 )[]
+\OMS/cmsy/m/n/10 f\OT1/cmr/m/n/10 (1 \OMS/cmsy/m/n/10 ^^@ \OML/cmm/m/it/10 p[]\
+OT1/cmr/m/n/10 ([][]\OML/cmm/m/it/10 ; []\OT1/cmr/m/n/10 ))\OML/cmm/m/it/10 S[]
+\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 y[]\OT1/cmr/m/n/10 ; []\OML/cmm/m/it/10 ; [][
+]\OT1/cmr/m/n/10 )\OMS/cmsy/m/n/10 g[]\OML/cmm/m/it/10 :
+(/usr/share/texlive/texmf-dist/tex/latex/inconsolata/ts1zi4.fd) [4] [5{/usr/sha
+re/texlive/texmf-dist/fonts/enc/dvips/inconsolata/i4-ts1.enc}]
+Overfull \hbox (1.74841pt too wide) detected at line 231
+\OML/cmm/m/it/10 L[]\OT1/cmr/m/n/10 ([]; []\OML/cmm/m/it/10 ; []\OT1/cmr/m/n/10
+ ) = [](1 \OMS/cmsy/m/n/10 ^^@ \OML/cmm/m/it/10 p[]\OT1/cmr/m/n/10 ([][]\OML/cm
+m/m/it/10 ; []\OT1/cmr/m/n/10 ))\OML/cmm/m/it/10 f[]\OT1/cmr/m/n/10 (\OML/cmm/m
+/it/10 y[]\OT1/cmr/m/n/10 ; []\OML/cmm/m/it/10 ; [][]\OT1/cmr/m/n/10 )[]  [] \O
+ML/cmm/m/it/10 p[]\OT1/cmr/m/n/10 ([][]\OML/cmm/m/it/10 ; []\OT1/cmr/m/n/10 )[]
+\OMS/cmsy/m/n/10 f\OT1/cmr/m/n/10 (1 \OMS/cmsy/m/n/10 ^^@ \OML/cmm/m/it/10 p[]\
+OT1/cmr/m/n/10 ([][]\OML/cmm/m/it/10 ; []\OT1/cmr/m/n/10 ))\OML/cmm/m/it/10 S[]
+\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 y[]\OT1/cmr/m/n/10 ; []\OML/cmm/m/it/10 ; [][
+]\OT1/cmr/m/n/10 )\OMS/cmsy/m/n/10 g[]\OML/cmm/m/it/10 :
+[6] [7] [8]
+Overfull \hbox (4.57414pt too wide) in paragraph at lines 353--354
+[]\T1/ptm/m/n/10 Positive in-te-ger cor-re-spond-ing to the num-ber of heated c
+hains in the MC$[]$ scheme. 
+[9]
+Overfull \hbox (18.93675pt too wide) in paragraph at lines 415--416
+[]\T1/ptm/m/n/10 The prob-a-bil-ity for at-tempt-ing a se-ries of sin-gle site 
+up-dates in the typ-i-cal Metropolis-
+
+Overfull \hbox (16.56929pt too wide) in paragraph at lines 432--433
+[]\T1/ptm/m/n/10 Optional. Rel-e-vant only in the case of the []\TS1/zi4/m/n/10
+ '\T1/zi4/m/n/10 gamma_mixture\TS1/zi4/m/n/10 '
+[10] [11]
+Overfull \hbox (3.0361pt too wide) in paragraph at lines 484--485
+[]\T1/ptm/m/n/10 Therneau T (2024). A Pack-age for Sur-vival Anal-y-sis in R. R
+ pack-age ver-sion 3.7-0, https://CRAN.R-
+[12] [13]
+Overfull \hbox (2.95644pt too wide) in paragraph at lines 594--595
+[]\T1/ptm/m/n/10 Probability of at-tempt-ing a single-site MH move in the ba-si
+c Metropolis-Hastings
+[14] [15] [16] [17] [18] [19] [20] [21] [22] [23] [24]
+Overfull \hbox (21.22856pt too wide) in paragraph at lines 1251--1253
+[]\T1/ptm/m/n/10 Integer or a char-ac-ter string with pos-si-ble val-ues equal 
+to []\TS1/zi4/m/n/10 '\T1/zi4/m/n/10 cured_prob\TS1/zi4/m/n/10 '[]\T1/ptm/m/n/1
+0 , []\TS1/zi4/m/n/10 '\T1/zi4/m/n/10 survival\TS1/zi4/m/n/10 '
+
+Overfull \hbox (18.0381pt too wide) in paragraph at lines 1261--1262
+[]\T1/ptm/m/n/10 Boolean. If TRUE (de-fault), a leg-end is plot-ted in the case
+ where []\T1/zi4/m/n/10 what = \TS1/zi4/m/n/10 '\T1/zi4/m/n/10 survival\TS1/zi4
+/m/n/10 '
+[25]
+Overfull \hbox (18.0381pt too wide) in paragraph at lines 1327--1328
+[]\T1/ptm/m/n/10 Boolean. If TRUE (de-fault), a leg-end is plot-ted in the case
+ where []\T1/zi4/m/n/10 what = \TS1/zi4/m/n/10 '\T1/zi4/m/n/10 survival\TS1/zi4
+/m/n/10 '
+[26] [27] [28] [29] [30]
+Overfull \hbox (69.74937pt too wide) in paragraph at lines 1546--1547
+[]\T1/ptm/m/n/10 An ob-ject of class []\T1/zi4/m/n/10 predict_bayesCureModel[]\
+T1/ptm/m/n/10 , which is re-turned by the []\T1/zi4/m/n/10 predict.cure_rate_MC
+3
+
+Overfull \hbox (69.74937pt too wide) in paragraph at lines 1582--1583
+[]\T1/ptm/m/n/10 An ob-ject of class []\T1/zi4/m/n/10 summary_bayesCureModel[]\
+T1/ptm/m/n/10 , which is re-turned by the []\T1/zi4/m/n/10 summary.cure_rate_MC
+3
+[31] [32] [33] [34] [35] [36] [37] (./Rd2.ind [38]
+
+LaTeX Font Warning: Font shape `T1/zi4/m/it' undefined
+(Font)              using `T1/zi4/m/n' instead on input line 11.
+
+[39]) (./Rd2.aux)
+
+LaTeX Font Warning: Some font shapes were not available, defaults substituted.
+
+ )
+(see the transcript file for additional information)
+pdfTeX warning (dest): name{Rfn.dlomax} has been referenced but does not exist,
+ replaced by a fixed one
+
+
+pdfTeX warning (dest): name{Rfn.dllogis} has been referenced but does not exist
+, replaced by a fixed one
+
+
+pdfTeX warning (dest): name{Rfn.dgompertz} has been referenced but does not exi
+st, replaced by a fixed one
+
+
+pdfTeX warning (dest): name{Rfn.dgamma} has been referenced but does not exist,
+ replaced by a fixed one
+
+
+pdfTeX warning (dest): name{Rfn.ddagum} has been referenced but does not exist,
+ replaced by a fixed one
+
+</usr/share/texlive/texmf-dist/fonts/type1/public/inconsolata/Inconsolata-zi4r.
+pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></
+usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/sh
+are/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/te
+xlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi5.pfb></usr/share/texlive/t
+exmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/share/texlive/texmf-di
+st/fonts/type1/public/amsfonts/cm/cmmib10.pfb></usr/share/texlive/texmf-dist/fo
+nts/type1/public/amsfonts/cmextra/cmmib7.pfb></usr/share/texlive/texmf-dist/fon
+ts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/type
+1/public/amsfonts/cm/cmr5.pfb></usr/share/texlive/texmf-dist/fonts/type1/public
+/amsfonts/cm/cmr7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfont
+s/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/c
+msy5.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pf
+b></usr/share/texlive/texmf-dist/fonts/type1/urw/helvetic/uhvr8a.pfb></usr/shar
+e/texlive/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/share/texlive/texmf
+-dist/fonts/type1/urw/times/utmr8a.pfb></usr/share/texlive/texmf-dist/fonts/typ
+e1/urw/times/utmr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/ut
+mri8a.pfb>
+Output written on Rd2.pdf (39 pages, 298663 bytes).
+Transcript written on Rd2.log.
+Saving output to ‘bayesCureRateModel-manual.pdf’ ...
+Done
+You may want to clean up by 'rm -Rf /tmp/Rtmp29yuIm/Rd2pdf1f0381bbaf5b6'
