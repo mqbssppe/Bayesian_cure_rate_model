@@ -46,7 +46,7 @@ where \deqn{f_\mathcal{G}(y;\alpha,\beta)=\frac{\beta^{\alpha}}{\Gamma(\alpha)}y
 For the previous model, the parameter vector is \deqn{\boldsymbol\alpha = (\alpha_1,\alpha_2,\alpha_3,\alpha_4,\alpha_5)'\in\mathcal A}
 where \eqn{\mathcal A = (0,\infty)^4\times (0,1)}. 
 
-More generally, one can fit a mixture of \eqn{K>2} Gamma distributions. The appropriate model can be selected according to information criteria such as the BIC.
+User defined promotion time distributions and finite mixtures of them can be also fitted using the options \code{'user'} and \code{'user_mixture'}, respectively. The appropriate model can be selected according to information criteria such as the BIC.
 
 
 The binary vector \eqn{\boldsymbol{I} = (I_1,\ldots,I_n)} contains the (latent) cure indicators, that is, \eqn{I_i = 1} if the \eqn{i}-th subject is susceptible and \eqn{I_i = 0} if the \eqn{i}-th subject is cured.  \eqn{\Delta_0} denotes the subset of \eqn{\{1,\ldots,n\}} containing the censored subjects, whereas \eqn{\Delta_1 = \Delta_0^c} is the (complementary) subset of uncensored subjects. The complete likelihood of the model is 
@@ -68,6 +68,8 @@ Maintainer: \packageMaintainer{bayesCureRateModel}
 }
 \references{
 Papastamoulis and Milienos (2024). Bayesian inference and cure rate modeling for event history data. TEST doi: 10.1007/s11749-024-00942-w.
+
+Papastamoulis and Milienos (2024). bayesCureRateModel: Bayesian Cure Rate Modeling for Time to Event Data in R. arXiv:2409.10221
 }
 \keyword{ package }
 \seealso{
@@ -90,7 +92,7 @@ Papastamoulis and Milienos (2024). Bayesian inference and cure rate modeling for
 # considering 2 heated chains 
 	fit1 <- cure_rate_MC3(survival::Surv(y, stat) ~ x1 + x2, 
 		data = my_data_frame, 
-		promotion_time = list(distribution = 'weibull'),
+		promotion_time = list(family = 'weibull'),
 		nChains = 2, 
 		nCores = 1, 
 		mcmc_cycles = 3, sweep=2)

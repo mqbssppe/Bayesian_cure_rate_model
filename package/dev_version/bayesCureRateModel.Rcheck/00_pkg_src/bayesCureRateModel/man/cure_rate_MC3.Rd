@@ -8,13 +8,13 @@ Runs a Metropolis Coupled MCMC (MC\eqn{^3}) sampler in order to estimate the joi
 }
 \usage{
 cure_rate_MC3(formula, data, nChains = 12, mcmc_cycles = 15000, 
-	alpha = NULL,nCores = 1, sweep = 5, mu_g = 1, s2_g = 1, 
+	alpha = NULL,nCores = 1, sweep = 5, a_g = 1, b_g = 1, 
 	a_l = 2.1, b_l = 1.1, mu_b = NULL, 
 	Sigma = NULL, g_prop_sd = 0.045, 
 	lambda_prop_scale = 0.03, b_prop_sd = NULL, 
 	initialValues = NULL, plot = TRUE, adjust_scales = FALSE, 
 	verbose = FALSE, tau_mala = 1.5e-05, mala = 0.15, 
-	promotion_time = list(distribution = "weibull", 
+	promotion_time = list(family = "weibull", 
 	prior_parameters = matrix(rep(c(2.1, 1.1), 2), byrow = TRUE, 2, 2), 
 	prop_scale = c(0.1, 0.2)), single_MH_in_f = 0.2, c_under = 1e-9)
 }
@@ -40,10 +40,10 @@ The number of cores used for parallel processing. In case where \code{nCores} > 
   \item{sweep}{
 The number of usual MCMC iterations per MCMC cycle. Default value: 10.
 }
-  \item{mu_g}{
+  \item{a_g}{
 Parameter \eqn{a_{\gamma}} of the prior distribution of \eqn{\gamma}.
 }
-  \item{s2_g}{
+  \item{b_g}{
 Parameter \eqn{b_{\gamma}} of the prior distribution of \eqn{\gamma}.
 }
   \item{a_l}{
@@ -95,18 +95,18 @@ A small positive number (much smaller than 1) which is used as a threshold in th
 }
 }
 \details{
-It is advised to scale all continuous explanatory variables in the design matrix, so their sample mean and standard deviations are equal to 0 and 1, respectively. 
+It is advised to scale all continuous explanatory variables in the design matrix, so their sample mean and standard deviations are equal to 0 and 1, respectively. No missing or infinite values are accepted.
 The \code{promotion_time} argument should be a list containing the following entries
 \describe{
-\item{\code{distribution} }{  Character string specifying the family of distributions \eqn{\{F(\cdot;\boldsymbol\alpha);\boldsymbol\alpha\in\mathcal A\}} describing the promotion time.}
+\item{\code{family} }{  Character string specifying the family of distributions \eqn{\{F(\cdot;\boldsymbol\alpha);\boldsymbol\alpha\in\mathcal A\}} describing the promotion time.}
 \item{\code{prior_parameters} }{  Values of hyper-parameters in the prior distribution of the parameters \eqn{\boldsymbol\alpha}.}
 \item{\code{prop_scale} }{  The scale of the proposal distributions for each parameter in \eqn{\boldsymbol\alpha}.}
 \item{\code{K} }{ Optional. The number of mixture components in case where a mixture model is fitted, that is, when setting \code{distribution} to either \code{'gamma_mixture'} or \code{'user_mixture'}. }
 \item{\code{dirichlet_concentration_parameter} }{  Optional. Relevant only in the case of the \code{'gamma_mixture'} or \code{'user_mixture'}. Positive scalar (typically, set to 1) determining the (common) concentration parameter of the Dirichlet prior distribution of mixing proportions. }
 }
-The \code{distribution} specifies the distributional family of promotion time and corresponds to a character string with available choices: \code{'exponential'}, \code{'weibull'}, \code{'gamma'}, \code{'logLogistic'}, \code{'gompertz'}, \code{'lomax'}, \code{'dagum'}, \code{'gamma_mixture'}. User defined promotion time distributions and finite mixtures of them can be also fitted using the options \code{'user'} and \code{'user_mixture'}, respectively. In this case, the user should specify the distributional family in a separate argument named \code{define} which is passed as an additional entry in the \code{promotion_time}. This function should accept two input arguments \code{y} and \code{a} corresponding to the observed data (vector of positive numbers) and the parameters of the distribution (vector of positives). Pay attention to the positivity requirement of the parameters: if this is not the case, the user should suitably reparameterize the distribution in terms of positive parameters.
+The \code{family} specifies the distributional family of promotion time and corresponds to a character string with available choices: \code{'exponential'}, \code{'weibull'}, \code{'gamma'}, \code{'logLogistic'}, \code{'gompertz'}, \code{'lomax'}, \code{'dagum'}, \code{'gamma_mixture'}. User defined promotion time distributions and finite mixtures of them can be also fitted using the options \code{family = 'user'} and \code{family = 'user_mixture'}, respectively. See the 'Note' below for further details. 
 
-The joint prior distribution of \eqn{\boldsymbol\alpha = (\alpha_1,\ldots,\alpha_d)} factorizes into products of inverse Gamma distributions for all (positive) parameters of \eqn{F}. Moreover, in the case of \code{'gamma_mixture'}, the joint prior also consists of another term to the Dirichlet prior distribution  on the mixing proportions. 
+The joint prior distribution of \eqn{\boldsymbol\alpha = (\alpha_1,\ldots,\alpha_d)} factorizes into products of inverse Gamma distributions for all (positive) parameters of \eqn{F}. Moreover, in the case of \code{'gamma_mixture'} or \code{'user_mixture'}, the joint prior also consists of another term to the Dirichlet prior distribution on the mixing proportions. 
 
 The \code{prop_scale} argument should be a vector with length equal to the length of vector \eqn{d} (number of elements in \eqn{\boldsymbol\alpha}), containing (positive) numbers which correspond to the scale of the proposal distribution. Note that these scale parameters are used only as initial values in case where \code{adjust_scales = TRUE}.
 }
@@ -131,9 +131,18 @@ An object of class \code{bayesCureModel}, i.e. a list with the following entries
 \item{BIC}{Bayesian Information Criterion of the fitted model.}
 \item{AIC}{Akaike Information Criterion of the fitted model.}
 \item{residuals}{The Cox-Snell residuals of the fitted model.}
+\item{logLik}{The maximum log-likelihood value for the target chain.}
+\item{n_parameters}{The number of parameters of the model.}
+\item{initial_values}{The initial values per chain.}
+}
+\note{
+User-defined promotion time distributions and finite mixtures of them can be fitted using the options \code{family = 'user'} and \code{family = 'user_mixture'}, respectively, in the \code{promotion_time} argument.
+In this case, the user should specify the distributional family in a separate argument named \code{define} which is passed as an additional entry in the \code{promotion_time}. This function should accept two input arguments \code{y} and \code{a} corresponding to the observed data (vector of positive numbers) and the parameters of the distribution (vector of positives). Pay attention to the positivity requirement of the parameters: if this is not the case, the user should suitably reparameterize the distribution in terms of positive parameters. The \code{define} function should return in the form of a list two arguments: \code{log_f} and \code{log_F}, corresponding to the the logarithm of the probability density function and the logarithm of the cumulative density function, respectively, per observation. See Papastamoulis and Milienos (2024b) for examples of the implementation.
 }
 \references{
 Papastamoulis and Milienos (2024). Bayesian inference and cure rate modeling for event history data. TEST doi: 10.1007/s11749-024-00942-w.
+
+Papastamoulis and Milienos (2024b). bayesCureRateModel: Bayesian Cure Rate Modeling for Time to Event Data in R. arXiv:2409.10221
 
 Plummer M, Best N, Cowles K, Vines K (2006). "CODA: Convergence Diagnosis and Output Analysis for MCMC." R News, 6(1), 7-11. 
 
@@ -141,9 +150,6 @@ Therneau T (2024). A Package for Survival Analysis in R. R package version 3.7-0
 }
 \author{
 Panagiotis Papastamoulis
-}
-\note{
-The core function is \code{\link{cure_rate_mcmc}}.
 }
 \seealso{
 \code{\link{cure_rate_mcmc}}
@@ -162,7 +168,7 @@ The core function is \code{\link{cure_rate_mcmc}}.
         my_data_frame <- data.frame(y, stat, x1 = x[,1], x2 = x[,2])
 	fit1 <- cure_rate_MC3(survival::Surv(y, stat) ~ x1 + x2, 
 		data = my_data_frame,
-		promotion_time = list(distribution = 'weibull'),
+		promotion_time = list(family = 'weibull'),
 		nChains = 2, nCores = 1, 
 		mcmc_cycles = 3, sweep = 2)
 

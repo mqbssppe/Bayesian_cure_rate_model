@@ -24,3 +24,4 @@ residuals.bayesCureModel	residuals.bayesCureModel
 sim_mix_data	sim_mix_data
 summary.bayesCureModel	summary.bayesCureModel
 summary.predict_bayesCureModel	summary.predict_bayesCureModel
+Surv	Surv

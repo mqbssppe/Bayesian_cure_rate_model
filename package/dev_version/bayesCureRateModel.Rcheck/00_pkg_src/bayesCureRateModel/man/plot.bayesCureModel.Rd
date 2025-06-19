@@ -7,7 +7,7 @@ Plot method
 	Plots and computes HDIs.
 }
 \usage{
-\method{plot}{bayesCureModel}(x, burn = NULL, alpha = 0.05, gamma_mix = TRUE, 
+\method{plot}{bayesCureModel}(x, burn = NULL, alpha0 = 0.05, gamma_mix = TRUE, 
 	K_gamma = 5, plot_graphs = TRUE, bw = "nrd0", what = NULL, predict_output = NULL,  
 	index_of_main_mode = NULL, draw_legend = TRUE,...)
 }
@@ -18,8 +18,8 @@ Plot method
   \item{burn}{
 	Number of iterations to discard as burn-in period.
 }
-  \item{alpha}{
- A value between 0 and 1 in order to compute the 1-\eqn{\alpha} Highest Posterior Density regions. 
+  \item{alpha0}{
+ A value between 0 and 1 in order to compute the 1-\eqn{\alpha0} Highest Posterior Density regions. 
 }
   \item{gamma_mix}{
 Boolean. If TRUE, the density of the marginal posterior distribution of the \eqn{\gamma} parameter is estimated from the sampled MCMC values by fitting a normal mixture  model.
@@ -71,7 +71,7 @@ Panagiotis Papastamoulis
 # run a weibull model with default prior setup
 # considering 2 heated chains 
 	fit1 <- cure_rate_MC3(survival::Surv(y, stat) ~ x1 + x2, data = my_data_frame, 
-		promotion_time = list(distribution = 'exponential'),
+		promotion_time = list(family = 'exponential'),
 		nChains = 2, 
 		nCores = 1, 
 		mcmc_cycles = 3, sweep=2)

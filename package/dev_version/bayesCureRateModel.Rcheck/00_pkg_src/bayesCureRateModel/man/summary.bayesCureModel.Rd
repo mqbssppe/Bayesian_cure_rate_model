@@ -9,7 +9,7 @@ This function produces all summaries after fitting a cure rate model.
 \usage{
 \method{summary}{bayesCureModel}(object, burn = NULL, gamma_mix = TRUE, 
 	K_gamma = 3,  K_max = 3, fdr = 0.1, covariate_levels = NULL, 
-	yRange = NULL, alpha = 0.1, quantiles = c(0.05, 0.5, 0.95), 
+	yRange = NULL, alpha0 = 0.1, quantiles = c(0.05, 0.5, 0.95), 
 	verbose = FALSE, ...)
 }
 \arguments{
@@ -37,7 +37,7 @@ Used only when \code{gamma_mix = TRUE} and corresponds to the number of normal m
   \item{yRange}{
 	Optional range (a vector of two non-negative values) for computing the sequence of posterior probabilities for the given values in \code{covariate_levels}. 
 }
-  \item{alpha}{
+  \item{alpha0}{
 	Scalar between 0 and 1 corresponding to 1 - confidencel level for computing Highest Density Intervals. If set to NULL, the confidence intervals are not computed.
 }
   \item{quantiles}{
@@ -100,7 +100,7 @@ Panagiotis Papastamoulis
 # considering 2 heated chains 
 	fit1 <- cure_rate_MC3(survival::Surv(y, stat) ~ x1 + x2, 
 		data = my_data_frame, 
-		promotion_time = list(distribution = 'exponential'),
+		promotion_time = list(family = 'exponential'),
 		nChains = 2, 
 		nCores = 1, 
 		mcmc_cycles = 3, sweep=2)

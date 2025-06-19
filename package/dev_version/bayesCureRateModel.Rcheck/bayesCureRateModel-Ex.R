@@ -18,6 +18,28 @@ library('bayesCureRateModel')
 base::assign(".oldSearch", base::search(), pos = 'CheckExEnv')
 base::assign(".old_wd", base::getwd(), pos = 'CheckExEnv')
 cleanEx()
+nameEx("Surv")
+### * Surv
+
+flush(stderr()); flush(stdout())
+
+base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+### Name: Surv
+### Title: Create a Survival Object
+### Aliases: Surv
+### Keywords: survival
+
+### ** Examples
+
+# Right-censored survival data
+Surv(5, 1)
+Surv(c(5, 10), c(1, 0))
+
+
+
+base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+base::cat("Surv", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+cleanEx()
 nameEx("bayesCureRateModel-package")
 ### * bayesCureRateModel-package
 
@@ -47,7 +69,7 @@ base::assign(".ptime", proc.time(), pos = "CheckExEnv")
 # considering 2 heated chains 
 	fit1 <- cure_rate_MC3(survival::Surv(y, stat) ~ x1 + x2, 
 		data = my_data_frame, 
-		promotion_time = list(distribution = 'weibull'),
+		promotion_time = list(family = 'weibull'),
 		nChains = 2, 
 		nCores = 1, 
 		mcmc_cycles = 3, sweep=2)
@@ -149,7 +171,7 @@ base::assign(".ptime", proc.time(), pos = "CheckExEnv")
         my_data_frame <- data.frame(y, stat, x1 = x[,1], x2 = x[,2])
 	fit1 <- cure_rate_MC3(survival::Surv(y, stat) ~ x1 + x2, 
 		data = my_data_frame,
-		promotion_time = list(distribution = 'weibull'),
+		promotion_time = list(family = 'weibull'),
 		nChains = 2, nCores = 1, 
 		mcmc_cycles = 3, sweep = 2)
 
@@ -181,7 +203,7 @@ base::assign(".ptime", proc.time(), pos = "CheckExEnv")
 #	for m = 10 mcmc iterations 
         fit1 <- cure_rate_mcmc(y = y, X = x, Censoring_status = stat, 
               	plot = FALSE,
-                promotion_time = list(distribution = 'weibull', 
+                promotion_time = list(family = 'weibull', 
                         prior_parameters = matrix(rep(c(2.1, 1.1), 2), 
                                                 byrow = TRUE, 2, 2),
                         prop_scale = c(0.1, 0.1)
@@ -222,7 +244,7 @@ base::assign(".ptime", proc.time(), pos = "CheckExEnv")
 # considering 2 heated chains 
 	fit1 <- cure_rate_MC3(survival::Surv(y, stat) ~ x1 + x2, 
 		data = my_data_frame, 
-		promotion_time = list(distribution = 'exponential'),
+		promotion_time = list(family = 'exponential'),
 		nChains = 2, 
 		nCores = 1, 
 		mcmc_cycles = 3, sweep=2)
@@ -433,7 +455,7 @@ base::assign(".ptime", proc.time(), pos = "CheckExEnv")
 # run a weibull model with default prior setup
 # considering 2 heated chains 
 	fit1 <- cure_rate_MC3(survival::Surv(y, stat) ~ x1 + x2, data = my_data_frame, 
-		promotion_time = list(distribution = 'exponential'),
+		promotion_time = list(family = 'exponential'),
 		nChains = 2, 
 		nCores = 1, 
 		mcmc_cycles = 3, sweep=2)
@@ -474,7 +496,7 @@ base::assign(".ptime", proc.time(), pos = "CheckExEnv")
 # run a weibull model with default prior setup
 # considering 2 heated chains 
 	fit1 <- cure_rate_MC3(survival::Surv(y, stat) ~ x1 + x2, data = my_data_frame, 
-		promotion_time = list(distribution = 'exponential'),
+		promotion_time = list(family = 'exponential'),
 		nChains = 2, 
 		nCores = 1, 
 		mcmc_cycles = 3, sweep=2)
@@ -520,7 +542,7 @@ base::assign(".ptime", proc.time(), pos = "CheckExEnv")
 # run a weibull model with default prior setup
 # considering 2 heated chains 
 	fit1 <- cure_rate_MC3(survival::Surv(y, stat) ~ x1 + x2, data = my_data_frame, 
-		promotion_time = list(distribution = 'exponential'),
+		promotion_time = list(family = 'exponential'),
 		nChains = 2, 
 		nCores = 1, 
 		mcmc_cycles = 3, sweep=2)
@@ -562,7 +584,7 @@ base::assign(".ptime", proc.time(), pos = "CheckExEnv")
 # considering 2 heated chains 
 	fit1 <- cure_rate_MC3(survival::Surv(y, stat) ~ x1 + x2, 
 		data = my_data_frame, 
-		promotion_time = list(distribution = 'exponential'),
+		promotion_time = list(family = 'exponential'),
 		nChains = 2, 
 		nCores = 1, 
 		mcmc_cycles = 3, sweep=2)
@@ -601,7 +623,7 @@ base::assign(".ptime", proc.time(), pos = "CheckExEnv")
 # considering 2 heated chains 
 	fit1 <- cure_rate_MC3(survival::Surv(y, stat) ~ x1 + x2, 
 		data = my_data_frame, 
-		promotion_time = list(distribution = 'exponential'),
+		promotion_time = list(family = 'exponential'),
 		nChains = 2, 
 		nCores = 1, 
 		mcmc_cycles = 3, sweep=2)
@@ -639,7 +661,7 @@ base::assign(".ptime", proc.time(), pos = "CheckExEnv")
 # run a weibull model with default prior setup
 # considering 2 heated chains 
 	fit1 <- cure_rate_MC3(survival::Surv(y, stat) ~ x1 + x2, data = my_data_frame, 
-	     promotion_time = list(distribution = 'exponential'),
+	     promotion_time = list(family = 'exponential'),
 	     nChains = 2, 
 	     nCores = 1, 
 	     mcmc_cycles = 3, sweep=2)

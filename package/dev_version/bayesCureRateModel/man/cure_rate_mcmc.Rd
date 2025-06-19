@@ -8,7 +8,7 @@ This is core MCMC function. The continuous parameters of the model are updated u
 }
 \usage{
 cure_rate_mcmc(y, X, Censoring_status, m, alpha = 1, mu_g = 1, s2_g = 1, 
-	a_l = 2.1, b_l = 1.1, promotion_time = list(distribution = "weibull", 
+	a_l = 2.1, b_l = 1.1, promotion_time = list(family = "weibull", 
 	prior_parameters = matrix(rep(c(2.1, 1.1), 2), byrow = TRUE, 2, 2), 
 	prop_scale = c(0.2, 0.03)), mu_b = NULL, Sigma = NULL, g_prop_sd = 0.045, 
 	lambda_prop_scale = 0.03, b_prop_sd = NULL, initialValues = NULL, 
@@ -116,7 +116,7 @@ Panagiotis Papastamoulis
 #	for m = 10 mcmc iterations 
         fit1 <- cure_rate_mcmc(y = y, X = x, Censoring_status = stat, 
               	plot = FALSE,
-                promotion_time = list(distribution = 'weibull', 
+                promotion_time = list(family = 'weibull', 
                         prior_parameters = matrix(rep(c(2.1, 1.1), 2), 
                                                 byrow = TRUE, 2, 2),
                         prop_scale = c(0.1, 0.1)

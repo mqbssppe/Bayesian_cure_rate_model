@@ -8,7 +8,7 @@ Returns MAP estimates of the survival function and the conditional cured probabi
 }
 \usage{
 \method{predict}{bayesCureModel}(object, newdata = NULL, tau_values = NULL, 
-	burn = NULL, K_max = 1, alpha = 0.1, nDigits = 3, verbose = FALSE, ...)
+	burn = NULL, K_max = 1, alpha0 = 0.1, nDigits = 3, verbose = FALSE, ...)
 }
 \arguments{
   \item{object}{
@@ -26,7 +26,7 @@ Positive integer corresponding to the number of mcmc iterations to discard as bu
 \item{K_max}{
  Maximum number of components in order to cluster the (univariate) values of the joint posterior distribution across the MCMC run. Used to identify the main mode of the posterior distribution. 
 }
-\item{alpha}{
+\item{alpha0}{
 Scalar between 0 and 1 corresponding to 1 - confidencel level for computing Highest Density Intervals. If set to NULL, the confidence intervals are not computed.
 }
 \item{nDigits}{
@@ -88,7 +88,7 @@ Panagiotis Papastamoulis
 # run a weibull model with default prior setup
 # considering 2 heated chains 
 	fit1 <- cure_rate_MC3(survival::Surv(y, stat) ~ x1 + x2, data = my_data_frame, 
-		promotion_time = list(distribution = 'exponential'),
+		promotion_time = list(family = 'exponential'),
 		nChains = 2, 
 		nCores = 1, 
 		mcmc_cycles = 3, sweep=2)

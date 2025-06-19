@@ -44,7 +44,7 @@ Panagiotis Papastamoulis
 # run a weibull model with default prior setup
 # considering 2 heated chains 
 	fit1 <- cure_rate_MC3(survival::Surv(y, stat) ~ x1 + x2, data = my_data_frame, 
-		promotion_time = list(distribution = 'exponential'),
+		promotion_time = list(family = 'exponential'),
 		nChains = 2, 
 		nCores = 1, 
 		mcmc_cycles = 3, sweep=2)
