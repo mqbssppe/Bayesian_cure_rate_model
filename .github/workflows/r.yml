@@ -1,5 +1,4 @@
-# GitHub Actions Workflow for R CMD Check
-# Updated to use latest versions of all actions
+# GitHub Actions Workflow for R CMD Check in a subdirectory
 
 name: R-CMD-check
 
@@ -8,7 +7,7 @@ on:
     branches: [main, master]
   pull_request:
     branches: [main, master]
-  workflow_dispatch:  # optional: allows manual triggering
+  workflow_dispatch:
 
 jobs:
   R-CMD-check:
@@ -51,8 +50,11 @@ jobs:
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
           extra-packages: any::rcmdcheck
+          working-directory: package/version_1.4/bayesCureRateModel  # 👈 update path here
 
       - uses: r-lib/actions/check-r-package@v2
+        with:
+          working-directory: package/version_1.4/bayesCureRateModel  # 👈 update path here
 
       - name: Show testthat output
         if: always()
