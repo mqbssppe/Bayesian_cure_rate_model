@@ -2466,7 +2466,7 @@ predict.bayesCureModel <- function(object, newdata = NULL, tau_values = NULL, bu
 ####################################################################################################################	
 	
 	if(is.data.frame(newdata) == FALSE){stop("newdata should be a data frame.", '\n')}
-
+	newdata <- newdata[, names(newdata) %in%  all.vars(object$input_data_and_model_prior$formula)[-(1:2)]]
 	xs <- sum(colnames(newdata) == all.vars(object$input_data_and_model_prior$formula)[-(1:2)])
 	if(xs != length(all.vars(object$input_data_and_model_prior$formula)[-(1:2)])){stop("covariate_levels should have same column names as the input data", '\n')}
 	nLines <- dim(newdata)[1]
