@@ -8,7 +8,7 @@ The promotion time can be modelled
  
 In both cases, user-defined families of distributions are allowed under some specific requirements. Posterior inference is carried out by constructing a Metropolis-coupled Markov chain Monte Carlo (MCMC) sampler, which combines Gibbs sampling for the latent cure indicators and Metropolis-Hastings steps with Langevin diffusion dynamics for parameter updates. The main MCMC algorithm is embedded within a parallel tempering scheme by considering heated versions of the target posterior distribution.
 
-The R package `bayesCureRateModel` package is available on [CRAN](https://CRAN.R-project.org/package=bayesCureRateModel). The latest version is 1.4 (18/6/2025). 
+The R package `bayesCureRateModel` package is available on [CRAN](https://CRAN.R-project.org/package=bayesCureRateModel). The latest version is 1.5 (1/11/2025). 
 
 ## References
 
