@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=pdflatex 2024.9.3)  31 OCT 2025 14:14
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=pdflatex 2024.9.3)  9 JAN 2026 14:46
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -566,8 +566,8 @@ T1/ptm/m/n/10 , which is re-turned by the []\T1/zi4/m/n/10 summary.cure_rate_MC
 
 [32] [33] [34] [35] [36] [37] [38]
 Overfull \hbox (3.0361pt too wide) in paragraph at lines 1958--1959
-[]\T1/ptm/m/n/10 Therneau T (2024). A Pack-age for Sur-vival Anal-y-sis in R. R
- pack-age ver-sion 3.7-0, https://CRAN.R-
+[]\T1/ptm/m/n/10 Therneau T (2026). A Pack-age for Sur-vival Anal-y-sis in R. R
+ pack-age ver-sion 3.8-5, https://CRAN.R-
  []
 
 (./Rd2.ind [39]
@@ -635,7 +635,7 @@ e/texlive/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/share/texlive/texmf
 -dist/fonts/type1/urw/times/utmr8a.pfb></usr/share/texlive/texmf-dist/fonts/typ
 e1/urw/times/utmr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/ut
 mri8a.pfb>
-Output written on Rd2.pdf (40 pages, 302800 bytes).
+Output written on Rd2.pdf (40 pages, 302789 bytes).
 PDF statistics:
  771 PDF objects out of 1000 (max. 8388607)
  683 compressed objects within 7 object streams

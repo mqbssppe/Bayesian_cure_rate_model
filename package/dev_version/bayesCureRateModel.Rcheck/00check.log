@@ -9,8 +9,8 @@
 * using option ‘--as-cran’
 * checking for file ‘bayesCureRateModel/DESCRIPTION’ ... OK
 * checking extension type ... Package
-* this is package ‘bayesCureRateModel’ version ‘1.5’
-* checking CRAN incoming feasibility ... [3s/16s] Note_to_CRAN_maintainers
+* this is package ‘bayesCureRateModel’ version ‘1.6’
+* checking CRAN incoming feasibility ... [4s/15s] Note_to_CRAN_maintainers
 Maintainer: ‘Panagiotis Papastamoulis <papapast@yahoo.gr>’
 * checking package namespace information ... OK
 * checking package dependencies ... OK
@@ -20,7 +20,7 @@ Maintainer: ‘Panagiotis Papastamoulis <papapast@yahoo.gr>’
 * checking for hidden files and directories ... OK
 * checking for portable file names ... OK
 * checking for sufficient/correct file permissions ... OK
-* checking whether package ‘bayesCureRateModel’ can be installed ... [11s/11s] OK
+* checking whether package ‘bayesCureRateModel’ can be installed ... [10s/10s] OK
 * used C++ compiler: ‘g++ (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0’
 * checking installed package size ... OK
 * checking package directory ... OK

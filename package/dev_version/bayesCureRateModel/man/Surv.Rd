@@ -6,13 +6,13 @@
 }
 \usage{
 Surv(time, time2, event, type = c("right", "left", "interval", 
-	"counting", "interval2", "mstate"), origin = 0)
+	"counting", "interval2"), origin = 0)
 }
 \arguments{
   \item{time}{The follow-up time. For counting process data, this is the start time.}
   \item{time2}{The end time for counting process or interval-censored data. Optional for right-censored data.}
   \item{event}{The event indicator, normally 0=alive/censored, 1=dead/event occurred. Can also be a factor or logical.}
-  \item{type}{Type of censoring. Options are \code{"right"}, \code{"left"}, \code{"interval"}, \code{"counting"}, \code{"interval2"}, or \code{"mstate"}.}
+  \item{type}{Type of censoring. Options are \code{"right"}, \code{"left"}, \code{"interval"}, \code{"counting"} or \code{"interval2"}.}
   \item{origin}{Starting point for time scale. Default is 0. Only used for type \code{"counting"}.}
 }
 \details{
@@ -37,7 +37,7 @@ The implementation in the \pkg{bayesCureRateModel} package only supports right-c
   \code{\link{cure_rate_MC3}}
 }
 \references{
-Therneau T (2024). A Package for Survival Analysis in R. R package version 3.7-0, https://CRAN.R-project.org/package=survival. 
+Therneau T (2026). A Package for Survival Analysis in R. R package version 3.8-5, https://CRAN.R-project.org/package=survival. 
 }
 
 \examples{
