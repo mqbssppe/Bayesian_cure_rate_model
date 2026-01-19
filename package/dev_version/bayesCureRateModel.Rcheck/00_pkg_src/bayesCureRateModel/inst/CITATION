@@ -16,9 +16,9 @@ bibentry(
   title = "bayesCureRateModel: Bayesian Cure Rate Modeling for Time to Event Data in R",
   author = c(person("Panagiotis", "Papastamoulis"),
              person("Fotios", "Milienos")),
-  year = 2024,
-  note = "arXiv:2409.10221",
+  year = 2026,
+  note = "Journal of Statistical Software",
   howpublished = "arXiv preprint",
-    textVersion = "Papastamoulis, P. and Milienos F. (2024). bayesCureRateModel: Bayesian Cure Rate Modeling for Time to Event Data in R. arXiv:2409.10221"
+    textVersion = "Papastamoulis, P. and Milienos F. (2026). bayesCureRateModel: Bayesian Cure Rate Modeling for Time to Event Data in R. Journal of Statistical Software"
 )
 
